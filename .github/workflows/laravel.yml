@@ -1,4 +1,4 @@
-name: Laravel with Redis and PostgreSQL
+name: Tests
 
 on:
   push:
