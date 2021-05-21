@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Casts;
+
+use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Http\File as FileClass;
+use InvalidArgumentException;
+
+class File implements CastsAttributes
+{
+    /**
+     * Cast the given value.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  string  $key
+     * @param  mixed  $value
+     * @param  array<mixed>  $attributes
+     * @return FileClass
+     */
+    public function get($model, $key, $value, $attributes)
+    {
+        return new FileClass($value, false);
+    }
+
+    /**
+     * Prepare the given value for storage.
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  string  $key
+     * @param  mixed  $value
+     * @param  array<mixed>  $attributes
+     * @return string
+     */
+    public function set($model, $key, $value, $attributes)
+    {
+        if (! $value instanceof FileClass) {
+            throw new InvalidArgumentException('The given value is not an File instance.');
+        }
+
+        return $value->path();
+    }
+}
