@@ -71,6 +71,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: ${{ env.php-extensions }}
+          tools: cs2pr
           coverage: xdebug
 
       - name: Setup problem matchers for PHP and PHPUnit
@@ -105,4 +106,4 @@ jobs:
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
 
       - name: Run PHPStan
-        run: vendor/bin/phpstan analyse -c phpstan.neon
+        run: vendor/bin/phpstan analyse -c phpstan.neon --error-format=checkstyle | cs2pr
