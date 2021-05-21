@@ -1,5 +1,5 @@
 # For more information: https://laravel.com/docs/sail
-version: '3'
+version: '3.8'
 
 services:
   laravel.test:
@@ -39,7 +39,7 @@ services:
       test: [ "CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}" ]
 
   redis:
-    image: 'redis:alpine'
+    image: 'redis:6-alpine'
     ports:
       - '${FORWARD_REDIS_PORT:-6379}:6379'
     volumes:
