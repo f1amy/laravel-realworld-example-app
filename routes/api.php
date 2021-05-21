@@ -3,8 +3,7 @@
 use App\Http\Controllers\Api\v1\Articles\ArticleController;
 use App\Http\Controllers\Api\v1\Articles\CommentsController;
 use App\Http\Controllers\Api\v1\Articles\FavoritesController;
-use App\Http\Controllers\Api\v1\Auth\LoginController;
-use App\Http\Controllers\Api\v1\Auth\RegisterController;
+use App\Http\Controllers\Api\v1\AuthController;
 use App\Http\Controllers\Api\v1\ProfileController;
 use App\Http\Controllers\Api\v1\TagsController;
 use App\Http\Controllers\Api\v1\UserController;
@@ -28,8 +27,8 @@ Route::prefix('v1')->group(function () {
             Route::put('user', [UserController::class, 'update'])->name('update');
         });
 
-        Route::post('users/login', LoginController::class)->name('login');
-        Route::post('users', RegisterController::class)->name('register');
+        Route::post('users/login', [AuthController::class, 'login'])->name('login');
+        Route::post('users', [AuthController::class, 'register'])->name('register');
     });
 
     Route::name('profiles.')->group(function () {
