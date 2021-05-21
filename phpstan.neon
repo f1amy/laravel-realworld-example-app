@@ -1,0 +1,7 @@
+parameters:
+
+    paths:
+        - app
+        - tests
+
+    level: 8
