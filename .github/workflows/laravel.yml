@@ -21,7 +21,6 @@ jobs:
       SESSION_DRIVER: redis
       DB_CONNECTION: pgsql
       DB_HOST: localhost
-      DB_PORT: 5432
       DB_PASSWORD: postgres
       DB_USERNAME: postgres
       DB_DATABASE: postgres
@@ -96,13 +95,13 @@ jobs:
       - name: Run migrations
         run: php artisan migrate -v
         env:
-          DB_PORT: ${{ job.services.postgres.ports['5432'] }}
+          DB_PORT: ${{ job.services.pgsql.ports[5432] }}
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
 
       - name: Test with PHPUnit
         run: vendor/bin/phpunit --coverage-text
         env:
-          DB_PORT: ${{ job.services.postgres.ports['5432'] }}
+          DB_PORT: ${{ job.services.pgsql.ports[5432] }}
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
 
       - name: Run PHPStan
