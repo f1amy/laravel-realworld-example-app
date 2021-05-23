@@ -21,8 +21,14 @@ use Illuminate\Notifications\Notifiable;
  * @property string $username
  * @property string|null $bio
  * @property \Illuminate\Http\File|null|null $image
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Article[] $articles
+ * @property-read int|null $articles_count
  * @property-read \Illuminate\Database\Eloquent\Collection|User[] $authors
  * @property-read int|null $authors_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
+ * @property-read int|null $comments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Article[] $favorites
+ * @property-read int|null $favorites_count
  * @property-read \Illuminate\Database\Eloquent\Collection|User[] $followers
  * @property-read int|null $followers_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
@@ -87,26 +93,8 @@ class User extends Authenticatable implements JwtSubject
     }
 
     /**
-     * The authors that the user follows.
+     * Determine if user is following an author.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function authors()
-    {
-        return $this->belongsToMany(User::class, 'author_follower', 'follower_id', 'author_id');
-    }
-
-    /**
-     * The followers of the author.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function followers()
-    {
-        return $this->belongsToMany(User::class, 'author_follower', 'author_id', 'follower_id');
-    }
-
-    /**
      * @param \App\Models\User $author
      * @return bool
      */
@@ -118,6 +106,8 @@ class User extends Authenticatable implements JwtSubject
     }
 
     /**
+     * Determine if author is followed by a user.
+     *
      * @param \App\Models\User $follower
      * @return bool
      */
@@ -126,5 +116,55 @@ class User extends Authenticatable implements JwtSubject
         return $this->followers()
             ->whereKey($follower->getKey())
             ->exists();
+    }
+
+    /**
+     * The authors that the user follows.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function authors()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    /**
+     * The followers of the author.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function followers()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    /**
+     * Get the comments of the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * Get user written articles.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
+
+    /**
+     * Get user favorite articles.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function favorites()
+    {
+        return $this->belongsToMany(Article::class);
     }
 }
