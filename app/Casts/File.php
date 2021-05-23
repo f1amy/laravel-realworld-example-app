@@ -5,6 +5,7 @@ namespace App\Casts;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Http\File as FileClass;
 use InvalidArgumentException;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 class File implements CastsAttributes
 {
@@ -15,11 +16,15 @@ class File implements CastsAttributes
      * @param  string  $key
      * @param  mixed  $value
      * @param  array<mixed>  $attributes
-     * @return FileClass
+     * @return FileClass|null
      */
     public function get($model, $key, $value, $attributes)
     {
-        return new FileClass($value, false);
+        try {
+            return new FileClass((string) $value);
+        } catch (FileNotFoundException $e) {
+            return null;
+        }
     }
 
     /**
