@@ -57,7 +57,7 @@ Route::prefix('v1')->group(function () {
                 Route::delete('articles/{slug}/comments', [CommentsController::class, 'delete'])->name('delete');
             });
 
-            Route::get('articles/{slug}/comments', [CommentsController::class, 'show'])->name('get');
+            Route::get('articles/{slug}/comments', [CommentsController::class, 'list'])->name('get');
         });
 
         Route::name('favorites.')->group(function () {
