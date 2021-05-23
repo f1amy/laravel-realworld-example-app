@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProfileResource;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -10,34 +12,82 @@ class ProfileController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param string $username
+     * @return \App\Http\Resources\ProfileResource|\Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show(string $username)
     {
-        //
+        $profile = User::whereUsername($username)
+            ->first();
+
+        if ($profile !== null) {
+            return new ProfileResource($profile);
+        }
+
+        return $this->notFoundResponse();
     }
 
     /**
-     * Update the specified resource in storage.
+     * Follow an author.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param string $username
+     * @return \App\Http\Resources\ProfileResource|\Illuminate\Http\JsonResponse
      */
-    public function follow(Request $request, $id)
+    public function follow(Request $request, string $username)
     {
-        //
+        $profile = User::whereUsername($username)
+            ->first();
+
+        if ($profile !== null) {
+            /**
+             * @var \App\Models\User $user
+             */
+            $user = $request->user();
+            $profile->followers()->syncWithoutDetaching($user);
+
+            return new ProfileResource($profile);
+        }
+
+        return $this->notFoundResponse();
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Unfollow an author.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param string $username
+     * @return \App\Http\Resources\ProfileResource|\Illuminate\Http\JsonResponse
      */
-    public function unfollow($id)
+    public function unfollow(Request $request, string $username)
     {
-        //
+        $profile = User::whereUsername($username)
+            ->first();
+
+        if ($profile !== null) {
+            /**
+             * @var \App\Models\User $user
+             */
+            $user = $request->user();
+            $profile->followers()->detach($user);
+
+            return new ProfileResource($profile);
+        }
+
+        return $this->notFoundResponse();
+    }
+
+    /**
+     * Return profile not found response.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    private function notFoundResponse()
+    {
+        return response()->json([
+            'errors' => [
+                'username' => 'The specified profile does not exist.',
+            ],
+        ], 422);
     }
 }
