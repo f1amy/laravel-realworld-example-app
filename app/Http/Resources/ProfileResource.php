@@ -40,7 +40,7 @@ class ProfileResource extends JsonResource
                 /**
                  * @var \App\Models\User $user
                  */
-                return $user->authors()->exists();
+                return $user->following($this->resource);
             }),
         ];
     }

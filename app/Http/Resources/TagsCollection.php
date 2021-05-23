@@ -13,18 +13,18 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class TagsCollection extends ResourceCollection
 {
     /**
-     * The resource that this resource collects.
-     *
-     * @var string
-     */
-    public $collects = TagResource::class;
-
-    /**
      * The "data" wrapper that should be applied.
      *
      * @var string|null
      */
     public static $wrap = 'tags';
+
+    /**
+     * The resource that this resource collects.
+     *
+     * @var string
+     */
+    public $collects = TagResource::class;
 
     /**
      * Transform the resource collection into an array.

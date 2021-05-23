@@ -125,7 +125,7 @@ class User extends Authenticatable implements JwtSubject
      */
     public function authors()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'author_follower', 'author_id', 'follower_id');
     }
 
     /**
@@ -135,7 +135,7 @@ class User extends Authenticatable implements JwtSubject
      */
     public function followers()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'author_follower', 'follower_id', 'author_id');
     }
 
     /**
@@ -145,7 +145,7 @@ class User extends Authenticatable implements JwtSubject
      */
     public function comments()
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class, 'author_id');
     }
 
     /**
@@ -155,7 +155,7 @@ class User extends Authenticatable implements JwtSubject
      */
     public function articles()
     {
-        return $this->hasMany(Article::class);
+        return $this->hasMany(Article::class, 'author_id');
     }
 
     /**
@@ -165,6 +165,6 @@ class User extends Authenticatable implements JwtSubject
      */
     public function favorites()
     {
-        return $this->belongsToMany(Article::class);
+        return $this->belongsToMany(Article::class, 'article_favorite');
     }
 }

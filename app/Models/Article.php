@@ -90,6 +90,6 @@ class Article extends Model
      */
     public function favoritedBy()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'article_favorite');
     }
 }

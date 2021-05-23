@@ -78,7 +78,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Return profile not found response.
+     * Return resource not found response.
      *
      * @return \Illuminate\Http\JsonResponse
      */
