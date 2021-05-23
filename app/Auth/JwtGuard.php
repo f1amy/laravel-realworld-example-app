@@ -12,6 +12,12 @@ use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Http\Request;
 use JsonException;
 
+/**
+ * Class JwtGuard
+ *
+ * @package App\Auth
+ * @property \Illuminate\Contracts\Auth\Authenticatable|null $user
+ */
 class JwtGuard implements Guard
 {
     use GuardHelpers;
@@ -74,6 +80,9 @@ class JwtGuard implements Guard
             }
 
             if ($this->validate([$this->inputKey => $jwt])) {
+                /**
+                 * @var \App\Contracts\JwToken $jwt
+                 */
                 $user = $this->provider->retrieveById($jwt->getSubject());
             }
         }
