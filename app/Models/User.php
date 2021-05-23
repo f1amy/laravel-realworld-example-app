@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Casts\File;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Contracts\JwtSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -12,7 +12,6 @@ use Illuminate\Notifications\Notifiable;
  * App\Models\User
  *
  * @property int $id
- * @property string $name
  * @property string $email
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
@@ -21,7 +20,11 @@ use Illuminate\Notifications\Notifiable;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string $username
  * @property string|null $bio
- * @property \Illuminate\Http\File|null $image
+ * @property \Illuminate\Http\File|null|null $image
+ * @property-read \Illuminate\Database\Eloquent\Collection|User[] $authors
+ * @property-read int|null $authors_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|User[] $followers
+ * @property-read int|null $followers_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @method static \Database\Factories\UserFactory factory(...$parameters)
@@ -34,14 +37,13 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereImage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
  * @mixin \Eloquent
  */
-class User extends Authenticatable
+class User extends Authenticatable implements JwtSubject
 {
     use HasFactory, Notifiable;
 
@@ -51,9 +53,11 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name',
+        'username',
         'email',
         'password',
+        'bio',
+        'image',
     ];
 
     /**
@@ -76,4 +80,51 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'image' => File::class,
     ];
+
+    public function getJwtIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * The authors that the user follows.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function authors()
+    {
+        return $this->belongsToMany(User::class, 'author_follower', 'follower_id', 'author_id');
+    }
+
+    /**
+     * The followers of the author.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'author_follower', 'author_id', 'follower_id');
+    }
+
+    /**
+     * @param \App\Models\User $author
+     * @return bool
+     */
+    public function following(User $author): bool
+    {
+        return $this->authors()
+            ->whereKey($author->getKey())
+            ->exists();
+    }
+
+    /**
+     * @param \App\Models\User $follower
+     * @return bool
+     */
+    public function followedBy(User $follower): bool
+    {
+        return $this->followers()
+            ->whereKey($follower->getKey())
+            ->exists();
+    }
 }
