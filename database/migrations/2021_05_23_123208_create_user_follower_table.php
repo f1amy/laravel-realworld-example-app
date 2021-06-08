@@ -14,8 +14,8 @@ class CreateUserFollowerTable extends Migration
     public function up()
     {
         Schema::create('author_follower', function (Blueprint $table) {
-            $table->foreignId('author_id')->constrained('users');
-            $table->foreignId('follower_id')->constrained('users');
+            $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('follower_id')->constrained('users')->onDelete('cascade');
 
             $table->unique(['author_id', 'follower_id']);
         });

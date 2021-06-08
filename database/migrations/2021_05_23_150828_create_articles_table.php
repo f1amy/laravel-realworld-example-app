@@ -16,7 +16,7 @@ class CreateArticlesTable extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('author_id')->constrained('users');
+            $table->foreignId('author_id')->constrained('users')->onDelete('cascade');
             $table->string('slug')->unique();
 
             $table->string('title');

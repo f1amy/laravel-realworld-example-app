@@ -14,7 +14,6 @@ class AddFieldsToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('name');
             $table->string('username')->unique();
             $table->text('bio')->nullable();
             $table->text('image')->nullable();
@@ -30,7 +29,6 @@ class AddFieldsToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn(['username', 'bio', 'image']);
-            $table->string('name');
         });
     }
 }

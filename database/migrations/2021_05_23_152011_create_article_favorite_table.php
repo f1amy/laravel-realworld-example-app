@@ -14,8 +14,8 @@ class CreateArticleFavoriteTable extends Migration
     public function up()
     {
         Schema::create('article_favorite', function (Blueprint $table) {
-            $table->foreignId('article_id')->constrained('articles');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('article_id')->constrained('articles')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
 
             $table->unique(['article_id', 'user_id']);
         });
