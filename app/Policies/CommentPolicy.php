@@ -19,6 +19,6 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment)
     {
-        return $user->getKey() === $comment->author_id;
+        return $user->getKey() === $comment->author->getKey();
     }
 }
