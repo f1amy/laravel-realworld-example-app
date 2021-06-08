@@ -54,7 +54,7 @@ Route::prefix('v1')->group(function () {
         Route::name('comments.')->group(function () {
             Route::middleware('auth:api')->group(function () {
                 Route::post('articles/{slug}/comments', [CommentsController::class, 'create'])->name('create');
-                Route::delete('articles/{slug}/comments', [CommentsController::class, 'delete'])->name('delete');
+                Route::delete('articles/{slug}/comments/{id}', [CommentsController::class, 'delete'])->name('delete');
             });
 
             Route::get('articles/{slug}/comments', [CommentsController::class, 'list'])->name('get');
