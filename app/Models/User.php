@@ -106,7 +106,7 @@ class User extends Authenticatable implements JwtSubject
     }
 
     /**
-     * Determine if author is followed by a user.
+     * Determine if author followed by a user.
      *
      * @param \App\Models\User $follower
      * @return bool

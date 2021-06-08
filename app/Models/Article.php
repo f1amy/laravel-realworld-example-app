@@ -19,8 +19,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\User $author
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Comment[] $comments
  * @property-read int|null $comments_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $favoritedBy
- * @property-read int|null $favorited_by_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $favoredUsers
+ * @property-read int|null $favored_users_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Tag[] $tags
  * @property-read int|null $tags_count
  * @method static \Illuminate\Database\Eloquent\Builder|Article newModelQuery()
@@ -52,6 +52,19 @@ class Article extends Model
         'description',
         'body',
     ];
+
+    /**
+     * Determine if user favored the article.
+     *
+     * @param \App\Models\User $user
+     * @return bool
+     */
+    public function favoredBy(User $user): bool
+    {
+        return $this->favoredUsers()
+            ->whereKey($user->getKey())
+            ->exists();
+    }
 
     /**
      * Article author.
@@ -88,7 +101,7 @@ class Article extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function favoritedBy()
+    public function favoredUsers()
     {
         return $this->belongsToMany(User::class, 'article_favorite');
     }
