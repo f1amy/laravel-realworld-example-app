@@ -3,6 +3,11 @@
 namespace App\Http\Controllers\Api\v1\Articles;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\NewArticleRequest;
+use App\Http\Requests\UpdateArticleRequest;
+use App\Http\Resources\ArticleResource;
+use App\Http\Resources\ArticlesCollection;
+use App\Models\Article;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -41,12 +46,15 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param string $slug
+     * @return \App\Http\Resources\ArticleResource
      */
-    public function show($id)
+    public function show(string $slug)
     {
-        //
+        $article = Article::whereSlug($slug)
+            ->firstOrFail();
+
+        return new ArticleResource($article);
     }
 
     /**
@@ -64,11 +72,19 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param string $slug
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function delete($id)
+    public function delete(string $slug)
     {
-        //
+        $article = Article::whereSlug($slug)
+            ->firstOrFail();
+
+        $this->authorize('delete', $article);
+
+        $article->delete(); // cascade
+
+        return response()->json(['status' => 'success']);
     }
 }
