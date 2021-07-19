@@ -2,13 +2,13 @@
 version: '3.8'
 
 services:
-  laravel.test:
+  app:
     build:
       context: ./docker/8.0
       dockerfile: Dockerfile
       args:
         WWWGROUP: '${WWWGROUP}'
-    image: ${COMPOSE_PROJECT_NAME:?}-sail-8.0/app
+    image: laravel-realworld-sail-8.0/app
     ports:
       - '${APP_PORT:-80}:80'
     environment:
@@ -52,13 +52,13 @@ services:
 
 networks:
   sail:
-    name: ${COMPOSE_PROJECT_NAME:?}-network
+    name: laravel-realworld-network
     driver: bridge
 
 volumes:
   sailpgsql:
-    name: ${COMPOSE_PROJECT_NAME:?}-database-data
+    name: laravel-realworld-database
     driver: local
   sailredis:
-    name: ${COMPOSE_PROJECT_NAME:?}-cache-data
+    name: laravel-realworld-cache
     driver: local
