@@ -69,6 +69,6 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::name('tags.')->group(function () {
-        Route::get('/tags', [TagsController::class, 'list'])->name('list');
+        Route::get('tags', [TagsController::class, 'list'])->name('list');
     });
 });
