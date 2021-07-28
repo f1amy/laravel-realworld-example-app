@@ -19,7 +19,7 @@ class ArticleFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function definition()
     {
@@ -28,7 +28,7 @@ class ArticleFactory extends Factory
             'slug' => function (array $attributes) {
                 return Str::slug($attributes['title']);
             },
-            'title' => $this->faker->sentence(4),
+            'title' => $this->faker->unique()->sentence(4),
             'description' => $this->faker->paragraph(),
             'body' => $this->faker->text(),
         ];
