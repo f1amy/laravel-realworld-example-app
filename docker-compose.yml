@@ -12,7 +12,7 @@ services:
     ports:
       - '${APP_PORT:-80}:80'
     environment:
-      PHP_IDE_CONFIG: 'serverName=${COMPOSE_PROJECT_NAME:?}.test'
+      PHP_IDE_CONFIG: 'serverName=laravel-realworld.test'
       WWWUSER: '${WWWUSER}'
       LARAVEL_SAIL: 1
     volumes:

@@ -1,4 +1,4 @@
-# ![RealWorld Example App](logo.png)
+# ![RealWorld Example App](.github/readme/logo.png)
 
 [![Laravel with Redis and PostgreSQL](https://github.com/f1amy/laravel-realworld-example-app/actions/workflows/laravel.yml/badge.svg)](https://github.com/f1amy/laravel-realworld-example-app/actions/workflows/laravel.yml)
 

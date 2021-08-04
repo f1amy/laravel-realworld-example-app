@@ -125,7 +125,7 @@ jobs:
         run: composer create-project --no-progress --prefer-dist
 
       - name: Run migrations
-        run: php artisan migrate -v
+        run: php artisan migrate -v --seed
         env:
           DB_PORT: ${{ job.services.pgsql.ports[5432] }}
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
