@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api\v1;
 
-class NewArticleRequest extends UpdateArticleRequest
+class ArticleListRequest extends FeedRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -12,8 +12,9 @@ class NewArticleRequest extends UpdateArticleRequest
     public function rules()
     {
         return parent::rules() + [
-            'article.tagList' => 'required|array',
-            'article.tagList.*' => 'required|string|distinct:strict',
+            'tag' => 'sometimes|string',
+            'author' => 'sometimes|string',
+            'favorited' => 'sometimes|string',
         ];
     }
 }

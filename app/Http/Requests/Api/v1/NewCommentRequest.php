@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api\v1;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FeedRequest extends FormRequest
+class NewCommentRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,8 +14,7 @@ class FeedRequest extends FormRequest
     public function rules()
     {
         return [
-            'limit' => 'sometimes|integer|min:0',
-            'offset' => 'sometimes|integer|min:0',
+            'comment.body' => 'required|string',
         ];
     }
 }

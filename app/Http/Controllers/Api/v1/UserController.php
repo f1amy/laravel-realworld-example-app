@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdateUserRequest;
-use App\Http\Resources\UserResource;
+use App\Http\Requests\Api\v1\UpdateUserRequest;
+use App\Http\Resources\Api\v1\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
@@ -13,7 +13,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @return \App\Http\Resources\UserResource
+     * @return \App\Http\Resources\Api\v1\UserResource
      */
     public function show(Request $request)
     {
@@ -23,8 +23,8 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\UpdateUserRequest $request
-     * @return \App\Http\Resources\UserResource
+     * @param \App\Http\Requests\Api\v1\UpdateUserRequest $request
+     * @return \App\Http\Resources\Api\v1\UserResource
      */
     public function update(UpdateUserRequest $request)
     {

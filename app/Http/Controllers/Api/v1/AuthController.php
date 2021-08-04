@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\NewUserRequest;
-use App\Http\Resources\UserTokenResource;
+use App\Http\Requests\Api\v1\LoginRequest;
+use App\Http\Requests\Api\v1\NewUserRequest;
+use App\Http\Resources\Api\v1\UserTokenResource;
 use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +17,7 @@ class AuthController extends Controller
      * Register new user.
      *
      * @param NewUserRequest $request
-     * @return \App\Http\Resources\UserTokenResource
+     * @return \App\Http\Resources\Api\v1\UserTokenResource
      */
     public function register(NewUserRequest $request)
     {
@@ -33,8 +33,8 @@ class AuthController extends Controller
     /**
      * Login existing user.
      *
-     * @param \App\Http\Requests\LoginRequest $request
-     * @return \App\Http\Resources\UserTokenResource|\Illuminate\Http\JsonResponse
+     * @param \App\Http\Requests\Api\v1\LoginRequest $request
+     * @return \App\Http\Resources\Api\v1\UserTokenResource|\Illuminate\Http\JsonResponse
      */
     public function login(LoginRequest $request)
     {

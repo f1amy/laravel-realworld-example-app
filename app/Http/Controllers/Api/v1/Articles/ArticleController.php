@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api\v1\Articles;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ArticleListRequest;
-use App\Http\Requests\FeedRequest;
-use App\Http\Requests\NewArticleRequest;
-use App\Http\Requests\UpdateArticleRequest;
-use App\Http\Resources\ArticleResource;
-use App\Http\Resources\ArticlesCollection;
+use App\Http\Requests\Api\v1\ArticleListRequest;
+use App\Http\Requests\Api\v1\FeedRequest;
+use App\Http\Requests\Api\v1\NewArticleRequest;
+use App\Http\Requests\Api\v1\UpdateArticleRequest;
+use App\Http\Resources\Api\v1\ArticleResource;
+use App\Http\Resources\Api\v1\ArticlesCollection;
 use App\Models\Article;
 use App\Models\Tag;
 use Illuminate\Database\Eloquent\Builder;
@@ -29,8 +29,8 @@ class ArticleController extends Controller
     /**
      * Display global listing of the articles.
      *
-     * @param \App\Http\Requests\ArticleListRequest $request
-     * @return \App\Http\Resources\ArticlesCollection<Article>
+     * @param \App\Http\Requests\Api\v1\ArticleListRequest $request
+     * @return \App\Http\Resources\Api\v1\ArticlesCollection<Article>
      */
     public function list(ArticleListRequest $request)
     {
@@ -67,8 +67,8 @@ class ArticleController extends Controller
     /**
      * Display article feed for the user.
      *
-     * @param \App\Http\Requests\FeedRequest $request
-     * @return \App\Http\Resources\ArticlesCollection<Article>
+     * @param \App\Http\Requests\Api\v1\FeedRequest $request
+     * @return \App\Http\Resources\Api\v1\ArticlesCollection<Article>
      */
     public function feed(FeedRequest $request)
     {
@@ -97,8 +97,8 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\NewArticleRequest $request
-     * @return \App\Http\Resources\ArticleResource
+     * @param \App\Http\Requests\Api\v1\NewArticleRequest $request
+     * @return \App\Http\Resources\Api\v1\ArticleResource
      */
     public function create(NewArticleRequest $request)
     {
@@ -126,7 +126,7 @@ class ArticleController extends Controller
      * Display the specified resource.
      *
      * @param string $slug
-     * @return \App\Http\Resources\ArticleResource
+     * @return \App\Http\Resources\Api\v1\ArticleResource
      */
     public function show(string $slug)
     {
@@ -139,9 +139,9 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\UpdateArticleRequest $request
+     * @param \App\Http\Requests\Api\v1\UpdateArticleRequest $request
      * @param string $slug
-     * @return \App\Http\Resources\ArticleResource
+     * @return \App\Http\Resources\Api\v1\ArticleResource
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(UpdateArticleRequest $request, string $slug)

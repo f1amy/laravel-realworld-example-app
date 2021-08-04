@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api\v1\Articles;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\NewCommentRequest;
-use App\Http\Resources\CommentResource;
-use App\Http\Resources\CommentsCollection;
+use App\Http\Requests\Api\v1\NewCommentRequest;
+use App\Http\Resources\Api\v1\CommentResource;
+use App\Http\Resources\Api\v1\CommentsCollection;
 use App\Models\Article;
 use App\Models\Comment;
 
@@ -15,7 +15,7 @@ class CommentsController extends Controller
      * Display a listing of the resource.
      *
      * @param string $slug
-     * @return \App\Http\Resources\CommentsCollection<Comment>
+     * @return \App\Http\Resources\Api\v1\CommentsCollection<Comment>
      */
     public function list(string $slug)
     {
@@ -28,9 +28,9 @@ class CommentsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\NewCommentRequest $request
+     * @param \App\Http\Requests\Api\v1\NewCommentRequest $request
      * @param string $slug
-     * @return \App\Http\Resources\CommentResource
+     * @return \App\Http\Resources\Api\v1\CommentResource
      */
     public function create(NewCommentRequest $request, string $slug)
     {

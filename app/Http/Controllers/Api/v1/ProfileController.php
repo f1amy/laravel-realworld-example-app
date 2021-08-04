@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ProfileResource;
+use App\Http\Resources\Api\v1\ProfileResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -13,7 +13,7 @@ class ProfileController extends Controller
      * Display the specified resource.
      *
      * @param string $username
-     * @return \App\Http\Resources\ProfileResource
+     * @return \App\Http\Resources\Api\v1\ProfileResource
      */
     public function show(string $username)
     {
@@ -28,7 +28,7 @@ class ProfileController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param string $username
-     * @return \App\Http\Resources\ProfileResource
+     * @return \App\Http\Resources\Api\v1\ProfileResource
      */
     public function follow(Request $request, string $username)
     {
@@ -49,7 +49,7 @@ class ProfileController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param string $username
-     * @return \App\Http\Resources\ProfileResource
+     * @return \App\Http\Resources\Api\v1\ProfileResource
      */
     public function unfollow(Request $request, string $username)
     {
