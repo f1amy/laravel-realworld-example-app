@@ -1,20 +1,22 @@
 # For more information: https://laravel.com/docs/sail
-version: '3.8'
+version: '3.9'
 
 services:
-  app:
+  laravel.test:
     build:
       context: ./docker/8.0
       dockerfile: Dockerfile
       args:
         WWWGROUP: '${WWWGROUP}'
-    image: laravel-realworld-sail-8.0/app
+    image: sail-8.0/app
     ports:
       - '${APP_PORT:-80}:80'
     environment:
       PHP_IDE_CONFIG: 'serverName=laravel-realworld.test'
       WWWUSER: '${WWWUSER}'
       LARAVEL_SAIL: 1
+      XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
+      XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
     volumes:
       - '.:/var/www/html'
     networks:
@@ -38,6 +40,8 @@ services:
       - sail
     healthcheck:
       test: [ "CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}" ]
+      retries: 3
+      timeout: 5s
 
   redis:
     image: 'redis:6-alpine'
@@ -49,6 +53,8 @@ services:
       - sail
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
+      retries: 3
+      timeout: 5s
 
 networks:
   sail:
