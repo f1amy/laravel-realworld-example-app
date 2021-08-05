@@ -12,12 +12,29 @@ class UnfollowProfileTest extends TestCase
 
     public function testUnfollowProfile(): void
     {
+        /** @var User $author */
+        $author = User::factory()->create();
 
-    }
+        /** @var User $follower */
+        $follower = User::factory()
+            ->hasAttached($author, [], 'authors')
+            ->create();
 
-    public function testUnfollowAlreadyUnfollowedProfile(): void
-    {
+        $this->assertTrue($author->followers->contains($follower));
 
+        $response = $this->actingAs($follower, 'api')
+            ->deleteJson("/api/v1/profiles/{$author->username}/follow");
+
+        $response->assertOk()
+            ->assertJsonPath('profile.following', false);
+
+        $this->assertFalse($follower->authors->contains($author));
+
+        $repeatedResponse = $this->actingAs($follower, 'api')
+            ->deleteJson("/api/v1/profiles/{$author->username}/follow");
+
+        $repeatedResponse->assertOk()
+            ->assertJsonPath('profile.following', false);
     }
 
     public function testUnfollowProfileWithoutAuth(): void

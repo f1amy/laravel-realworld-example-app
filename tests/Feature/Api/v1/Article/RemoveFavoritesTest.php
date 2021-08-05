@@ -30,6 +30,8 @@ class RemoveFavoritesTest extends TestCase
             ->assertJsonPath('article.favorited', false)
             ->assertJsonPath('article.favoritesCount', 0);
 
+        $this->assertFalse($article->favoredUsers->contains($user));
+
         $repeatedResponse = $this->actingAs($user, 'api')
             ->deleteJson("/api/v1/articles/{$article->slug}/favorite");
 

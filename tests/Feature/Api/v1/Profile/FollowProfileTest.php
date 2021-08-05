@@ -12,12 +12,29 @@ class FollowProfileTest extends TestCase
 
     public function testFollowProfile(): void
     {
+        /** @var User $author */
+        $author = User::factory()->create();
 
-    }
+        /** @var User $follower */
+        $follower = User::factory()->create();
 
-    public function testFollowAlreadyFollowedProfile(): void
-    {
+        $this->assertFalse($author->followers->contains($follower));
 
+        $response = $this->actingAs($follower, 'api')
+            ->postJson("/api/v1/profiles/{$author->username}/follow");
+
+        $response->assertOk()
+            ->assertJsonPath('profile.following', true);
+
+        $this->assertTrue($follower->authors->contains($author));
+
+        $repeatedResponse = $this->actingAs($follower, 'api')
+            ->postJson("/api/v1/profiles/{$author->username}/follow");
+
+        $repeatedResponse->assertOk()
+            ->assertJsonPath('profile.following', true);
+
+        $this->assertDatabaseCount('author_follower', 1);
     }
 
     public function testFollowProfileWithoutAuth(): void

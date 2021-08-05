@@ -28,12 +28,16 @@ class AddFavoritesTest extends TestCase
             ->assertJsonPath('article.favorited', true)
             ->assertJsonPath('article.favoritesCount', 1);
 
+        $this->assertTrue($article->favoredUsers->contains($user));
+
         $repeatedResponse = $this->actingAs($user, 'api')
             ->postJson("/api/v1/articles/{$article->slug}/favorite");
 
         $repeatedResponse->assertOk()
             ->assertJsonPath('article.favorited', true)
             ->assertJsonPath('article.favoritesCount', 1);
+
+        $this->assertDatabaseCount('article_favorite', 1);
     }
 
     public function testAddNonExistentArticleToFavorites(): void
