@@ -9,13 +9,6 @@ class ShowProfileTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testShowNonExistentProfile(): void
-    {
-        $response = $this->getJson("/api/v1/profiles/non-existent");
-
-        $response->assertNotFound();
-    }
-
     public function testShowProfileWithoutAuth(): void
     {
 
@@ -29,5 +22,12 @@ class ShowProfileTest extends TestCase
     public function testShowUnfollowedProfile(): void
     {
 
+    }
+
+    public function testShowNonExistentProfile(): void
+    {
+        $response = $this->getJson("/api/v1/profiles/non-existent");
+
+        $response->assertNotFound();
     }
 }

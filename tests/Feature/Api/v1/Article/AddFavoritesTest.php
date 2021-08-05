@@ -13,12 +13,27 @@ class AddFavoritesTest extends TestCase
 
     public function testAddArticleToFavorites(): void
     {
+        /** @var Article $article */
+        $article = Article::factory()->create();
 
-    }
+        /** @var User $user */
+        $user = User::factory()->create();
 
-    public function testAddAlreadyFavoredArticleToFavorites(): void
-    {
+        $this->assertFalse($user->favorites->contains($article));
 
+        $response = $this->actingAs($user, 'api')
+            ->postJson("/api/v1/articles/{$article->slug}/favorite");
+
+        $response->assertOk()
+            ->assertJsonPath('article.favorited', true)
+            ->assertJsonPath('article.favoritesCount', 1);
+
+        $repeatedResponse = $this->actingAs($user, 'api')
+            ->postJson("/api/v1/articles/{$article->slug}/favorite");
+
+        $repeatedResponse->assertOk()
+            ->assertJsonPath('article.favorited', true)
+            ->assertJsonPath('article.favoritesCount', 1);
     }
 
     public function testAddNonExistentArticleToFavorites(): void
