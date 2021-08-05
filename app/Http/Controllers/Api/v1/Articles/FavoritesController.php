@@ -21,9 +21,7 @@ class FavoritesController extends Controller
         $article = Article::whereSlug($slug)
             ->firstOrFail();
 
-        /**
-         * @var \App\Models\User $user
-         */
+        /** @var \App\Models\User $user */
         $user = $request->user();
 
         $user->favorites()->syncWithoutDetaching($article);
@@ -43,9 +41,7 @@ class FavoritesController extends Controller
         $article = Article::whereSlug($slug)
             ->firstOrFail();
 
-        /**
-         * @var \App\Models\User $user
-         */
+        /** @var \App\Models\User $user */
         $user = $request->user();
 
         $user->favorites()->detach($article);

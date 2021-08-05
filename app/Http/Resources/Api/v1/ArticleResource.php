@@ -27,9 +27,7 @@ class ArticleResource extends JsonResource
      */
     public function toArray($request)
     {
-        /**
-         * @var \App\Models\User|null $user
-         */
+        /** @var \App\Models\User|null $user */
         $user = $request->user('api');
 
         return [
@@ -41,9 +39,7 @@ class ArticleResource extends JsonResource
             'createdAt' => $this->resource->created_at,
             'updatedAt' => $this->resource->updated_at,
             'favorited' => $this->when($user !== null, function () use ($user) {
-                /**
-                 * @var \App\Models\User $user
-                 */
+                /** @var \App\Models\User $user */
                 return $this->resource->favoredBy($user);
             }),
             'favoritesCount' => $this->resource->favoredUsers()->count(),

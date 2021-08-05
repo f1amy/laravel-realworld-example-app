@@ -23,9 +23,7 @@ class Parser implements JwtParser
         }
 
         $base64Decoded = array_map(function ($part) {
-            /**
-             * @var false|string $decoded
-             */
+            /** @var false|string $decoded */
             $decoded = base64_decode($part);
 
             if ($decoded === false) {

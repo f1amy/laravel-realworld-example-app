@@ -8,9 +8,7 @@ use App\Contracts\JwtSubject;
 
 class Builder implements JwtBuilder
 {
-    /**
-     * @var JwToken
-     */
+    /** @var JwToken */
     private $jwt;
 
     public function __construct()

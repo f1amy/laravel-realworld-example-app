@@ -35,9 +35,7 @@ class ProfileController extends Controller
         $profile = User::whereUsername($username)
             ->firstOrFail();
 
-        /**
-         * @var \App\Models\User $user
-         */
+        /** @var \App\Models\User $user */
         $user = $request->user();
         $profile->followers()->syncWithoutDetaching($user);
 
@@ -56,9 +54,7 @@ class ProfileController extends Controller
         $profile = User::whereUsername($username)
             ->firstOrFail();
 
-        /**
-         * @var \App\Models\User $user
-         */
+        /** @var \App\Models\User $user */
         $user = $request->user();
         $profile->followers()->detach($user);
 

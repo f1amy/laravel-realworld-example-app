@@ -18,18 +18,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        /**
-         * @var User[]|\Illuminate\Database\Eloquent\Collection<User> $users
-         */
+        /** @var User[]|\Illuminate\Database\Eloquent\Collection<User> $users */
         $users = User::factory()->count(20)->create();
 
         foreach ($users as $user) {
             $user->followers()->attach($users->random(rand(0, 5)));
         }
 
-        /**
-         * @var Article[]|\Illuminate\Database\Eloquent\Collection<Article> $articles
-         */
+        /** @var Article[]|\Illuminate\Database\Eloquent\Collection<Article> $articles */
         $articles = Article::factory()
             ->count(30)
             ->state(new Sequence(function () use ($users) {
@@ -37,9 +33,7 @@ class DatabaseSeeder extends Seeder
             }))
             ->create();
 
-        /**
-         * @var Tag[]|\Illuminate\Database\Eloquent\Collection<Tag> $tags
-         */
+        /** @var Tag[]|\Illuminate\Database\Eloquent\Collection<Tag> $tags */
         $tags = Tag::factory()->count(20)->create();
 
         foreach ($articles as $article) {

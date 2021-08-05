@@ -37,9 +37,7 @@ class CommentsController extends Controller
         $article = Article::whereSlug($slug)
             ->firstOrFail();
 
-        /**
-         * @var \App\Models\User $user
-         */
+        /** @var \App\Models\User $user */
         $user = $request->user();
 
         $comment = Comment::create([
@@ -71,6 +69,6 @@ class CommentsController extends Controller
 
         $comment->delete();
 
-        return response()->json(['status' => 'success']);
+        return response()->json(['message' => 'Success.']);
     }
 }

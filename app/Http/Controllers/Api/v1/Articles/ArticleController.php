@@ -16,14 +16,10 @@ use Illuminate\Support\Arr;
 
 class ArticleController extends Controller
 {
-    /**
-     * @var int Default limit for feed listing.
-     */
+    /** @var int Default limit for feed listing. */
     protected const FILTER_LIMIT = 20;
 
-    /***
-     * @var int Default offset for feed listing.
-     */
+    /** @var int Default offset for feed listing. */
     protected const FILTER_OFFSET = 0;
 
     /**
@@ -77,9 +73,7 @@ class ArticleController extends Controller
         $limit = (int) $filter->get('limit', static::FILTER_LIMIT);
         $offset = (int) $filter->get('offset', static::FILTER_OFFSET);
 
-        /**
-         * @var \App\Models\User $user
-         */
+        /** @var \App\Models\User $user */
         $user = $request->user();
 
         $feed = Article::whereHas('author',
@@ -174,6 +168,6 @@ class ArticleController extends Controller
 
         $article->delete(); // cascade
 
-        return response()->json(['status' => 'success']);
+        return response()->json(['message' => 'Success.']);
     }
 }

@@ -27,9 +27,7 @@ class ProfileResource extends JsonResource
      */
     public function toArray($request)
     {
-        /**
-         * @var \App\Models\User|null $user
-         */
+        /** @var \App\Models\User|null $user */
         $user = $request->user('api');
 
         return [
@@ -37,9 +35,7 @@ class ProfileResource extends JsonResource
             'bio' => $this->resource->bio,
             'image' => $this->resource->image,
             'following' => $this->when($user !== null, function () use ($user) {
-                /**
-                 * @var \App\Models\User $user
-                 */
+                /** @var \App\Models\User $user */
                 return $user->following($this->resource);
             }),
         ];

@@ -80,9 +80,7 @@ class JwtGuard implements Guard
             }
 
             if ($this->validate([$this->inputKey => $jwt])) {
-                /**
-                 * @var \App\Contracts\JwToken $jwt
-                 */
+                /** @var \App\Contracts\JwToken $jwt */
                 $user = $this->provider->retrieveById($jwt->getSubject());
             }
         }

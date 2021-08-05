@@ -28,17 +28,13 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request)
     {
-        /**
-         * @var \App\Models\User $user
-         */
+        /** @var \App\Models\User $user */
         $user = $request->user();
 
         $attributes = Arr::get($request->validated(), 'user');
 
         if ($request->hasFile('user.image')) {
-            /**
-             * @var \Illuminate\Http\UploadedFile
-             */
+            /** @var \Illuminate\Http\UploadedFile */
             $image = $request->file('user.image');
 
             $attributes['image'] = $image->path();

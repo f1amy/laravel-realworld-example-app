@@ -38,10 +38,8 @@ class Handler extends ExceptionHandler
         $this->renderable(function (NotFoundHttpException $e) {
             if ($e->getPrevious() instanceof ModelNotFoundException) {
                 return response()->json([
-                    'errors' => [
-                        'model' => ['Resource not found.'],
-                    ],
-                ], 422);
+                    'message' => 'Resource not found.',
+                ], 404);
             }
 
             return null;
