@@ -13,7 +13,7 @@ class RemoveFavoritesTest extends TestCase
 
     public function testRemoveArticleFromFavorites(): void
     {
-
+        $this->fail('Checking annotations in GitHub Actions UI');
     }
 
     public function testRemoveAlreadyRemovedArticleFromFavorites(): void

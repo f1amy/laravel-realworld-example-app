@@ -13,7 +13,7 @@ class AddFavoritesTest extends TestCase
 
     public function testAddArticleToFavorites(): void
     {
-
+        $this->fail('Checking annotations in GitHub Actions UI');
     }
 
     public function testAddAlreadyFavoredArticleToFavorites(): void
