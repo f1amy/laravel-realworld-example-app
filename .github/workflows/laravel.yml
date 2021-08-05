@@ -131,7 +131,7 @@ jobs:
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
 
       - name: Test with PHPUnit
-        run: vendor/bin/phpunit --coverage-text
+        run: php artisan test --parallel --coverage-text
         env:
           DB_PORT: ${{ job.services.pgsql.ports[5432] }}
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
