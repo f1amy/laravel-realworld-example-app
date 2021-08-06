@@ -2,15 +2,7 @@
 
 namespace App\Http\Resources\Api\v1;
 
-use Illuminate\Http\Resources\Json\JsonResource;
-
-/**
- * Class ProfileResource
- *
- * @package App\Http\Resources
- * @property \App\Models\User $resource
- */
-class ProfileResource extends JsonResource
+class ProfileResource extends BaseUserResource
 {
     /**
      * The "data" wrapper that should be applied.
@@ -30,10 +22,7 @@ class ProfileResource extends JsonResource
         /** @var \App\Models\User|null $user */
         $user = $request->user('api');
 
-        return [
-            'username' => $this->resource->username,
-            'bio' => $this->resource->bio,
-            'image' => $this->resource->image,
+        return parent::toArray($request) + [
             'following' => $this->when($user !== null, function () use ($user) {
                 /** @var \App\Models\User $user */
                 return $user->following($this->resource);

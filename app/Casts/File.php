@@ -20,11 +20,15 @@ class File implements CastsAttributes
      */
     public function get($model, $key, $value, $attributes)
     {
-        try {
-            return new FileClass((string) $value);
-        } catch (FileNotFoundException $e) {
-            return null;
+        if ($value !== null) {
+            try {
+                return new FileClass((string) $value);
+            } catch (FileNotFoundException $e) {
+                return null;
+            }
         }
+
+        return null;
     }
 
     /**
@@ -34,14 +38,18 @@ class File implements CastsAttributes
      * @param  string  $key
      * @param  mixed  $value
      * @param  array<mixed>  $attributes
-     * @return string
+     * @return string|null
      */
     public function set($model, $key, $value, $attributes)
     {
-        if (! $value instanceof FileClass) {
-            throw new InvalidArgumentException('The given value is not an File instance.');
+        if ($value !== null) {
+            if (! $value instanceof FileClass) {
+                throw new InvalidArgumentException('The given value is not an File instance.');
+            }
+
+            return $value->path();
         }
 
-        return $value->path();
+        return null;
     }
 }

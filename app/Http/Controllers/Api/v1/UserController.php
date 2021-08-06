@@ -32,12 +32,19 @@ class UserController extends Controller
         $user = $request->user();
 
         $attributes = Arr::get($request->validated(), 'user');
+        unset($attributes['image']);
 
         if ($request->hasFile('user.image')) {
             /** @var \Illuminate\Http\UploadedFile */
             $image = $request->file('user.image');
 
-            $attributes['image'] = $image->path();
+            if ($image->isValid()) {
+                $path = $image->store('images', 'public');
+
+                if ($path !== false) {
+                    $attributes['image'] = $path;
+                }
+            }
         }
 
         $user->update($attributes);
