@@ -53,7 +53,7 @@ class UnfollowProfileTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($user, 'api')
-            ->deleteJson("/api/v1/profiles/non-existent/follow");
+            ->deleteJson('/api/v1/profiles/non-existent/follow');
 
         $response->assertNotFound();
     }

@@ -18,7 +18,7 @@ class TagsTest extends TestCase
 
         $response->assertOk()
             ->assertExactJson([
-                'tags' => $tags->pluck('name')
+                'tags' => $tags->pluck('name'),
             ]);
     }
 

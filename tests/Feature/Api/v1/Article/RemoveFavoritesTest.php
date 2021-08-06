@@ -46,7 +46,7 @@ class RemoveFavoritesTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($user, 'api')
-            ->deleteJson("/api/v1/articles/non-existent/favorite");
+            ->deleteJson('/api/v1/articles/non-existent/favorite');
 
         $response->assertNotFound();
     }

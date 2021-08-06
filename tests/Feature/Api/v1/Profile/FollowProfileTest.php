@@ -53,7 +53,7 @@ class FollowProfileTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($user, 'api')
-            ->postJson("/api/v1/profiles/non-existent/follow");
+            ->postJson('/api/v1/profiles/non-existent/follow');
 
         $response->assertNotFound();
     }

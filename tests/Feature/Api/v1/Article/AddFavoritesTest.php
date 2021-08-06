@@ -46,7 +46,7 @@ class AddFavoritesTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->actingAs($user, 'api')
-            ->postJson("/api/v1/articles/non-existent/favorite");
+            ->postJson('/api/v1/articles/non-existent/favorite');
 
         $response->assertNotFound();
     }
