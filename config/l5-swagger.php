@@ -1,18 +1,17 @@
 <?php
 
 return [
-    'default' => 'default',
+    'default' => 'v1',
     'documentations' => [
-        'default' => [
+        'v1' => [
             'api' => [
-                'title' => 'L5 Swagger UI',
+                'title' => config('app.name') . ' OpenAPI Documentation',
             ],
-
             'routes' => [
                 /*
                  * Route for accessing api documentation interface
                 */
-                'api' => 'api/documentation',
+                'api' => 'api/v1/documentation',
             ],
             'paths' => [
                 /*
@@ -34,7 +33,11 @@ return [
                  * Absolute paths to directory containing the swagger annotations are stored.
                 */
                 'annotations' => [
-                    base_path('app'),
+                    base_path('app/Annotations/Api/v1'),
+                    base_path('app/Http/Controllers/Api/v1'),
+                    base_path('app/Http/Requests/Api/v1'),
+                    base_path('app/Http/Resources/Api/v1'),
+                    base_path('app/Models'),
                 ],
 
             ],
