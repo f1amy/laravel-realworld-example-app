@@ -28,9 +28,9 @@ class DatabaseSeeder extends Seeder
         /** @var Article[]|\Illuminate\Database\Eloquent\Collection<Article> $articles */
         $articles = Article::factory()
             ->count(30)
-            ->state(new Sequence(function () use ($users) {
-                return ['author_id' => $users->random()];
-            }))
+            ->state(new Sequence(fn() => [
+                'author_id' => $users->random(),
+            ]))
             ->create();
 
         /** @var Tag[]|\Illuminate\Database\Eloquent\Collection<Tag> $tags */
@@ -43,12 +43,10 @@ class DatabaseSeeder extends Seeder
 
         Comment::factory()
             ->count(60)
-            ->state(new Sequence(function () use ($articles, $users) {
-                return [
-                    'article_id' => $articles->random(),
-                    'author_id' => $users->random(),
-                ];
-            }))
+            ->state(new Sequence(fn() => [
+                'article_id' => $articles->random(),
+                'author_id' => $users->random(),
+            ]))
             ->create();
     }
 }

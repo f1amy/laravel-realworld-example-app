@@ -14,14 +14,14 @@ class FollowProfileTest extends TestCase
         /** @var User $follower */
         $follower = User::factory()->create();
 
-        $response = $this->actingAs($follower, 'api')
+        $response = $this->actingAs($follower)
             ->postJson("/api/v1/profiles/{$author->username}/follow");
         $response->assertOk()
             ->assertJsonPath('profile.following', true);
 
         $this->assertTrue($author->followers->contains($follower));
 
-        $repeatedResponse = $this->actingAs($follower, 'api')
+        $repeatedResponse = $this->actingAs($follower)
             ->postJson("/api/v1/profiles/{$author->username}/follow");
         $repeatedResponse->assertOk();
 
@@ -43,7 +43,7 @@ class FollowProfileTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user)
             ->postJson('/api/v1/profiles/non-existent/follow');
 
         $response->assertNotFound();

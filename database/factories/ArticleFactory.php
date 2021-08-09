@@ -25,9 +25,7 @@ class ArticleFactory extends Factory
     {
         return [
             'author_id' => User::factory(),
-            'slug' => function (array $attributes) {
-                return Str::slug($attributes['title']);
-            },
+            'slug' => fn (array $attrs) => Str::slug($attrs['title']),
             'title' => $this->faker->unique()->sentence(4),
             'description' => $this->faker->paragraph(),
             'body' => $this->faker->text(),

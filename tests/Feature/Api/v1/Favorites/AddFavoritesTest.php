@@ -15,7 +15,7 @@ class AddFavoritesTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user)
             ->postJson("/api/v1/articles/{$article->slug}/favorite");
         $response->assertOk()
             ->assertJsonPath('article.favorited', true)
@@ -23,7 +23,7 @@ class AddFavoritesTest extends TestCase
 
         $this->assertTrue($user->favorites->contains($article));
 
-        $repeatedResponse = $this->actingAs($user, 'api')
+        $repeatedResponse = $this->actingAs($user)
             ->postJson("/api/v1/articles/{$article->slug}/favorite");
         $repeatedResponse->assertOk()
             ->assertJsonPath('article.favoritesCount', 1);
@@ -36,7 +36,7 @@ class AddFavoritesTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user)
             ->postJson('/api/v1/articles/non-existent/favorite');
 
         $response->assertNotFound();

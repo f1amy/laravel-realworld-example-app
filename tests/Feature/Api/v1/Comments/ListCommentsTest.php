@@ -22,7 +22,6 @@ class ListCommentsTest extends TestCase
         $response = $this->getJson("/api/v1/articles/{$article->slug}/comments");
 
         $response->assertOk()
-            ->assertJsonCount(5, 'comments')
             ->assertJson(function (AssertableJson $json) use ($comment) {
                 $json->has('comments', 5, function (AssertableJson $item) use ($comment) {
                     $author = $comment->author;
@@ -52,7 +51,7 @@ class ListCommentsTest extends TestCase
             ->create();
         $article = $comment->article;
 
-        $response = $this->actingAs($follower, 'api')
+        $response = $this->actingAs($follower)
             ->getJson("/api/v1/articles/{$article->slug}/comments");
 
         $response->assertOk()
@@ -68,7 +67,7 @@ class ListCommentsTest extends TestCase
             ->has(Comment::factory(), 'comments')
             ->create();
 
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user)
             ->getJson("/api/v1/articles/{$article->slug}/comments");
 
         $response->assertOk()

@@ -7,14 +7,10 @@ use Illuminate\Support\Collection;
 
 class Token implements JwToken
 {
-    /** @var \Illuminate\Support\Collection */
-    private $header;
-
-    /** @var \Illuminate\Support\Collection */
-    private $payload;
-
-    /** @var string|null User-supplied signature */
-    private $signature;
+    /** User-supplied signature */
+    private ?string $signature;
+    private Collection $header;
+    private Collection $payload;
 
     /**
      * JwToken constructor.

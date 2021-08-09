@@ -20,7 +20,7 @@ class ProfileResource extends BaseUserResource
     public function toArray($request)
     {
         /** @var \App\Models\User|null $user */
-        $user = $request->user('api');
+        $user = $request->user();
 
         return parent::toArray($request) + [
             'following' => $this->when($user !== null, function () use ($user) {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Api\v1;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -11,10 +12,16 @@ class UpdateUserRequest extends FormRequest
      * Get the validation rules that apply to the request.
      *
      * @return array<string, mixed>
+     * @throws \Illuminate\Auth\AuthenticationException
      */
     public function rules()
     {
+        /** @var \App\Models\User|null $user */
         $user = $this->user();
+
+        if ($user === null) {
+            throw new AuthenticationException();
+        }
 
         return [
             'user.username' => [

@@ -39,7 +39,7 @@ class ShowProfileTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user)
             ->getJson("/api/v1/profiles/{$profile->username}");
 
         $response->assertOk()
@@ -55,7 +55,7 @@ class ShowProfileTest extends TestCase
             ->hasAttached($profile, [], 'authors')
             ->create();
 
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user)
             ->getJson("/api/v1/profiles/{$profile->username}");
 
         $response->assertOk()

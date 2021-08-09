@@ -5,14 +5,14 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^7.4|^8.0",
+        "ext-json": "*",
         "darkaonline/l5-swagger": "^8.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.40",
-        "laravel/tinker": "^2.5",
-        "ext-json": "*"
+        "laravel/tinker": "^2.5"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.10",
@@ -63,7 +63,7 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "platform": {
-            "php": "7.3"
+            "php": "7.4"
         }
     },
     "minimum-stability": "dev",

@@ -16,14 +16,14 @@ class UnfollowProfileTest extends TestCase
             ->hasAttached($author, [], 'authors')
             ->create();
 
-        $response = $this->actingAs($follower, 'api')
+        $response = $this->actingAs($follower)
             ->deleteJson("/api/v1/profiles/{$author->username}/follow");
         $response->assertOk()
             ->assertJsonPath('profile.following', false);
 
         $this->assertFalse($author->followers->contains($follower));
 
-        $repeatedResponse = $this->actingAs($follower, 'api')
+        $repeatedResponse = $this->actingAs($follower)
             ->deleteJson("/api/v1/profiles/{$author->username}/follow");
         $repeatedResponse->assertOk();
     }
@@ -43,7 +43,7 @@ class UnfollowProfileTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user)
             ->deleteJson('/api/v1/profiles/non-existent/follow');
 
         $response->assertNotFound();

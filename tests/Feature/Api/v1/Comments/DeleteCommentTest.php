@@ -15,7 +15,7 @@ class DeleteCommentTest extends TestCase
         $comment = Comment::factory()->create();
         $article = $comment->article;
 
-        $response = $this->actingAs($comment->author, 'api')
+        $response = $this->actingAs($comment->author)
             ->deleteJson("/api/v1/articles/{$article->slug}/comments/{$comment->getKey()}");
 
         $response->assertOk();
@@ -30,7 +30,7 @@ class DeleteCommentTest extends TestCase
 
         $this->assertNotSame($nonExistentSlug = 'non-existent', $article->slug);
 
-        $response = $this->actingAs($comment->author, 'api')
+        $response = $this->actingAs($comment->author)
             ->deleteJson("/api/v1/articles/{$nonExistentSlug}/comments/{$comment->getKey()}");
 
         $response->assertNotFound();
@@ -45,11 +45,11 @@ class DeleteCommentTest extends TestCase
 
         $this->assertNotEquals($nonExistentId = 123, $comment->getKey());
 
-        $response = $this->actingAs($comment->author, 'api')
+        $response = $this->actingAs($comment->author)
             ->deleteJson("/api/v1/articles/{$article->slug}/comments/{$nonExistentId}");
         $response->assertNotFound();
 
-        $repeatedResponse = $this->actingAs($comment->author, 'api')
+        $repeatedResponse = $this->actingAs($comment->author)
             ->deleteJson("/api/v1/articles/{$article->slug}/comments/non-existent");
         $repeatedResponse->assertNotFound();
 
@@ -64,7 +64,7 @@ class DeleteCommentTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user)
             ->deleteJson("/api/v1/articles/{$article->slug}/comments/{$comment->getKey()}");
 
         $response->assertForbidden();
@@ -78,7 +78,7 @@ class DeleteCommentTest extends TestCase
         /** @var Article $article */
         $article = Article::factory()->create();
 
-        $response = $this->actingAs($comment->author, 'api')
+        $response = $this->actingAs($comment->author)
             ->deleteJson("/api/v1/articles/{$article->slug}/comments/{$comment->getKey()}");
 
         $response->assertNotFound();

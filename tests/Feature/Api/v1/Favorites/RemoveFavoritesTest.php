@@ -17,7 +17,7 @@ class RemoveFavoritesTest extends TestCase
             ->hasAttached($user, [], 'favoredUsers')
             ->create();
 
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user)
             ->deleteJson("/api/v1/articles/{$article->slug}/favorite");
         $response->assertOk()
             ->assertJsonPath('article.favorited', false)
@@ -25,7 +25,7 @@ class RemoveFavoritesTest extends TestCase
 
         $this->assertFalse($user->favorites->contains($article));
 
-        $repeatedResponse = $this->actingAs($user, 'api')
+        $repeatedResponse = $this->actingAs($user)
             ->deleteJson("/api/v1/articles/{$article->slug}/favorite");
         $repeatedResponse->assertOk();
     }
@@ -35,7 +35,7 @@ class RemoveFavoritesTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user, 'api')
+        $response = $this->actingAs($user)
             ->deleteJson('/api/v1/articles/non-existent/favorite');
 
         $response->assertNotFound();

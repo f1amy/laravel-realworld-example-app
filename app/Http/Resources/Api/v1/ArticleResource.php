@@ -28,7 +28,7 @@ class ArticleResource extends JsonResource
     public function toArray($request)
     {
         /** @var \App\Models\User|null $user */
-        $user = $request->user('api');
+        $user = $request->user();
 
         return [
             'slug' => $this->resource->slug,

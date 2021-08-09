@@ -31,10 +31,8 @@ class JwtGuard implements Guard
 
     /**
      * The name of the query string item from the request containing the API token.
-     *
-     * @var string
      */
-    protected $inputKey;
+    protected string $inputKey;
 
     /**
      * Create a new authentication guard.
