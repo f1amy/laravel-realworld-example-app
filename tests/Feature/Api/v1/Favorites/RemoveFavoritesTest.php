@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Api\v1\Article;
+namespace Tests\Feature\Api\v1\Favorites;
 
 use App\Models\Article;
 use App\Models\User;

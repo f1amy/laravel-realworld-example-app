@@ -30,7 +30,7 @@ class CommentsController extends Controller
      *
      * @param \App\Http\Requests\Api\v1\NewCommentRequest $request
      * @param string $slug
-     * @return \App\Http\Resources\Api\v1\CommentResource
+     * @return \Illuminate\Http\JsonResponse|object
      */
     public function create(NewCommentRequest $request, string $slug)
     {
@@ -46,7 +46,9 @@ class CommentsController extends Controller
             'body' => $request->input('comment.body'),
         ]);
 
-        return new CommentResource($comment);
+        return (new CommentResource($comment))
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**

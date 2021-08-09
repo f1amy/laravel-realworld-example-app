@@ -17,7 +17,7 @@ class AuthController extends Controller
      * Register new user.
      *
      * @param NewUserRequest $request
-     * @return \App\Http\Resources\Api\v1\UserTokenResource
+     * @return \Illuminate\Http\JsonResponse|object
      */
     public function register(NewUserRequest $request)
     {
@@ -27,7 +27,9 @@ class AuthController extends Controller
 
         $user = User::create($attributes);
 
-        return new UserTokenResource($user);
+        return (new UserTokenResource($user))
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**
@@ -46,7 +48,7 @@ class AuthController extends Controller
 
         return response()->json([
             'errors' => [
-                'email' => 'The provided credentials do not match our records.',
+                'email' => trans('auth.failed'),
             ],
         ], 422);
     }

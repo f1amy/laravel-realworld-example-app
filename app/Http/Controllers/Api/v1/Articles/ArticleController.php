@@ -92,7 +92,7 @@ class ArticleController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\Api\v1\NewArticleRequest $request
-     * @return \App\Http\Resources\Api\v1\ArticleResource
+     * @return \Illuminate\Http\JsonResponse|object
      */
     public function create(NewArticleRequest $request)
     {
@@ -113,7 +113,9 @@ class ArticleController extends Controller
             $article->refresh();
         }
 
-        return new ArticleResource($article);
+        return (new ArticleResource($article))
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**
