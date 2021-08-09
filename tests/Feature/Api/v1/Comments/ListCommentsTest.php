@@ -5,14 +5,11 @@ namespace Tests\Feature\Api\v1\Comments;
 use App\Models\Article;
 use App\Models\Comment;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
 class ListCommentsTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function testListArticleCommentsWithoutAuth(): void
     {
         /** @var Article $article */
@@ -55,9 +52,6 @@ class ListCommentsTest extends TestCase
             ->create();
         $article = $comment->article;
 
-        $this->assertTrue($comment->author->is($author));
-        $this->assertTrue($author->followers->contains($follower));
-
         $response = $this->actingAs($follower, 'api')
             ->getJson("/api/v1/articles/{$article->slug}/comments");
 
@@ -73,8 +67,6 @@ class ListCommentsTest extends TestCase
         $article = Article::factory()
             ->has(Comment::factory(), 'comments')
             ->create();
-
-        $this->assertTrue($user->authors->isEmpty());
 
         $response = $this->actingAs($user, 'api')
             ->getJson("/api/v1/articles/{$article->slug}/comments");

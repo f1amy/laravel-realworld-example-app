@@ -3,13 +3,10 @@
 namespace Tests\Feature\Api\v1\Profile;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class UnfollowProfileTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function testUnfollowProfile(): void
     {
         /** @var User $author */
@@ -19,14 +16,12 @@ class UnfollowProfileTest extends TestCase
             ->hasAttached($author, [], 'authors')
             ->create();
 
-        $this->assertTrue($author->followers->contains($follower));
-
         $response = $this->actingAs($follower, 'api')
             ->deleteJson("/api/v1/profiles/{$author->username}/follow");
         $response->assertOk()
             ->assertJsonPath('profile.following', false);
 
-        $this->assertFalse($follower->authors->contains($author));
+        $this->assertFalse($author->followers->contains($follower));
 
         $repeatedResponse = $this->actingAs($follower, 'api')
             ->deleteJson("/api/v1/profiles/{$author->username}/follow");

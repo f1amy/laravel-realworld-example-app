@@ -4,13 +4,10 @@ namespace Tests\Feature\Api\v1\Favorites;
 
 use App\Models\Article;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class AddFavoritesTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function testAddArticleToFavorites(): void
     {
         /** @var Article $article */
@@ -18,15 +15,13 @@ class AddFavoritesTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $this->assertFalse($user->favorites->contains($article));
-
         $response = $this->actingAs($user, 'api')
             ->postJson("/api/v1/articles/{$article->slug}/favorite");
         $response->assertOk()
             ->assertJsonPath('article.favorited', true)
             ->assertJsonPath('article.favoritesCount', 1);
 
-        $this->assertTrue($article->favoredUsers->contains($user));
+        $this->assertTrue($user->favorites->contains($article));
 
         $repeatedResponse = $this->actingAs($user, 'api')
             ->postJson("/api/v1/articles/{$article->slug}/favorite");

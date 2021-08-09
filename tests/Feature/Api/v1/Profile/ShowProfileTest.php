@@ -3,15 +3,12 @@
 namespace Tests\Feature\Api\v1\Profile;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ShowProfileTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function testShowProfileWithoutAuth(): void
     {
         Storage::fake('public');
@@ -42,8 +39,6 @@ class ShowProfileTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $this->assertFalse($profile->followers->contains($user));
-
         $response = $this->actingAs($user, 'api')
             ->getJson("/api/v1/profiles/{$profile->username}");
 
@@ -59,8 +54,6 @@ class ShowProfileTest extends TestCase
         $user = User::factory()
             ->hasAttached($profile, [], 'authors')
             ->create();
-
-        $this->assertTrue($profile->followers->contains($user));
 
         $response = $this->actingAs($user, 'api')
             ->getJson("/api/v1/profiles/{$profile->username}");

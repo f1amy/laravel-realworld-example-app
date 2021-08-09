@@ -3,13 +3,10 @@
 namespace Tests\Feature\Api\v1\Profile;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class FollowProfileTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function testFollowProfile(): void
     {
         /** @var User $author */
@@ -17,14 +14,12 @@ class FollowProfileTest extends TestCase
         /** @var User $follower */
         $follower = User::factory()->create();
 
-        $this->assertFalse($author->followers->contains($follower));
-
         $response = $this->actingAs($follower, 'api')
             ->postJson("/api/v1/profiles/{$author->username}/follow");
         $response->assertOk()
             ->assertJsonPath('profile.following', true);
 
-        $this->assertTrue($follower->authors->contains($author));
+        $this->assertTrue($author->followers->contains($follower));
 
         $repeatedResponse = $this->actingAs($follower, 'api')
             ->postJson("/api/v1/profiles/{$author->username}/follow");

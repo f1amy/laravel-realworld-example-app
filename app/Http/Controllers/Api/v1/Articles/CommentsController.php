@@ -55,17 +55,17 @@ class CommentsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param string $slug
-     * @param int $id
+     * @param mixed $id
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function delete(string $slug, int $id)
+    public function delete(string $slug, $id)
     {
         $article = Article::whereSlug($slug)
             ->firstOrFail();
 
         $comment = $article->comments()
-            ->findOrFail($id);
+            ->findOrFail((int) $id);
 
         $this->authorize('delete', $comment);
 

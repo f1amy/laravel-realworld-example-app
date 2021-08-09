@@ -4,13 +4,10 @@ namespace Tests\Feature\Api\v1\Favorites;
 
 use App\Models\Article;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class RemoveFavoritesTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function testRemoveArticleFromFavorites(): void
     {
         /** @var User $user */
@@ -20,15 +17,13 @@ class RemoveFavoritesTest extends TestCase
             ->hasAttached($user, [], 'favoredUsers')
             ->create();
 
-        $this->assertTrue($user->favorites->contains($article));
-
         $response = $this->actingAs($user, 'api')
             ->deleteJson("/api/v1/articles/{$article->slug}/favorite");
         $response->assertOk()
             ->assertJsonPath('article.favorited', false)
             ->assertJsonPath('article.favoritesCount', 0);
 
-        $this->assertFalse($article->favoredUsers->contains($user));
+        $this->assertFalse($user->favorites->contains($article));
 
         $repeatedResponse = $this->actingAs($user, 'api')
             ->deleteJson("/api/v1/articles/{$article->slug}/favorite");

@@ -3,13 +3,10 @@
 namespace Tests\Feature\Api\v1;
 
 use App\Models\Tag;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class TagsTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function testReturnsTagsList(): void
     {
         $tags = Tag::factory()->count(5)->create();
