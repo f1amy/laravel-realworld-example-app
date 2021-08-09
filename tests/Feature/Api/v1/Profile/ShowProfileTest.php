@@ -18,8 +18,8 @@ class ShowProfileTest extends TestCase
 
         /** @var User $profile */
         $profile = User::factory()->withImage()->create();
-
         $image = $profile->image;
+
         $this->assertInstanceOf(File::class, $image);
         $this->assertFileExists($image->path());
 
@@ -39,7 +39,6 @@ class ShowProfileTest extends TestCase
     {
         /** @var User $profile */
         $profile = User::factory()->create();
-
         /** @var User $user */
         $user = User::factory()->create();
 
@@ -56,7 +55,6 @@ class ShowProfileTest extends TestCase
     {
         /** @var User $profile */
         $profile = User::factory()->create();
-
         /** @var User $user */
         $user = User::factory()
             ->hasAttached($profile, [], 'authors')

@@ -14,7 +14,6 @@ class FollowProfileTest extends TestCase
     {
         /** @var User $author */
         $author = User::factory()->create();
-
         /** @var User $follower */
         $follower = User::factory()->create();
 
@@ -22,7 +21,6 @@ class FollowProfileTest extends TestCase
 
         $response = $this->actingAs($follower, 'api')
             ->postJson("/api/v1/profiles/{$author->username}/follow");
-
         $response->assertOk()
             ->assertJsonPath('profile.following', true);
 
@@ -30,9 +28,7 @@ class FollowProfileTest extends TestCase
 
         $repeatedResponse = $this->actingAs($follower, 'api')
             ->postJson("/api/v1/profiles/{$author->username}/follow");
-
-        $repeatedResponse->assertOk()
-            ->assertJsonPath('profile.following', true);
+        $repeatedResponse->assertOk();
 
         $this->assertDatabaseCount('author_follower', 1);
     }

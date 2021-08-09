@@ -15,7 +15,6 @@ class RemoveFavoritesTest extends TestCase
     {
         /** @var User $user */
         $user = User::factory()->create();
-
         /** @var Article $article */
         $article = Article::factory()
             ->hasAttached($user, [], 'favoredUsers')
@@ -25,7 +24,6 @@ class RemoveFavoritesTest extends TestCase
 
         $response = $this->actingAs($user, 'api')
             ->deleteJson("/api/v1/articles/{$article->slug}/favorite");
-
         $response->assertOk()
             ->assertJsonPath('article.favorited', false)
             ->assertJsonPath('article.favoritesCount', 0);
@@ -34,10 +32,7 @@ class RemoveFavoritesTest extends TestCase
 
         $repeatedResponse = $this->actingAs($user, 'api')
             ->deleteJson("/api/v1/articles/{$article->slug}/favorite");
-
-        $repeatedResponse->assertOk()
-            ->assertJsonPath('article.favorited', false)
-            ->assertJsonPath('article.favoritesCount', 0);
+        $repeatedResponse->assertOk();
     }
 
     public function testRemoveNonExistentArticleFromFavorites(): void

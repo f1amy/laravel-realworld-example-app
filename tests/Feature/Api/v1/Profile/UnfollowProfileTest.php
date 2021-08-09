@@ -14,7 +14,6 @@ class UnfollowProfileTest extends TestCase
     {
         /** @var User $author */
         $author = User::factory()->create();
-
         /** @var User $follower */
         $follower = User::factory()
             ->hasAttached($author, [], 'authors')
@@ -24,7 +23,6 @@ class UnfollowProfileTest extends TestCase
 
         $response = $this->actingAs($follower, 'api')
             ->deleteJson("/api/v1/profiles/{$author->username}/follow");
-
         $response->assertOk()
             ->assertJsonPath('profile.following', false);
 
@@ -32,9 +30,7 @@ class UnfollowProfileTest extends TestCase
 
         $repeatedResponse = $this->actingAs($follower, 'api')
             ->deleteJson("/api/v1/profiles/{$author->username}/follow");
-
-        $repeatedResponse->assertOk()
-            ->assertJsonPath('profile.following', false);
+        $repeatedResponse->assertOk();
     }
 
     public function testUnfollowProfileWithoutAuth(): void
