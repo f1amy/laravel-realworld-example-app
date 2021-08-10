@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Handler extends ExceptionHandler
 {
     /**

@@ -40,21 +40,21 @@ class ArticleController extends Controller
             ->offset($offset);
 
         if ($tag = $filter->get('tag')) {
-            $list->whereHas('tags', function (Builder $query) use ($tag) {
-                $query->where('name', $tag);
-            });
+            $list->whereHas('tags', fn (Builder $query) =>
+                $query->where('name', $tag)
+            );
         }
 
         if ($authorName = $filter->get('author')) {
-            $list->whereHas('author', function (Builder $query) use ($authorName) {
-                $query->where('name', $authorName);
-            });
+            $list->whereHas('author', fn (Builder $query) =>
+                $query->where('name', $authorName)
+            );
         }
 
         if ($userName = $filter->get('favorited')) {
-            $list->whereHas('favoredUsers', function (Builder $query) use ($userName) {
-                $query->where('name', $userName);
-            });
+            $list->whereHas('favoredUsers', fn (Builder $query) =>
+                $query->where('name', $userName)
+            );
         }
 
         return new ArticlesCollection($list->get());
@@ -76,10 +76,9 @@ class ArticleController extends Controller
         /** @var \App\Models\User $user */
         $user = $request->user();
 
-        $feed = Article::whereHas('author',
-            function (Builder $query) use ($user) {
-                $query->whereIn('id', $user->authors->pluck('id'));
-            })
+        $feed = Article::whereHas('author', fn (Builder $query) =>
+                $query->whereIn('id', $user->authors->pluck('id'))
+            )
             ->orderBy('created_at', 'desc')
             ->limit($limit)
             ->offset($offset)

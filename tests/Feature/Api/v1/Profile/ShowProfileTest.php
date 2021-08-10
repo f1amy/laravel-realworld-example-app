@@ -3,7 +3,6 @@
 namespace Tests\Feature\Api\v1\Profile;
 
 use App\Models\User;
-use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
@@ -17,8 +16,9 @@ class ShowProfileTest extends TestCase
         $profile = User::factory()->withImage()->create();
         $image = $profile->image;
 
-        $this->assertInstanceOf(File::class, $image);
-        $this->assertFileExists($image->path());
+        $this->assertNotNull($image);
+        Storage::disk('public')
+            ->assertExists($imagePath = "images/{$image->getBasename()}");
 
         $response = $this->getJson("/api/v1/profiles/{$profile->username}");
 
@@ -27,7 +27,7 @@ class ShowProfileTest extends TestCase
                 'profile' => [
                     'username' => $profile->username,
                     'bio' => $profile->bio,
-                    'image' => "/storage/images/{$image->getBasename()}",
+                    'image' => "/storage/{$imagePath}",
                 ],
             ]);
     }

@@ -18,26 +18,25 @@ class ListCommentsTest extends TestCase
             ->create();
         /** @var Comment $comment */
         $comment = $article->comments->first();
+        $author = $comment->author;
 
         $response = $this->getJson("/api/v1/articles/{$article->slug}/comments");
 
         $response->assertOk()
-            ->assertJson(function (AssertableJson $json) use ($comment) {
-                $json->has('comments', 5, function (AssertableJson $item) use ($comment) {
-                    $author = $comment->author;
-
+            ->assertJson(fn (AssertableJson $json) =>
+                $json->has('comments', 5, fn (AssertableJson $item) =>
                     $item->where('id', $comment->getKey())
                         ->where('createdAt', optional($comment->created_at)->toISOString())
                         ->where('updatedAt', optional($comment->updated_at)->toISOString())
                         ->where('body', $comment->body)
-                        ->has('author', function (AssertableJson $subItem) use ($author) {
+                        ->has('author', fn (AssertableJson $subItem) =>
                             $subItem->where('username', $author->username)
                                 ->where('bio', $author->bio)
                                 ->where('image', $author->image)
-                                ->missing('following');
-                        });
-                });
-            });
+                                ->missing('following')
+                        )
+                )
+            );
     }
 
     public function testListArticleCommentsFollowedAuthor(): void

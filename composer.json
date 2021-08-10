@@ -1,17 +1,17 @@
 {
-    "name": "laravel/laravel",
+    "name": "f1amy/laravel-realworld-example-app",
     "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "description": "Laravel framework RealWorld backend implementation.",
+    "keywords": ["laravel", "jwt", "crud", "demo-app", "realworld", "rest-api"],
+    "homepage": "https://github.com/f1amy/laravel-realworld-example-app",
     "license": "MIT",
     "require": {
         "php": "^7.4|^8.0",
         "ext-json": "*",
         "darkaonline/l5-swagger": "^8.0",
-        "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/framework": "^8.40",
+        "laravel/framework": "^8.54",
         "laravel/tinker": "^2.5"
     },
     "require-dev": {
