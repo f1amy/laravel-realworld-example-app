@@ -38,9 +38,9 @@ jobs:
         run: composer create-project --no-progress --prefer-dist
 
       - name: Run PHPStan
-        run: >-
+        run: >
           vendor/bin/phpstan analyse -c phpstan.neon
-            --no-progress --error-format=checkstyle | cs2pr
+          --no-progress --error-format=checkstyle | cs2pr
 
   tests:
     name: Tests (PHP ${{ matrix.php-versions }})
@@ -49,34 +49,27 @@ jobs:
     env:
       php-extensions: pgsql, redis
       php-extensions-key: cache-v1 # change to clear the extension cache.
-      REDIS_HOST: redis
-      CACHE_DRIVER: redis
-      SESSION_DRIVER: redis
       DB_CONNECTION: pgsql
-      DB_HOST: pgsql
-      DB_PASSWORD: postgres
-      DB_USERNAME: postgres
-      DB_DATABASE: postgres
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_DATABASE: laravel-realworld
+      DB_USERNAME: username
+      DB_PASSWORD: password
 
     services:
       pgsql:
         image: postgres:alpine
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
+          POSTGRES_DB: laravel-realworld
+          POSTGRES_USER: username
+          POSTGRES_PASSWORD: password
         ports:
-          - 5432/tcp
+          - 5432:5432
         options: >-
-          --health-cmd "pg_isready" --health-interval 10s
-          --health-timeout 5s --health-retries 3
-      redis:
-        image: redis:alpine
-        ports:
-          - 6379/tcp
-        options: >-
-          --health-cmd="redis-cli ping" --health-interval 10s
-          --health-timeout 5s --health-retries 3
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 3
 
     strategy:
       fail-fast: false
@@ -130,12 +123,6 @@ jobs:
 
       - name: Run migrations
         run: php artisan migrate -v --seed
-        env:
-          DB_PORT: ${{ job.services.pgsql.ports[5432] }}
-          REDIS_PORT: ${{ job.services.redis.ports[6379] }}
 
       - name: Test with PHPUnit
         run: php artisan test --without-tty --parallel --coverage-text
-        env:
-          DB_PORT: ${{ job.services.pgsql.ports[5432] }}
-          REDIS_PORT: ${{ job.services.redis.ports[6379] }}
