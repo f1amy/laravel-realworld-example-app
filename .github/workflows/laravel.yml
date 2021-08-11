@@ -38,9 +38,9 @@ jobs:
         run: composer create-project --no-progress --prefer-dist
 
       - name: Run PHPStan
-        run: |
-          vendor/bin/phpstan analyse -c phpstan.neon \
-          --no-progress --error-format=checkstyle | cs2pr
+        run: >
+          vendor/bin/phpstan analyse -c phpstan.neon
+            --no-progress --error-format=checkstyle | cs2pr
 
   tests:
     name: Tests (PHP ${{ matrix.php-versions }})
@@ -67,15 +67,15 @@ jobs:
           POSTGRES_DB: postgres
         ports:
           - 5432/tcp
-        options: |
-          --health-cmd "pg_isready" --health-interval 10s \
+        options: >
+          --health-cmd "pg_isready" --health-interval 10s
           --health-timeout 5s --health-retries 3
       redis:
         image: redis:alpine
         ports:
           - 6379/tcp
-        options: |
-          --health-cmd="redis-cli ping" --health-interval 10s \
+        options: >
+          --health-cmd="redis-cli ping" --health-interval 10s
           --health-timeout 5s --health-retries 3
 
     strategy:
