@@ -26,7 +26,7 @@ services:
             - redis
 
     pgsql:
-        image: 'postgres:13-alpine'
+        image: 'postgres:alpine'
         ports:
             - '${FORWARD_DB_PORT:-5432}:5432'
         environment:
@@ -39,12 +39,12 @@ services:
         networks:
             - sail
         healthcheck:
-            test: [ "CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}" ]
+            test: [ "CMD", "pg_isready", "-q" ]
             retries: 3
             timeout: 5s
 
     redis:
-        image: 'redis:6-alpine'
+        image: 'redis:alpine'
         ports:
             - '${FORWARD_REDIS_PORT:-6379}:6379'
         volumes:
