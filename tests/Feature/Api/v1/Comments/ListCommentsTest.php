@@ -86,8 +86,7 @@ class ListCommentsTest extends TestCase
 
     public function testListCommentsOfNonExistentArticle(): void
     {
-        $response = $this->getJson('/api/v1/articles/non-existent/comments');
-
-        $response->assertNotFound();
+        $this->getJson('/api/v1/articles/non-existent/comments')
+            ->assertNotFound();
     }
 }

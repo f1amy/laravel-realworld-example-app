@@ -21,9 +21,9 @@ class FollowProfileTest extends TestCase
 
         $this->assertTrue($author->followers->contains($follower));
 
-        $repeatedResponse = $this->actingAs($follower)
-            ->postJson("/api/v1/profiles/{$author->username}/follow");
-        $repeatedResponse->assertOk();
+        $this->actingAs($follower)
+            ->postJson("/api/v1/profiles/{$author->username}/follow")
+            ->assertOk();
 
         $this->assertDatabaseCount('author_follower', 1);
     }
@@ -33,9 +33,8 @@ class FollowProfileTest extends TestCase
         /** @var User $profile */
         $profile = User::factory()->create();
 
-        $response = $this->postJson("/api/v1/profiles/{$profile->username}/follow");
-
-        $response->assertUnauthorized();
+        $this->postJson("/api/v1/profiles/{$profile->username}/follow")
+            ->assertUnauthorized();
     }
 
     public function testFollowNonExistentProfile(): void
@@ -43,9 +42,8 @@ class FollowProfileTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)
-            ->postJson('/api/v1/profiles/non-existent/follow');
-
-        $response->assertNotFound();
+        $this->actingAs($user)
+            ->postJson('/api/v1/profiles/non-existent/follow')
+            ->assertNotFound();
     }
 }

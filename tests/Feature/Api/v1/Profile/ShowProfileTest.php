@@ -64,8 +64,7 @@ class ShowProfileTest extends TestCase
 
     public function testShowNonExistentProfile(): void
     {
-        $response = $this->getJson('/api/v1/profiles/non-existent');
-
-        $response->assertNotFound();
+        $this->getJson('/api/v1/profiles/non-existent')
+            ->assertNotFound();
     }
 }

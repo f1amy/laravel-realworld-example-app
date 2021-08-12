@@ -23,9 +23,9 @@ class UnfollowProfileTest extends TestCase
 
         $this->assertFalse($author->followers->contains($follower));
 
-        $repeatedResponse = $this->actingAs($follower)
-            ->deleteJson("/api/v1/profiles/{$author->username}/follow");
-        $repeatedResponse->assertOk();
+        $this->actingAs($follower)
+            ->deleteJson("/api/v1/profiles/{$author->username}/follow")
+            ->assertOk();
     }
 
     public function testUnfollowProfileWithoutAuth(): void
@@ -33,9 +33,8 @@ class UnfollowProfileTest extends TestCase
         /** @var User $profile */
         $profile = User::factory()->create();
 
-        $response = $this->deleteJson("/api/v1/profiles/{$profile->username}/follow");
-
-        $response->assertUnauthorized();
+        $this->deleteJson("/api/v1/profiles/{$profile->username}/follow")
+            ->assertUnauthorized();
     }
 
     public function testUnfollowNonExistentProfile(): void
@@ -43,9 +42,8 @@ class UnfollowProfileTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)
-            ->deleteJson('/api/v1/profiles/non-existent/follow');
-
-        $response->assertNotFound();
+        $this->actingAs($user)
+            ->deleteJson('/api/v1/profiles/non-existent/follow')
+            ->assertNotFound();
     }
 }

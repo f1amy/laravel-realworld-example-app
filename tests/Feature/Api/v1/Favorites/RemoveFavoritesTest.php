@@ -25,9 +25,9 @@ class RemoveFavoritesTest extends TestCase
 
         $this->assertFalse($user->favorites->contains($article));
 
-        $repeatedResponse = $this->actingAs($user)
-            ->deleteJson("/api/v1/articles/{$article->slug}/favorite");
-        $repeatedResponse->assertOk();
+        $this->actingAs($user)
+            ->deleteJson("/api/v1/articles/{$article->slug}/favorite")
+            ->assertOk();
     }
 
     public function testRemoveNonExistentArticleFromFavorites(): void
@@ -35,10 +35,9 @@ class RemoveFavoritesTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)
-            ->deleteJson('/api/v1/articles/non-existent/favorite');
-
-        $response->assertNotFound();
+        $this->actingAs($user)
+            ->deleteJson('/api/v1/articles/non-existent/favorite')
+            ->assertNotFound();
     }
 
     public function testRemoveArticleFromFavoritesWithoutAuth(): void
@@ -46,8 +45,7 @@ class RemoveFavoritesTest extends TestCase
         /** @var Article $article */
         $article = Article::factory()->create();
 
-        $response = $this->deleteJson("/api/v1/articles/{$article->slug}/favorite");
-
-        $response->assertUnauthorized();
+        $this->deleteJson("/api/v1/articles/{$article->slug}/favorite")
+            ->assertUnauthorized();
     }
 }

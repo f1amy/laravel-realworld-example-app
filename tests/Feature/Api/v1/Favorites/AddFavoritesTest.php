@@ -36,10 +36,9 @@ class AddFavoritesTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)
-            ->postJson('/api/v1/articles/non-existent/favorite');
-
-        $response->assertNotFound();
+        $this->actingAs($user)
+            ->postJson('/api/v1/articles/non-existent/favorite')
+            ->assertNotFound();
     }
 
     public function testAddArticleToFavoritesWithoutAuth(): void
@@ -47,8 +46,7 @@ class AddFavoritesTest extends TestCase
         /** @var Article $article */
         $article = Article::factory()->create();
 
-        $response = $this->postJson("/api/v1/articles/{$article->slug}/favorite");
-
-        $response->assertUnauthorized();
+        $this->postJson("/api/v1/articles/{$article->slug}/favorite")
+            ->assertUnauthorized();
     }
 }

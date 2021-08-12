@@ -15,10 +15,10 @@ class DeleteCommentTest extends TestCase
         $comment = Comment::factory()->create();
         $article = $comment->article;
 
-        $response = $this->actingAs($comment->author)
-            ->deleteJson("/api/v1/articles/{$article->slug}/comments/{$comment->getKey()}");
+        $this->actingAs($comment->author)
+            ->deleteJson("/api/v1/articles/{$article->slug}/comments/{$comment->getKey()}")
+            ->assertOk();
 
-        $response->assertOk();
         $this->assertDeleted($comment);
     }
 
@@ -30,28 +30,28 @@ class DeleteCommentTest extends TestCase
 
         $this->assertNotSame($nonExistentSlug = 'non-existent', $article->slug);
 
-        $response = $this->actingAs($comment->author)
-            ->deleteJson("/api/v1/articles/{$nonExistentSlug}/comments/{$comment->getKey()}");
+        $this->actingAs($comment->author)
+            ->deleteJson("/api/v1/articles/{$nonExistentSlug}/comments/{$comment->getKey()}")
+            ->assertNotFound();
 
-        $response->assertNotFound();
         $this->assertTrue($comment->exists());
     }
 
-    public function testDeleteNonExistentArticleComment(): void
+    /**
+     * @dataProvider nonExistentIdProvider
+     * @param mixed $nonExistentId
+     */
+    public function testDeleteNonExistentArticleComment($nonExistentId): void
     {
         /** @var Comment $comment */
         $comment = Comment::factory()->create();
         $article = $comment->article;
 
-        $this->assertNotEquals($nonExistentId = 123, $comment->getKey());
+        $this->assertNotEquals($nonExistentId, $comment->getKey());
 
-        $response = $this->actingAs($comment->author)
-            ->deleteJson("/api/v1/articles/{$article->slug}/comments/{$nonExistentId}");
-        $response->assertNotFound();
-
-        $repeatedResponse = $this->actingAs($comment->author)
-            ->deleteJson("/api/v1/articles/{$article->slug}/comments/non-existent");
-        $repeatedResponse->assertNotFound();
+        $this->actingAs($comment->author)
+            ->deleteJson("/api/v1/articles/{$article->slug}/comments/{$nonExistentId}")
+            ->assertNotFound();
 
         $this->assertTrue($comment->exists());
     }
@@ -64,10 +64,10 @@ class DeleteCommentTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
 
-        $response = $this->actingAs($user)
-            ->deleteJson("/api/v1/articles/{$article->slug}/comments/{$comment->getKey()}");
+        $this->actingAs($user)
+            ->deleteJson("/api/v1/articles/{$article->slug}/comments/{$comment->getKey()}")
+            ->assertForbidden();
 
-        $response->assertForbidden();
         $this->assertTrue($comment->exists());
     }
 
@@ -78,10 +78,10 @@ class DeleteCommentTest extends TestCase
         /** @var Article $article */
         $article = Article::factory()->create();
 
-        $response = $this->actingAs($comment->author)
-            ->deleteJson("/api/v1/articles/{$article->slug}/comments/{$comment->getKey()}");
+        $this->actingAs($comment->author)
+            ->deleteJson("/api/v1/articles/{$article->slug}/comments/{$comment->getKey()}")
+            ->assertNotFound();
 
-        $response->assertNotFound();
         $this->assertTrue($comment->exists());
     }
 
@@ -91,9 +91,20 @@ class DeleteCommentTest extends TestCase
         $comment = Comment::factory()->create();
         $article = $comment->article;
 
-        $response = $this->deleteJson("/api/v1/articles/{$article->slug}/comments/{$comment->getKey()}");
+        $this->deleteJson("/api/v1/articles/{$article->slug}/comments/{$comment->getKey()}")
+            ->assertUnauthorized();
 
-        $response->assertUnauthorized();
         $this->assertTrue($comment->exists());
+    }
+
+    /**
+     * @return array<int|string, mixed>
+     */
+    public function nonExistentIdProvider(): array
+    {
+        return [
+            'int key' => [123],
+            'string key' => ['non-existent'],
+        ];
     }
 }
