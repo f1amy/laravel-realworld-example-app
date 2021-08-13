@@ -34,7 +34,7 @@ class UpdateUserRequest extends FormRequest
                 Rule::unique('users', 'email')->ignore($user->getKey()),
             ],
             'user.bio' => 'required_without_all:user.username,user.email,user.image|string',
-            'user.image' => 'required_without_all:user.username,user.email,user.bio|file|image',
+            'user.image' => 'required_without_all:user.username,user.email,user.bio|file|image|max:10000',
         ];
     }
 }

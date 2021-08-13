@@ -14,8 +14,8 @@ class UserTokenResource extends UserResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request) + [
+        return array_merge(parent::toArray($request), [
             'token' => Generator::token($this->resource),
-        ];
+        ]);
     }
 }

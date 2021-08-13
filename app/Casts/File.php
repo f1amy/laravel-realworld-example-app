@@ -3,8 +3,9 @@
 namespace App\Casts;
 
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
-use Illuminate\Http\File as FileClass;
+use Illuminate\Http\File as LaravelFile;
 use InvalidArgumentException;
+use SplFileInfo;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 class File implements CastsAttributes
@@ -16,19 +17,19 @@ class File implements CastsAttributes
      * @param string $key
      * @param mixed $value
      * @param array<mixed> $attributes
-     * @return FileClass|null
+     * @return LaravelFile|null
      */
     public function get($model, $key, $value, $attributes)
     {
-        if ($value !== null) {
-            try {
-                return new FileClass((string) $value);
-            } catch (FileNotFoundException $e) {
-                return null;
-            }
+        if ($value === null) {
+            return null;
         }
 
-        return null;
+        try {
+            return new LaravelFile((string) $value);
+        } catch (FileNotFoundException $e) {
+            return null;
+        }
     }
 
     /**
@@ -42,14 +43,19 @@ class File implements CastsAttributes
      */
     public function set($model, $key, $value, $attributes)
     {
-        if ($value !== null) {
-            if (! $value instanceof FileClass) {
-                throw new InvalidArgumentException('The given value is not an File instance.');
-            }
-
-            return $value->path();
+        if ($value === null) {
+            return null;
         }
 
-        return null;
+        if (! $value instanceof SplFileInfo) {
+            throw new InvalidArgumentException('The given value is not an SplFileInfo instance.');
+        }
+
+        $fullPath = $value->getRealPath();
+        if ($fullPath === false) {
+            throw new InvalidArgumentException('The given file does not exist.');
+        }
+
+        return $fullPath;
     }
 }

@@ -169,6 +169,6 @@ class ArticleController extends Controller
 
         $article->delete(); // cascade
 
-        return response()->json(['message' => 'Success.']);
+        return response()->json(['message' => 'Article deleted.']);
     }
 }

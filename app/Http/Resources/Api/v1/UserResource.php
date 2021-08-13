@@ -19,8 +19,8 @@ class UserResource extends BaseUserResource
      */
     public function toArray($request)
     {
-        return [
+        return array_merge(parent::toArray($request), [
             'email' => $this->resource->email,
-        ] + parent::toArray($request);
+        ]);
     }
 }

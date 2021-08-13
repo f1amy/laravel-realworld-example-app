@@ -11,10 +11,10 @@ class ArticleListRequest extends FeedRequest
      */
     public function rules()
     {
-        return parent::rules() + [
+        return array_merge(parent::rules(), [
             'tag' => 'sometimes|string',
             'author' => 'sometimes|string',
             'favorited' => 'sometimes|string',
-        ];
+        ]);
     }
 }

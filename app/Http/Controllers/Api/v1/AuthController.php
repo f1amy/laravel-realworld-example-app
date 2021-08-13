@@ -49,8 +49,9 @@ class AuthController extends Controller
         }
 
         return response()->json([
+            'message' => 'The given data was invalid.',
             'errors' => [
-                'user' => trans('auth.failed'),
+                'user' => [trans('auth.failed')],
             ],
         ], 422);
     }
