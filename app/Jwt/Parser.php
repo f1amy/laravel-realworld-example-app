@@ -35,9 +35,10 @@ class Parser implements JwtParser
 
         [$jsonHeader, $jsonPayload, $signature] = $base64Decoded;
 
-        $jsonDecoded = array_map(function ($part) {
-            return json_decode($part, true, 512, JSON_THROW_ON_ERROR);
-        }, [$jsonHeader, $jsonPayload]);
+        $jsonDecoded = array_map(fn (string $part) =>
+            json_decode($part, true, 512, JSON_THROW_ON_ERROR),
+            [$jsonHeader, $jsonPayload]
+        );
 
         [$header, $payload] = $jsonDecoded;
 

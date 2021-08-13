@@ -1,0 +1,12 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#1 \\$user of method App\\\\Models\\\\Article\\:\\:favoredBy\\(\\) expects App\\\\Models\\\\User, App\\\\Models\\\\User\\|null given\\.$#"
+			count: 1
+			path: app/Http/Resources/Api/v1/ArticleResource.php
+
+		-
+			message: "#^Cannot call method following\\(\\) on App\\\\Models\\\\User\\|null\\.$#"
+			count: 1
+			path: app/Http/Resources/Api/v1/ProfileResource.php
+

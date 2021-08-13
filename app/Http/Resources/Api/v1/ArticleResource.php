@@ -38,11 +38,10 @@ class ArticleResource extends JsonResource
             'tagList' => new TagsCollection($this->resource->tags),
             'createdAt' => $this->resource->created_at,
             'updatedAt' => $this->resource->updated_at,
-            'favorited' => $this->when($user !== null, function () use ($user) {
-                /** @var \App\Models\User $user */
-                return $this->resource->favoredBy($user);
-            }),
-            'favoritesCount' => $this->resource->favoredUsers()->count(),
+            'favorited' => $this->when($user !== null, fn() =>
+                $this->resource->favoredBy($user)
+            ),
+            'favoritesCount' => $this->resource->favoredUsers->count(),
             'author' => new ProfileResource($this->resource->author),
         ];
     }
