@@ -92,7 +92,7 @@ class CreateCommentTest extends TestCase
     }
 
     /**
-     * @return array<int|string, mixed>
+     * @return array<int|string, array<mixed>>
      */
     public function commentProvider(): array
     {

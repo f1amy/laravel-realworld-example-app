@@ -74,7 +74,7 @@ class RegisterTest extends TestCase
     }
 
     /**
-     * @return array<int|string, mixed>
+     * @return array<int|string, array<mixed>>
      */
     public function userProvider(): array
     {
