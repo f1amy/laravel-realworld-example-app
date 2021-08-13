@@ -106,7 +106,7 @@ class ArticleController extends Controller
                     'name' => $tagName,
                 ]);
 
-                $article->tags()->attach($tag);
+                $article->tags()->syncWithoutDetaching($tag);
             }
 
             $article->refresh();

@@ -37,6 +37,7 @@ class ProfileController extends Controller
 
         /** @var \App\Models\User $user */
         $user = $request->user();
+
         $profile->followers()->syncWithoutDetaching($user);
 
         return new ProfileResource($profile);
@@ -56,6 +57,7 @@ class ProfileController extends Controller
 
         /** @var \App\Models\User $user */
         $user = $request->user();
+
         $profile->followers()->detach($user);
 
         return new ProfileResource($profile);

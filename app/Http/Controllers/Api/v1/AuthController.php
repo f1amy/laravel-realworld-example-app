@@ -42,13 +42,15 @@ class AuthController extends Controller
     {
         $credentials = Arr::get($request->validated(), 'user');
 
+        Auth::shouldUse('web');
+
         if (Auth::attempt($credentials)) {
             return new UserTokenResource(Auth::user());
         }
 
         return response()->json([
             'errors' => [
-                'email' => trans('auth.failed'),
+                'user' => trans('auth.failed'),
             ],
         ], 422);
     }
