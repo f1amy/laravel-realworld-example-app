@@ -39,9 +39,9 @@ class UpdateArticleRequest extends FormRequest
         }
 
         return [
-            'article.title' => 'required|string',
-            'article.slug' => ['required', 'string', $unique],
-            'article.description' => 'required|string',
+            'article.title' => 'required|string|max:255',
+            'article.slug' => ['required', 'string', 'max:255', $unique],
+            'article.description' => 'required|string|max:510',
             'article.body' => 'required|string',
         ];
     }

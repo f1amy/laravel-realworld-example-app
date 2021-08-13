@@ -13,7 +13,7 @@ class NewArticleRequest extends UpdateArticleRequest
     {
         return parent::rules() + [
             'article.tagList' => 'required|array',
-            'article.tagList.*' => 'required|string|distinct:strict',
+            'article.tagList.*' => 'required|string|max:255',
         ];
     }
 }
