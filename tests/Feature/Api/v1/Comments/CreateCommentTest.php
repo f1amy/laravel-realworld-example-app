@@ -46,9 +46,9 @@ class CreateCommentTest extends TestCase
 
     /**
      * @dataProvider commentProvider
-     * @param array<string, mixed> $data
+     * @param array<mixed> $data
      */
-    public function testCreateCommentForArticleWrongAttributes(array $data): void
+    public function testCreateCommentValidation(array $data): void
     {
         /** @var Article $article */
         $article = Article::factory()->create();
@@ -77,7 +77,7 @@ class CreateCommentTest extends TestCase
         $response->assertNotFound();
     }
 
-    public function testCreateCommentForArticleWithoutAuth(): void
+    public function testCreateCommentWithoutAuth(): void
     {
         /** @var Article $article */
         $article = Article::factory()->create();

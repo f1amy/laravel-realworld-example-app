@@ -85,7 +85,7 @@ class DeleteCommentTest extends TestCase
         $this->assertTrue($comment->exists());
     }
 
-    public function testDeleteArticleCommentWithoutAuth(): void
+    public function testDeleteCommentWithoutAuth(): void
     {
         /** @var Comment $comment */
         $comment = Comment::factory()->create();
