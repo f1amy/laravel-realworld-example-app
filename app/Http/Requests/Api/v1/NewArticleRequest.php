@@ -12,7 +12,7 @@ class NewArticleRequest extends UpdateArticleRequest
     public function rules()
     {
         return array_merge(parent::rules(), [
-            'article.tagList' => 'required|array',
+            'article.tagList' => 'sometimes|array',
             'article.tagList.*' => 'required|string|max:255',
         ]);
     }

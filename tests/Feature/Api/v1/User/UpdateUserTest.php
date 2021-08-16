@@ -110,6 +110,24 @@ class UpdateUserTest extends TestCase
             ]);
     }
 
+    public function testSelfUpdateUserValidationUnique(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)
+            ->putJson('/api/v1/user', [
+                'user' => [
+                    'username' => $user->username,
+                    'email' => $user->email,
+                ],
+            ]);
+
+        $response->assertOk()
+            ->assertJsonPath('user.username', $user->username)
+            ->assertJsonPath('user.email', $user->email);
+    }
+
     public function testUpdateUserWithoutAuth(): void
     {
         $this->putJson('/api/v1/user')

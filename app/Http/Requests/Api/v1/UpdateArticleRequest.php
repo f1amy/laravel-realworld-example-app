@@ -4,6 +4,7 @@ namespace App\Http\Requests\Api\v1;
 
 use App\Models\Article;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -16,11 +17,14 @@ class UpdateArticleRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        $this->merge([
-            'article.slug' => Str::slug(
-                (string) $this->input('article.title')
-            ),
-        ]);
+        $input = $this->input();
+        $title = Arr::get($input, 'article.title');
+
+        Arr::set($input, 'article.slug', Str::slug(
+            is_string($title) ? $title : ''
+        ));
+
+        $this->merge($input);
     }
 
     /**

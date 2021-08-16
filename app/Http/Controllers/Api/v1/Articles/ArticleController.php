@@ -95,9 +95,13 @@ class ArticleController extends Controller
      */
     public function create(NewArticleRequest $request)
     {
-        $attributes = Arr::get($request->validated(), 'article');
-        $tags = Arr::pull($attributes, 'tagList');
+        /** @var \App\Models\User $user */
+        $user = $request->user();
 
+        $attributes = Arr::get($request->validated(), 'article');
+        $attributes['author_id'] = $user->getKey();
+
+        $tags = Arr::pull($attributes, 'tagList');
         $article = Article::create($attributes);
 
         if (is_array($tags)) {
