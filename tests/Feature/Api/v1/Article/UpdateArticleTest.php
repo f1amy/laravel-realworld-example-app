@@ -11,19 +11,28 @@ class UpdateArticleTest extends TestCase
 {
     use WithFaker;
 
-    public function testUpdateArticle(): void
+    private Article $article;
+
+    protected function setUp(): void
     {
+        parent::setUp();
+
         /** @var Article $article */
         $article = Article::factory()->create();
-        $author = $article->author;
+        $this->article = $article;
+    }
 
-        $this->assertNotEquals($title = 'Updated title', $article->title);
-        $this->assertNotEquals($fakeSlug = 'overwrite-slug', $article->slug);
-        $this->assertNotEquals($description = 'New description.', $article->description);
-        $this->assertNotEquals($body = 'Updated article body.', $article->body);
+    public function testUpdateArticle(): void
+    {
+        $author = $this->article->author;
+
+        $this->assertNotEquals($title = 'Updated title', $this->article->title);
+        $this->assertNotEquals($fakeSlug = 'overwrite-slug', $this->article->slug);
+        $this->assertNotEquals($description = 'New description.', $this->article->description);
+        $this->assertNotEquals($body = 'Updated article body.', $this->article->body);
 
         $response = $this->actingAs($author)
-            ->putJson("/api/v1/articles/{$article->slug}", [
+            ->putJson("/api/v1/articles/{$this->article->slug}", [
                 'article' => [
                     'title' => $title,
                     'slug' => $fakeSlug, // must be overwritten with title slug
@@ -40,8 +49,8 @@ class UpdateArticleTest extends TestCase
                     'description' => $description,
                     'body' => $body,
                     'tagList' => [],
-                    'createdAt' => optional($article->created_at)->toISOString(),
-                    'updatedAt' => optional($article->updated_at)->toISOString(),
+                    'createdAt' => optional($this->article->created_at)->toISOString(),
+                    'updatedAt' => optional($this->article->updated_at)->toISOString(),
                     'favorited' => false,
                     'favoritesCount' => 0,
                     'author' => [
@@ -56,13 +65,11 @@ class UpdateArticleTest extends TestCase
 
     public function testUpdateForeignArticle(): void
     {
-        /** @var Article $article */
-        $article = Article::factory()->create();
         /** @var User $user */
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)
-            ->putJson("/api/v1/articles/{$article->slug}", [
+            ->putJson("/api/v1/articles/{$this->article->slug}", [
                 'article' => [
                     'title' => $this->faker->sentence(4),
                     'description' => $this->faker->paragraph(),
@@ -76,29 +83,24 @@ class UpdateArticleTest extends TestCase
     /**
      * @dataProvider articleProvider
      * @param array<mixed> $data
-     * @param array<string>|string $errors
+     * @param array<string> $errors
      */
-    public function testUpdateArticleValidation(array $data, $errors): void
+    public function testUpdateArticleValidation(array $data, array $errors): void
     {
-        /** @var Article $article */
-        $article = Article::factory()->create();
-
-        $response = $this->actingAs($article->author)
-            ->putJson("/api/v1/articles/{$article->slug}", $data);
+        $response = $this->actingAs($this->article->author)
+            ->putJson("/api/v1/articles/{$this->article->slug}", $data);
 
         $response->assertStatus(422)
-            ->assertJsonValidationErrors($errors);
+            ->assertInvalid($errors);
     }
 
     public function testUpdateArticleValidationUnique(): void
     {
-        /** @var Article $article */
-        $article = Article::factory()->create();
         /** @var Article $anotherArticle */
         $anotherArticle = Article::factory()->create();
 
-        $response = $this->actingAs($article->author)
-            ->putJson("/api/v1/articles/{$article->slug}", [
+        $response = $this->actingAs($this->article->author)
+            ->putJson("/api/v1/articles/{$this->article->slug}", [
                 'article' => [
                     'title' => $anotherArticle->title,
                     'description' => $this->faker->paragraph(),
@@ -107,25 +109,22 @@ class UpdateArticleTest extends TestCase
             ]);
 
         $response->assertStatus(422)
-            ->assertJsonValidationErrors('article.slug');
+            ->assertInvalid(['article.slug']);
     }
 
     public function testSelfUpdateArticleValidationUnique(): void
     {
-        /** @var Article $article */
-        $article = Article::factory()->create();
-
-        $response = $this->actingAs($article->author)
-            ->putJson("/api/v1/articles/{$article->slug}", [
+        $response = $this->actingAs($this->article->author)
+            ->putJson("/api/v1/articles/{$this->article->slug}", [
                 'article' => [
-                    'title' => $article->title,
-                    'description' => $article->description,
-                    'body' => $article->body,
+                    'title' => $this->article->title,
+                    'description' => $this->article->description,
+                    'body' => $this->article->body,
                 ],
             ]);
 
         $response->assertOk()
-            ->assertJsonPath('article.slug', $article->slug);
+            ->assertJsonPath('article.slug', $this->article->slug);
     }
 
     public function testUpdateNonExistentArticle(): void
@@ -147,10 +146,7 @@ class UpdateArticleTest extends TestCase
 
     public function testUpdateArticleWithoutAuth(): void
     {
-        /** @var Article $article */
-        $article = Article::factory()->create();
-
-        $response = $this->putJson("/api/v1/articles/{$article->slug}", [
+        $response = $this->putJson("/api/v1/articles/{$this->article->slug}", [
             'article' => [
                 'title' => $this->faker->sentence(4),
                 'description' => $this->faker->paragraph(),

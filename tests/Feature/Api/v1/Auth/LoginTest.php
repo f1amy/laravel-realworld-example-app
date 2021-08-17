@@ -60,20 +60,20 @@ class LoginTest extends TestCase
         ]);
 
         $response->assertStatus(422)
-            ->assertJsonValidationErrors('user');
+            ->assertInvalid(['user']);
     }
 
     /**
      * @dataProvider credentialsProvider
      * @param array<mixed> $data
-     * @param array<string>|string $errors
+     * @param array<string> $errors
      */
-    public function testLoginUserValidation(array $data, $errors): void
+    public function testLoginUserValidation(array $data, array $errors): void
     {
         $response = $this->postJson('/api/v1/users/login', $data);
 
         $response->assertStatus(422)
-            ->assertJsonValidationErrors($errors);
+            ->assertInvalid($errors);
     }
 
     /**
@@ -81,27 +81,27 @@ class LoginTest extends TestCase
      */
     public function credentialsProvider(): array
     {
-        $allErrors = ['user.email', 'user.password'];
+        $errors = ['user.email', 'user.password'];
 
         return [
-            'required' => [[], $allErrors],
+            'required' => [[], $errors],
             'not strings' => [[
                 'user' => [
                     'email' => [],
                     'password' => null,
                 ],
-            ], $allErrors],
+            ], $errors],
             'empty strings' => [[
                 'user' => [
                     'email' => '',
                     'password' => '',
                 ],
-            ], $allErrors],
+            ], $errors],
             'not email' => [[
                 'user' => [
                     'email' => 'not an email',
                 ],
-            ], 'user.email'],
+            ], ['user.email']],
         ];
     }
 }

@@ -9,23 +9,31 @@ use Tests\TestCase;
 
 class UpdateUserTest extends TestCase
 {
-    public function testUpdateUser(): void
+    private User $user;
+
+    protected function setUp(): void
     {
+        parent::setUp();
+
         /** @var User $user */
         $user = User::factory()->create();
+        $this->user = $user;
+    }
 
-        $this->assertNotEquals($username = 'new.username', $user->username);
-        $this->assertNotEquals($email = 'newEmail@example.com', $user->email);
-        $this->assertNotEquals($bio = 'New bio information.', $user->bio);
+    public function testUpdateUser(): void
+    {
+        $this->assertNotEquals($username = 'new.username', $this->user->username);
+        $this->assertNotEquals($email = 'newEmail@example.com', $this->user->email);
+        $this->assertNotEquals($bio = 'New bio information.', $this->user->bio);
 
         // update by one to check required_without_all rule
-        $this->actingAs($user)
+        $this->actingAs($this->user)
             ->putJson('/api/v1/user', ['user' => ['username' => $username]])
             ->assertOk();
-        $this->actingAs($user)
+        $this->actingAs($this->user)
             ->putJson('/api/v1/user', ['user' => ['email' => $email]])
             ->assertOk();
-        $response = $this->actingAs($user)
+        $response = $this->actingAs($this->user)
             ->putJson('/api/v1/user', ['user' => ['bio' => $bio]]);
 
         $response->assertOk()
@@ -34,7 +42,7 @@ class UpdateUserTest extends TestCase
                     'username' => $username,
                     'email' => $email,
                     'bio' => $bio,
-                    'image' => $user->image,
+                    'image' => $this->user->image,
                 ],
             ]);
     }
@@ -43,11 +51,9 @@ class UpdateUserTest extends TestCase
     {
         Storage::fake('public');
 
-        /** @var User $user */
-        $user = User::factory()->create();
         $image = UploadedFile::fake()->image('avatar.jpg');
 
-        $response = $this->actingAs($user)
+        $response = $this->actingAs($this->user)
             ->putJson('/api/v1/user', [
                 'user' => [
                     'image' => $image,
@@ -67,36 +73,31 @@ class UpdateUserTest extends TestCase
      */
     public function testUpdateUserInvalidImage(): void
     {
-        $this->markTestIncomplete('todo invalid image');
+        $this->markTestIncomplete('todo mock invalid image?');
     }
 
     /**
      * @dataProvider userProvider
      * @param array<mixed> $data
-     * @param array<string>|string $errors
+     * @param array<string> $errors
      */
-    public function testUpdateUserValidation(array $data, $errors): void
+    public function testUpdateUserValidation(array $data, array $errors): void
     {
         Storage::fake('public');
 
-        /** @var User $user */
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)
+        $response = $this->actingAs($this->user)
             ->putJson('/api/v1/user', $data);
 
         $response->assertStatus(422)
-            ->assertJsonValidationErrors($errors);
+            ->assertInvalid($errors);
     }
 
     public function testUpdateUserValidationUnique(): void
     {
-        /** @var User $user */
-        $user = User::factory()->create();
         /** @var User $anotherUser */
         $anotherUser = User::factory()->create();
 
-        $response = $this->actingAs($user)
+        $response = $this->actingAs($this->user)
             ->putJson('/api/v1/user', [
                 'user' => [
                     'username' => $anotherUser->username,
@@ -105,27 +106,22 @@ class UpdateUserTest extends TestCase
             ]);
 
         $response->assertStatus(422)
-            ->assertJsonValidationErrors([
+            ->assertInvalid([
                 'user.username', 'user.email',
             ]);
     }
 
     public function testSelfUpdateUserValidationUnique(): void
     {
-        /** @var User $user */
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)
+        $response = $this->actingAs($this->user)
             ->putJson('/api/v1/user', [
                 'user' => [
-                    'username' => $user->username,
-                    'email' => $user->email,
+                    'username' => $this->user->username,
+                    'email' => $this->user->email,
                 ],
             ]);
 
-        $response->assertOk()
-            ->assertJsonPath('user.username', $user->username)
-            ->assertJsonPath('user.email', $user->email);
+        $response->assertOk();
     }
 
     public function testUpdateUserWithoutAuth(): void
@@ -159,14 +155,14 @@ class UpdateUserTest extends TestCase
                     'bio' => '',
                 ],
             ], $strErrors],
-            'bad username' => [['user' => ['username' => 'user n@me']], 'user.username'],
-            'not email' => [['user' => ['email' => 'not an email']], 'user.email'],
+            'bad username' => [['user' => ['username' => 'user n@me']], ['user.username']],
+            'not email' => [['user' => ['email' => 'not an email']], ['user.email']],
             'file but not image' => [[
                 'user' => [
                     'image' => UploadedFile::fake()
                         ->create('file.txt', 100, 'text/plain'),
                 ],
-            ], 'user.image'],
+            ], ['user.image']],
         ];
     }
 }

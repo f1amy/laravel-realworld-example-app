@@ -8,6 +8,17 @@ use Tests\TestCase;
 
 class ShowProfileTest extends TestCase
 {
+    private User $profile;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        /** @var User $user */
+        $user = User::factory()->create();
+        $this->profile = $user;
+    }
+
     public function testShowProfileWithoutAuth(): void
     {
         Storage::fake('public');
@@ -34,13 +45,11 @@ class ShowProfileTest extends TestCase
 
     public function testShowUnfollowedProfile(): void
     {
-        /** @var User $profile */
-        $profile = User::factory()->create();
         /** @var User $user */
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)
-            ->getJson("/api/v1/profiles/{$profile->username}");
+            ->getJson("/api/v1/profiles/{$this->profile->username}");
 
         $response->assertOk()
             ->assertJsonPath('profile.following', false);
@@ -48,15 +57,13 @@ class ShowProfileTest extends TestCase
 
     public function testShowFollowedProfile(): void
     {
-        /** @var User $profile */
-        $profile = User::factory()->create();
         /** @var User $user */
         $user = User::factory()
-            ->hasAttached($profile, [], 'authors')
+            ->hasAttached($this->profile, [], 'authors')
             ->create();
 
         $response = $this->actingAs($user)
-            ->getJson("/api/v1/profiles/{$profile->username}");
+            ->getJson("/api/v1/profiles/{$this->profile->username}");
 
         $response->assertOk()
             ->assertJsonPath('profile.following', true);

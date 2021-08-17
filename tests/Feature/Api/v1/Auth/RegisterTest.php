@@ -44,14 +44,14 @@ class RegisterTest extends TestCase
     /**
      * @dataProvider userProvider
      * @param array<mixed> $data
-     * @param array<string>|string $errors
+     * @param array<string> $errors
      */
-    public function testRegisterUserValidation(array $data, $errors): void
+    public function testRegisterUserValidation(array $data, array $errors): void
     {
         $response = $this->postJson('/api/v1/users', $data);
 
         $response->assertStatus(422)
-            ->assertJsonValidationErrors($errors);
+            ->assertInvalid($errors);
     }
 
     public function testRegisterUserValidationUnique(): void
@@ -68,7 +68,7 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertStatus(422)
-            ->assertJsonValidationErrors([
+            ->assertInvalid([
                 'user.username', 'user.email',
             ]);
     }
@@ -78,27 +78,27 @@ class RegisterTest extends TestCase
      */
     public function userProvider(): array
     {
-        $allErrors = ['user.username', 'user.email', 'user.password'];
+        $errors = ['user.username', 'user.email', 'user.password'];
 
         return [
-            'required' => [[], $allErrors],
+            'required' => [[], $errors],
             'not strings' => [[
                 'user' => [
                     'username' => 123,
                     'email' => [],
                     'password' => null,
                 ],
-            ], $allErrors],
+            ], $errors],
             'empty strings' => [[
                 'user' => [
                     'username' => '',
                     'email' => '',
                     'password' => '',
                 ],
-            ], $allErrors],
-            'bad username' => [['user' => ['username' => 'user n@me']], 'user.username'],
-            'not email' => [['user' => ['email' => 'not an email']], 'user.email'],
-            'small password' => [['user' => ['password' => 'small']], 'user.password'],
+            ], $errors],
+            'bad username' => [['user' => ['username' => 'user n@me']], ['user.username']],
+            'not email' => [['user' => ['email' => 'not an email']], ['user.email']],
+            'small password' => [['user' => ['password' => 'small']], ['user.password']],
         ];
     }
 }

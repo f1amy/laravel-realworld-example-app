@@ -109,9 +109,9 @@ class CreateArticleTest extends TestCase
     /**
      * @dataProvider articleProvider
      * @param array<mixed> $data
-     * @param array<string>|string $errors
+     * @param array<string> $errors
      */
-    public function testCreateArticleValidation(array $data, $errors): void
+    public function testCreateArticleValidation(array $data, array $errors): void
     {
         /** @var User $author */
         $author = User::factory()->create();
@@ -120,7 +120,7 @@ class CreateArticleTest extends TestCase
             ->postJson('/api/v1/articles', $data);
 
         $response->assertStatus(422)
-            ->assertJsonValidationErrors($errors);
+            ->assertInvalid($errors);
     }
 
     public function testCreateArticleValidationUnique(): void
@@ -138,7 +138,7 @@ class CreateArticleTest extends TestCase
             ]);
 
         $response->assertStatus(422)
-            ->assertJsonValidationErrors('article.slug');
+            ->assertInvalid(['article.slug']);
     }
 
     public function testCreateArticleWithoutAuth(): void
@@ -179,7 +179,7 @@ class CreateArticleTest extends TestCase
                 'article' => [
                     'tagList' => 'str',
                 ],
-            ], 'article.tagList'],
+            ], ['article.tagList']],
         ];
     }
 }

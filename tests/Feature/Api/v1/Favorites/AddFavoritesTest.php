@@ -8,22 +8,31 @@ use Tests\TestCase;
 
 class AddFavoritesTest extends TestCase
 {
+    private User $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        /** @var User $user */
+        $user = User::factory()->create();
+        $this->user = $user;
+    }
+
     public function testAddArticleToFavorites(): void
     {
         /** @var Article $article */
         $article = Article::factory()->create();
-        /** @var User $user */
-        $user = User::factory()->create();
 
-        $response = $this->actingAs($user)
+        $response = $this->actingAs($this->user)
             ->postJson("/api/v1/articles/{$article->slug}/favorite");
         $response->assertOk()
             ->assertJsonPath('article.favorited', true)
             ->assertJsonPath('article.favoritesCount', 1);
 
-        $this->assertTrue($user->favorites->contains($article));
+        $this->assertTrue($this->user->favorites->contains($article));
 
-        $repeatedResponse = $this->actingAs($user)
+        $repeatedResponse = $this->actingAs($this->user)
             ->postJson("/api/v1/articles/{$article->slug}/favorite");
         $repeatedResponse->assertOk()
             ->assertJsonPath('article.favoritesCount', 1);
@@ -33,10 +42,7 @@ class AddFavoritesTest extends TestCase
 
     public function testAddNonExistentArticleToFavorites(): void
     {
-        /** @var User $user */
-        $user = User::factory()->create();
-
-        $this->actingAs($user)
+        $this->actingAs($this->user)
             ->postJson('/api/v1/articles/non-existent/favorite')
             ->assertNotFound();
     }

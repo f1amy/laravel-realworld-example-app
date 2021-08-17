@@ -12,16 +12,28 @@ class CreateCommentTest extends TestCase
 {
     use WithFaker;
 
-    public function testCreateCommentForArticle(): void
+    private Article $article;
+    private User $user;
+
+    protected function setUp(): void
     {
+        parent::setUp();
+
         /** @var Article $article */
         $article = Article::factory()->create();
         /** @var User $user */
         $user = User::factory()->create();
+
+        $this->article = $article;
+        $this->user = $user;
+    }
+
+    public function testCreateCommentForArticle(): void
+    {
         $message = $this->faker->sentence();
 
-        $response = $this->actingAs($user)
-            ->postJson("/api/v1/articles/{$article->slug}/comments", [
+        $response = $this->actingAs($this->user)
+            ->postJson("/api/v1/articles/{$this->article->slug}/comments", [
                 'comment' => [
                     'body' => $message,
                 ],
@@ -37,9 +49,9 @@ class CreateCommentTest extends TestCase
                         ])
                         ->where('body', $message)
                         ->has('author', fn (AssertableJson $author) =>
-                            $author->where('username', $user->username)
-                                ->where('bio', $user->bio)
-                                ->where('image', $user->image)
+                            $author->where('username', $this->user->username)
+                                ->where('bio', $this->user->bio)
+                                ->where('image', $this->user->image)
                                 ->where('following', false)
                         )
                 )
@@ -52,24 +64,16 @@ class CreateCommentTest extends TestCase
      */
     public function testCreateCommentValidation(array $data): void
     {
-        /** @var Article $article */
-        $article = Article::factory()->create();
-        /** @var User $user */
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)
-            ->postJson("/api/v1/articles/{$article->slug}/comments", $data);
+        $response = $this->actingAs($this->user)
+            ->postJson("/api/v1/articles/{$this->article->slug}/comments", $data);
 
         $response->assertStatus(422)
-            ->assertJsonValidationErrors('comment.body');
+            ->assertInvalid(['comment.body']);
     }
 
     public function testCreateCommentForNonExistentArticle(): void
     {
-        /** @var User $user */
-        $user = User::factory()->create();
-
-        $response = $this->actingAs($user)
+        $response = $this->actingAs($this->user)
             ->postJson("/api/v1/articles/non-existent/comments", [
                 'comment' => [
                     'body' => $this->faker->sentence(),
@@ -81,10 +85,7 @@ class CreateCommentTest extends TestCase
 
     public function testCreateCommentWithoutAuth(): void
     {
-        /** @var Article $article */
-        $article = Article::factory()->create();
-
-        $response = $this->postJson("/api/v1/articles/{$article->slug}/comments", [
+        $response = $this->postJson("/api/v1/articles/{$this->article->slug}/comments", [
             'comment' => [
                 'body' => $this->faker->sentence(),
             ],
