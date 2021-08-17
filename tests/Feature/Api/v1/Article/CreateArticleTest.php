@@ -21,7 +21,7 @@ class CreateArticleTest extends TestCase
         $title = 'Original title';
         $description = $this->faker->paragraph();
         $body = $this->faker->text();
-        $tags = $this->faker->words(5);
+        $tags = $this->faker->unique()->words(5);
 
         $response = $this->actingAs($author)
             ->postJson('/api/v1/articles', [
