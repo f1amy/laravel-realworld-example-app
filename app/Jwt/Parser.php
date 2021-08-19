@@ -24,7 +24,7 @@ class Parser implements JwtParser
 
         $base64Decoded = array_map(function ($part) {
             /** @var false|string $decoded */
-            $decoded = base64_decode($part);
+            $decoded = base64_decode($part, true);
 
             if ($decoded === false) {
                 throw new JwtParseException('JWToken parts base64 decode error.');

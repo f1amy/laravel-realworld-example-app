@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\Api\v1;
 
+use App\Http\Resources\Api\v1\TagResource;
 use App\Models\Tag;
+use Illuminate\Http\Request;
 use Tests\TestCase;
 
 class TagsTest extends TestCase
@@ -25,5 +27,20 @@ class TagsTest extends TestCase
 
         $response->assertOk()
             ->assertExactJson(['tags' => []]);
+    }
+
+    public function testTagResource(): void
+    {
+        /** @var Tag $tag */
+        $tag = Tag::factory()->create();
+
+        $resource = new TagResource($tag);
+
+        /** @var Request $request */
+        $request = $this->mock(Request::class);
+
+        $tagResource = $resource->toArray($request);
+
+        $this->assertSame(['name' => $tag->name], $tagResource);
     }
 }
