@@ -41,7 +41,8 @@ class ArticleFeedTest extends TestCase
             ->assertJson(fn (AssertableJson $json) =>
                 $json->where('articlesCount', 20)
                     ->has('articles', 20, fn (AssertableJson $item) =>
-                        $item->whereAllType([
+                        $item->where('tagList', [])
+                            ->whereAllType([
                                 'slug' => 'string',
                                 'title' => 'string',
                                 'description' => 'string',
@@ -49,16 +50,17 @@ class ArticleFeedTest extends TestCase
                                 'createdAt' => 'string',
                                 'updatedAt' => 'string',
                             ])
-                            ->where('tagList', [])
-                            ->where('favorited', false)
-                            ->where('favoritesCount', 0)
+                            ->whereAll([
+                                'favorited' => false,
+                                'favoritesCount' => 0,
+                            ])
                             ->has('author', fn (AssertableJson $subItem) =>
-                                $subItem->whereAllType([
+                                $subItem->where('following', true)
+                                    ->whereAllType([
                                         'username' => 'string',
-                                        'bio' => 'string',
+                                        'bio' => 'string|null',
                                         'image' => 'string|null',
                                     ])
-                                    ->where('following', true)
                             )
                     )
             );
@@ -85,15 +87,15 @@ class ArticleFeedTest extends TestCase
     public function testArticleFeedOffset(): void
     {
         $response = $this->actingAs($this->user)
-            ->getJson('/api/v1/articles/feed?offset=15');
+            ->getJson('/api/v1/articles/feed?offset=20');
 
         $response->assertOk()
-            ->assertJsonPath('articlesCount', 15)
-            ->assertJsonCount(15, 'articles');
+            ->assertJsonPath('articlesCount', 10)
+            ->assertJsonCount(10, 'articles');
     }
 
     /**
-     * @dataProvider feedProvider
+     * @dataProvider queryProvider
      * @param array<mixed> $data
      * @param array<string> $errors
      */
@@ -115,19 +117,13 @@ class ArticleFeedTest extends TestCase
     /**
      * @return array<int|string, array<mixed>>
      */
-    public function feedProvider(): array
+    public function queryProvider(): array
     {
         $errors = ['limit', 'offset'];
 
         return [
-            'not integer' => [[
-                'limit' => 'string',
-                'offset' => 0.123,
-            ], $errors],
-            'less than zero' => [[
-                'limit' => -123,
-                'offset' => -321,
-            ], $errors],
+            'not integer' => [['limit' => 'string', 'offset' => 0.123], $errors],
+            'less than zero' => [['limit' => -123, 'offset' => -321], $errors],
         ];
     }
 }

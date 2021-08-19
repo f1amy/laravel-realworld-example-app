@@ -29,11 +29,13 @@ class RegisterTest extends TestCase
         $response->assertCreated()
             ->assertJson(fn (AssertableJson $json) =>
                 $json->has('user', fn (AssertableJson $item) =>
-                    $item->where('username', $username)
-                        ->where('email', $email)
-                        ->where('bio', null)
-                        ->where('image', null)
-                        ->whereType('token', 'string')
+                    $item->whereType('token', 'string')
+                        ->whereAll([
+                            'username' => $username,
+                            'email' => $email,
+                            'bio' => null,
+                            'image' => null,
+                        ])
                 )
             );
 

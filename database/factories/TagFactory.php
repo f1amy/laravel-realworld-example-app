@@ -21,8 +21,12 @@ class TagFactory extends Factory
      */
     public function definition()
     {
+        $createdAt = $this->faker->dateTimeThisDecade();
+
         return [
             'name' => $this->faker->unique()->word(),
+            'created_at' => $createdAt,
+            'updated_at' => $createdAt,
         ];
     }
 }

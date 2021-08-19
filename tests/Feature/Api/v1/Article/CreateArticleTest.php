@@ -21,7 +21,7 @@ class CreateArticleTest extends TestCase
         $title = 'Original title';
         $description = $this->faker->paragraph();
         $body = $this->faker->text();
-        $tags = $this->faker->unique()->words(5);
+        $tags = ['one', 'two', 'three', 'four', 'five'];
 
         $response = $this->actingAs($author)
             ->postJson('/api/v1/articles', [
@@ -37,24 +37,26 @@ class CreateArticleTest extends TestCase
         $response->assertCreated()
             ->assertJson(fn (AssertableJson $json) =>
                 $json->has('article', fn (AssertableJson $item) =>
-                    $item->where('slug', 'original-title')
-                        ->where('title', $title)
-                        ->where('description', $description)
-                        ->where('body', $body)
-                        ->whereType('tagList', 'array')
-                        ->has('tagList', 5)
-                        ->whereContains('tagList', $tags)
+                    $item->where('tagList', $tags)
+                        ->whereAll([
+                            'slug' => 'original-title',
+                            'title' => $title,
+                            'description' => $description,
+                            'body' => $body,
+                            'favorited' => false,
+                            'favoritesCount' => 0,
+                        ])
                         ->whereAllType([
                             'createdAt' => 'string',
                             'updatedAt' => 'string',
                         ])
-                        ->where('favorited', false)
-                        ->where('favoritesCount', 0)
                         ->has('author', fn (AssertableJson $subItem) =>
-                            $subItem->where('username', $author->username)
-                                ->where('bio', $author->bio)
-                                ->where('image', $author->image)
-                                ->where('following', false)
+                            $subItem->whereAll([
+                                'username' => $author->username,
+                                'bio' => $author->bio,
+                                'image' => $author->image,
+                                'following' => false,
+                            ])
                         )
                 )
             );
@@ -175,11 +177,7 @@ class CreateArticleTest extends TestCase
                     ],
                 ],
             ], array_merge($errors, $tags)],
-            'not array' => [[
-                'article' => [
-                    'tagList' => 'str',
-                ],
-            ], ['article.tagList']],
+            'not array' => [['article' => ['tagList' => 'str']], ['article.tagList']],
         ];
     }
 }

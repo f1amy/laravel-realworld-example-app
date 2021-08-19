@@ -68,15 +68,6 @@ class UpdateUserTest extends TestCase
     }
 
     /**
-     * @todo should cover isValid check and $relPath = false
-     * @see \App\Http\Controllers\Api\v1\UserController::storeUploadedImage()
-     */
-    public function testUpdateUserInvalidImage(): void
-    {
-        $this->markTestIncomplete('todo mock invalid image?');
-    }
-
-    /**
      * @dataProvider userProvider
      * @param array<mixed> $data
      * @param array<string> $errors

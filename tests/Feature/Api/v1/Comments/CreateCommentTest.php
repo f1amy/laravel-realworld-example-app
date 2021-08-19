@@ -42,17 +42,19 @@ class CreateCommentTest extends TestCase
         $response->assertCreated()
             ->assertJson(fn (AssertableJson $json) =>
                 $json->has('comment', fn (AssertableJson $comment) =>
-                    $comment->whereAllType([
+                    $comment->where('body', $message)
+                        ->whereAllType([
                             'id' => 'integer',
                             'createdAt' => 'string',
                             'updatedAt' => 'string',
                         ])
-                        ->where('body', $message)
                         ->has('author', fn (AssertableJson $author) =>
-                            $author->where('username', $this->user->username)
-                                ->where('bio', $this->user->bio)
-                                ->where('image', $this->user->image)
-                                ->where('following', false)
+                            $author->whereAll([
+                                'username' => $this->user->username,
+                                'bio' => $this->user->bio,
+                                'image' => $this->user->image,
+                                'following' => false,
+                            ])
                         )
                 )
             );

@@ -24,22 +24,24 @@ class ShowArticleTest extends TestCase
         $response->assertOk()
             ->assertJson(fn (AssertableJson $json) =>
                 $json->has('article', fn (AssertableJson $item) =>
-                    $item->where('slug', $article->slug)
-                        ->where('title', $article->title)
-                        ->where('description', $article->description)
-                        ->where('body', $article->body)
-                        ->whereType('tagList', 'array')
-                        ->has('tagList', 5)
-                        ->whereContains('tagList', $tags->pluck('name'))
-                        ->where('createdAt', optional($article->created_at)->toISOString())
-                        ->where('updatedAt', optional($article->updated_at)->toISOString())
-                        ->missing('favorited')
-                        ->where('favoritesCount', 0)
+                    $item->missing('favorited')
+                        ->whereAll([
+                            'slug' => $article->slug,
+                            'title' => $article->title,
+                            'description' => $article->description,
+                            'body' => $article->body,
+                            'tagList' => $tags->pluck('name'),
+                            'createdAt' => optional($article->created_at)->toISOString(),
+                            'updatedAt' => optional($article->updated_at)->toISOString(),
+                            'favoritesCount' => 0,
+                        ])
                         ->has('author', fn (AssertableJson $subItem) =>
-                            $subItem->where('username', $author->username)
-                                ->where('bio', $author->bio)
-                                ->where('image', $author->image)
-                                ->missing('following')
+                            $subItem->missing('following')
+                                ->whereAll([
+                                    'username' => $author->username,
+                                    'bio' => $author->bio,
+                                    'image' => $author->image,
+                                ])
                         )
                 )
             );

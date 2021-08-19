@@ -32,11 +32,13 @@ class LoginTest extends TestCase
         $response->assertOk()
             ->assertJson(fn (AssertableJson $json) =>
                 $json->has('user', fn (AssertableJson $item) =>
-                    $item->where('username', $user->username)
-                        ->where('email', $user->email)
-                        ->where('bio', $user->bio)
-                        ->where('image', $user->image)
-                        ->whereType('token', 'string')
+                    $item->whereType('token', 'string')
+                        ->whereAll([
+                            'username' => $user->username,
+                            'email' => $user->email,
+                            'bio' => $user->bio,
+                            'image' => $user->image,
+                        ])
                 )
             );
 
@@ -97,11 +99,7 @@ class LoginTest extends TestCase
                     'password' => '',
                 ],
             ], $errors],
-            'not email' => [[
-                'user' => [
-                    'email' => 'not an email',
-                ],
-            ], ['user.email']],
+            'not email' => [['user' => ['email' => 'not an email']], ['user.email']],
         ];
     }
 }

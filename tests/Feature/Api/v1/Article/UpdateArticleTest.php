@@ -5,6 +5,7 @@ namespace Tests\Feature\Api\v1\Article;
 use App\Models\Article;
 use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
 class UpdateArticleTest extends TestCase
@@ -42,25 +43,29 @@ class UpdateArticleTest extends TestCase
             ]);
 
         $response->assertOk()
-            ->assertExactJson([
-                'article' => [
-                    'slug' => 'updated-title',
-                    'title' => $title,
-                    'description' => $description,
-                    'body' => $body,
-                    'tagList' => [],
-                    'createdAt' => optional($this->article->created_at)->toISOString(),
-                    'updatedAt' => optional($this->article->updated_at)->toISOString(),
-                    'favorited' => false,
-                    'favoritesCount' => 0,
-                    'author' => [
-                        'username' => $author->username,
-                        'bio' => $author->bio,
-                        'image' => $author->image,
-                        'following' => false,
-                    ],
-                ],
-            ]);
+            ->assertJson(fn (AssertableJson $json) =>
+                $json->has('article', fn (AssertableJson $item) =>
+                    $item->whereType('updatedAt', 'string')
+                        ->whereAll([
+                            'slug' => 'updated-title',
+                            'title' => $title,
+                            'description' => $description,
+                            'body' => $body,
+                            'tagList' => [],
+                            'createdAt' => optional($this->article->created_at)->toISOString(),
+                            'favorited' => false,
+                            'favoritesCount' => 0,
+                        ])
+                        ->has('author', fn (AssertableJson $subItem) =>
+                            $subItem->whereAll([
+                                'username' => $author->username,
+                                'bio' => $author->bio,
+                                'image' => $author->image,
+                                'following' => false,
+                            ])
+                        )
+                )
+            );
     }
 
     public function testUpdateForeignArticle(): void

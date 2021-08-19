@@ -47,13 +47,13 @@ class ArticleController extends Controller
 
         if ($authorName = $filter->get('author')) {
             $list->whereHas('author', fn (Builder $query) =>
-                $query->where('name', $authorName)
+                $query->where('username', $authorName)
             );
         }
 
         if ($userName = $filter->get('favorited')) {
             $list->whereHas('favoredUsers', fn (Builder $query) =>
-                $query->where('name', $userName)
+                $query->where('username', $userName)
             );
         }
 

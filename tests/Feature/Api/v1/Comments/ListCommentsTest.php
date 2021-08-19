@@ -26,14 +26,18 @@ class ListCommentsTest extends TestCase
             ->assertJson(fn (AssertableJson $json) =>
                 $json->has('comments', 5, fn (AssertableJson $item) =>
                     $item->where('id', $comment->getKey())
-                        ->where('createdAt', optional($comment->created_at)->toISOString())
-                        ->where('updatedAt', optional($comment->updated_at)->toISOString())
-                        ->where('body', $comment->body)
+                        ->whereAll([
+                            'createdAt' => optional($comment->created_at)->toISOString(),
+                            'updatedAt' => optional($comment->updated_at)->toISOString(),
+                            'body' => $comment->body,
+                        ])
                         ->has('author', fn (AssertableJson $subItem) =>
-                            $subItem->where('username', $author->username)
-                                ->where('bio', $author->bio)
-                                ->where('image', $author->image)
-                                ->missing('following')
+                            $subItem->missing('following')
+                                ->whereAll([
+                                    'username' => $author->username,
+                                    'bio' => $author->bio,
+                                    'image' => $author->image,
+                                ])
                         )
                 )
             );
