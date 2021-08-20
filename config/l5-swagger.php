@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'default' => 'v1',
+    'default' => 'default',
     'documentations' => [
-        'v1' => [
+        'default' => [
             'api' => [
                 'title' => config('app.name') . ' OpenAPI Documentation',
             ],
@@ -11,7 +11,7 @@ return [
                 /*
                  * Route for accessing api documentation interface
                 */
-                'api' => 'api/v1/documentation',
+                'api' => 'api/documentation',
             ],
             'paths' => [
                 /*
@@ -33,10 +33,10 @@ return [
                  * Absolute paths to directory containing the swagger annotations are stored.
                 */
                 'annotations' => [
-                    base_path('app/Annotations/Api/v1'),
-                    base_path('app/Http/Controllers/Api/v1'),
-                    base_path('app/Http/Requests/Api/v1'),
-                    base_path('app/Http/Resources/Api/v1'),
+                    base_path('app/Annotations/Api'),
+                    base_path('app/Http/Controllers/Api'),
+                    base_path('app/Http/Requests/Api'),
+                    base_path('app/Http/Resources/Api'),
                     base_path('app/Models'),
                 ],
 

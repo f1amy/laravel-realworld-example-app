@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\Api\v1\Articles\ArticleController;
-use App\Http\Controllers\Api\v1\Articles\CommentsController;
-use App\Http\Controllers\Api\v1\Articles\FavoritesController;
-use App\Http\Controllers\Api\v1\AuthController;
-use App\Http\Controllers\Api\v1\ProfileController;
-use App\Http\Controllers\Api\v1\TagsController;
-use App\Http\Controllers\Api\v1\UserController;
+use App\Http\Controllers\Api\Articles\ArticleController;
+use App\Http\Controllers\Api\Articles\CommentsController;
+use App\Http\Controllers\Api\Articles\FavoritesController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\TagsController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('v1')->group(function () {
+Route::name('api.')->group(function () {
     Route::name('users.')->group(function () {
         Route::middleware('auth:api')->group(function () {
             Route::get('user', [UserController::class, 'show'])->name('current');
