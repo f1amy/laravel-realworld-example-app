@@ -2,18 +2,17 @@
 
 namespace App\Http\Requests\Api;
 
-class NewArticleRequest extends UpdateArticleRequest
+class NewArticleRequest extends BaseArticleRequest
 {
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
     public function rules()
     {
-        return array_merge(parent::rules(), [
-            'article.tagList' => 'sometimes|array',
-            'article.tagList.*' => 'required|string|max:255',
+        return array_merge_recursive(parent::rules(), [
+            'title' => ['required'],
+            'slug' => ['required'],
+            'description' => ['required'],
+            'body' => ['required'],
+            'tagList' => 'sometimes|array',
+            'tagList.*' => 'required|string|max:255',
         ]);
     }
 }

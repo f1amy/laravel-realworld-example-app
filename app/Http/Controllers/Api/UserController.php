@@ -34,22 +34,29 @@ class UserController extends Controller
         /** @var \App\Models\User $user */
         $user = $request->user();
 
-        $attributes = Arr::get($request->validated(), 'user');
+        if (empty($attrs = $request->validated())) {
+            return response()->json([
+                'message' => 'The given data was invalid.',
+                'errors' => [
+                    'any' => [trans('validation.required_at_least_one')],
+                ],
+            ], 422);
+        }
 
-        if (Arr::has($attributes, 'image')) {
-            $attributes['image'] = $this->storeUploadedImage($attributes['image']);
+        if ($image = Arr::get($attrs, 'image')) {
+            $attrs['image'] = $this->storeUploadedImage($image);
 
-            if ($attributes['image'] === null) {
+            if ($attrs['image'] === null) {
                 return response()->json([
                     'message' => 'The given data was invalid.',
                     'errors' => [
-                        'user.image' => [trans('validation.uploaded')],
+                        'image' => [trans('validation.uploaded')],
                     ],
                 ], 422);
             }
         }
 
-        $user->update($attributes);
+        $user->update($attrs);
 
         return new UserResource($user);
     }

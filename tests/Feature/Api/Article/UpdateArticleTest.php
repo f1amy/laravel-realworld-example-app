@@ -80,8 +80,6 @@ class UpdateArticleTest extends TestCase
         $response = $this->actingAs($user)
             ->putJson("/api/articles/{$this->article->slug}", [
                 'article' => [
-                    'title' => $this->faker->sentence(4),
-                    'description' => $this->faker->paragraph(),
                     'body' => $this->faker->text(),
                 ],
             ]);
@@ -112,13 +110,11 @@ class UpdateArticleTest extends TestCase
             ->putJson("/api/articles/{$this->article->slug}", [
                 'article' => [
                     'title' => $anotherArticle->title,
-                    'description' => $this->faker->paragraph(),
-                    'body' => $this->faker->text(),
                 ],
             ]);
 
         $response->assertStatus(422)
-            ->assertInvalid(['article.slug']);
+            ->assertInvalid(['slug']);
     }
 
     public function testSelfUpdateArticleValidationUnique(): void
@@ -127,8 +123,6 @@ class UpdateArticleTest extends TestCase
             ->putJson("/api/articles/{$this->article->slug}", [
                 'article' => [
                     'title' => $this->article->title,
-                    'description' => $this->article->description,
-                    'body' => $this->article->body,
                 ],
             ]);
 
@@ -144,8 +138,6 @@ class UpdateArticleTest extends TestCase
         $response = $this->actingAs($user)
             ->putJson('/api/articles/non-existent', [
                 'article' => [
-                    'title' => $this->faker->sentence(4),
-                    'description' => $this->faker->paragraph(),
                     'body' => $this->faker->text(),
                 ],
             ]);
@@ -157,8 +149,6 @@ class UpdateArticleTest extends TestCase
     {
         $response = $this->putJson("/api/articles/{$this->article->slug}", [
             'article' => [
-                'title' => $this->faker->sentence(4),
-                'description' => $this->faker->paragraph(),
                 'body' => $this->faker->text(),
             ],
         ]);
@@ -171,7 +161,7 @@ class UpdateArticleTest extends TestCase
      */
     public function articleProvider(): array
     {
-        $errors = ['article.title', 'article.description', 'article.body'];
+        $errors = ['title', 'description', 'body'];
 
         return [
             'required' => [[], $errors],
@@ -180,6 +170,13 @@ class UpdateArticleTest extends TestCase
                     'title' => 123,
                     'description' => [],
                     'body' => null,
+                ],
+            ], $errors],
+            'empty strings' => [[
+                'article' => [
+                    'title' => '',
+                    'description' => '',
+                    'body' => '',
                 ],
             ], $errors],
         ];

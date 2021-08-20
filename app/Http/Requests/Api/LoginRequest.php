@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Arr;
 
 class LoginRequest extends FormRequest
 {
@@ -14,8 +15,16 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'user.email' => 'required|string|email',
-            'user.password' => 'required|string',
+            'email' => 'required|string|email',
+            'password' => 'required|string',
         ];
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public function validationData()
+    {
+        return Arr::wrap($this->input('user'));
     }
 }

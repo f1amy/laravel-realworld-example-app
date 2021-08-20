@@ -83,7 +83,7 @@ class LoginTest extends TestCase
      */
     public function credentialsProvider(): array
     {
-        $errors = ['user.email', 'user.password'];
+        $errors = ['email', 'password'];
 
         return [
             'required' => [[], $errors],
@@ -99,7 +99,7 @@ class LoginTest extends TestCase
                     'password' => '',
                 ],
             ], $errors],
-            'not email' => [['user' => ['email' => 'not an email']], ['user.email']],
+            'not email' => [['user' => ['email' => 'not an email']], ['email']],
         ];
     }
 }

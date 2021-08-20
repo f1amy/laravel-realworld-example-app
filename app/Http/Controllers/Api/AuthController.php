@@ -7,7 +7,6 @@ use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\NewUserRequest;
 use App\Http\Resources\Api\UserResource;
 use App\Models\User;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -21,7 +20,7 @@ class AuthController extends Controller
      */
     public function register(NewUserRequest $request)
     {
-        $attributes = Arr::get($request->validated(), 'user');
+        $attributes = $request->validated();
 
         $attributes['password'] = Hash::make($attributes['password']);
 
@@ -40,7 +39,7 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        $credentials = Arr::get($request->validated(), 'user');
+        $credentials = $request->validated();
 
         Auth::shouldUse('web');
 

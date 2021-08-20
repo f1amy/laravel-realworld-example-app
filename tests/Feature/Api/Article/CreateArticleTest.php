@@ -140,7 +140,7 @@ class CreateArticleTest extends TestCase
             ]);
 
         $response->assertStatus(422)
-            ->assertInvalid(['article.slug']);
+            ->assertInvalid(['slug']);
     }
 
     public function testCreateArticleWithoutAuth(): void
@@ -161,8 +161,8 @@ class CreateArticleTest extends TestCase
      */
     public function articleProvider(): array
     {
-        $errors = ['article.title', 'article.description', 'article.body'];
-        $tags = ['article.tagList.0', 'article.tagList.1', 'article.tagList.2'];
+        $errors = ['title', 'description', 'body'];
+        $tags = ['tagList.0', 'tagList.1', 'tagList.2'];
 
         return [
             'required' => [[], $errors],
@@ -176,7 +176,7 @@ class CreateArticleTest extends TestCase
                     ],
                 ],
             ], array_merge($errors, $tags)],
-            'not array' => [['article' => ['tagList' => 'str']], ['article.tagList']],
+            'not array' => [['article' => ['tagList' => 'str']], ['tagList']],
         ];
     }
 }

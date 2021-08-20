@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
 use InvalidArgumentException;
 
@@ -23,24 +24,28 @@ class UpdateUserRequest extends FormRequest
         }
 
         return [
-            'user.username' => [
-                'required_without_all:user.email,user.bio,user.image',
-                'string', 'regex:/^[\pL\pM\pN._-]+$/u', 'max:255',
-                Rule::unique('users', 'username')->ignore($user->getKey()),
+            'username' => [
+                'sometimes', 'string', 'regex:/^[\pL\pM\pN._-]+$/u', 'max:255',
+                Rule::unique('users', 'username')
+                    ->ignore($user->getKey()),
             ],
-            'user.email' => [
-                'required_without_all:user.username,user.bio,user.image',
-                'string', 'email', 'max:255',
-                Rule::unique('users', 'email')->ignore($user->getKey()),
+            'email' => [
+                'sometimes', 'string', 'email', 'max:255',
+                Rule::unique('users', 'email')
+                    ->ignore($user->getKey()),
             ],
-            'user.bio' => [
-                'required_without_all:user.username,user.email,user.image',
-                'string',
-            ],
-            'user.image' => [
-                'required_without_all:user.username,user.email,user.bio',
-                'file', 'image', 'max:10000',
-            ],
+            'bio' => 'sometimes|nullable|string',
+            'image' => 'sometimes|nullable|file|image|max:10000',
         ];
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public function validationData()
+    {
+        return Arr::wrap(
+            Arr::get($this->all(), 'user')
+        );
     }
 }

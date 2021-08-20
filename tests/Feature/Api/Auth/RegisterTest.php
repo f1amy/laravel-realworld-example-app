@@ -70,9 +70,7 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertStatus(422)
-            ->assertInvalid([
-                'user.username', 'user.email',
-            ]);
+            ->assertInvalid(['username', 'email']);
     }
 
     /**
@@ -80,7 +78,7 @@ class RegisterTest extends TestCase
      */
     public function userProvider(): array
     {
-        $errors = ['user.username', 'user.email', 'user.password'];
+        $errors = ['username', 'email', 'password'];
 
         return [
             'required' => [[], $errors],
@@ -98,9 +96,9 @@ class RegisterTest extends TestCase
                     'password' => '',
                 ],
             ], $errors],
-            'bad username' => [['user' => ['username' => 'user n@me']], ['user.username']],
-            'not email' => [['user' => ['email' => 'not an email']], ['user.email']],
-            'small password' => [['user' => ['password' => 'small']], ['user.password']],
+            'bad username' => [['user' => ['username' => 'user n@me']], ['username']],
+            'not email' => [['user' => ['email' => 'not an email']], ['email']],
+            'small password' => [['user' => ['password' => 'small']], ['password']],
         ];
     }
 }

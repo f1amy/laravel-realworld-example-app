@@ -98,7 +98,7 @@ class ArticleController extends Controller
         /** @var \App\Models\User $user */
         $user = $request->user();
 
-        $attributes = Arr::get($request->validated(), 'article');
+        $attributes = $request->validated();
         $attributes['author_id'] = $user->getKey();
 
         $tags = Arr::pull($attributes, 'tagList');
@@ -150,7 +150,7 @@ class ArticleController extends Controller
 
         $this->authorize('update', $article);
 
-        $attributes = Arr::get($request->validated(), 'article');
+        $attributes = $request->validated();
 
         $article->update($attributes);
 

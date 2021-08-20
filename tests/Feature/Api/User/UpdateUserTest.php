@@ -101,9 +101,7 @@ class UpdateUserTest extends TestCase
             ]);
 
         $response->assertStatus(422)
-            ->assertInvalid([
-                'user.username', 'user.email',
-            ]);
+            ->assertInvalid(['username', 'email']);
     }
 
     public function testSelfUpdateUserValidationUnique(): void
@@ -119,6 +117,29 @@ class UpdateUserTest extends TestCase
         $response->assertOk();
     }
 
+    public function testUpdateUserSetNull(): void
+    {
+        Storage::fake('public');
+
+        /** @var User $user */
+        $user = User::factory()
+            ->withImage()
+            ->state(['bio' => 'not-null'])
+            ->create();
+
+        $response = $this->actingAs($user)
+            ->putJson('/api/user', [
+                'user' => [
+                    'bio' => null,
+                    'image' => null,
+                ],
+            ]);
+
+        $response->assertOk()
+            ->assertJsonPath('user.bio', null)
+            ->assertJsonPath('user.image', null);
+    }
+
     public function testUpdateUserWithoutAuth(): void
     {
         $this->putJson('/api/user')
@@ -130,16 +151,16 @@ class UpdateUserTest extends TestCase
      */
     public function userProvider(): array
     {
-        $strErrors = ['user.username', 'user.email', 'user.bio'];
-        $allErrors = array_merge($strErrors, ['user.image']);
+        $strErrors = ['username', 'email'];
+        $allErrors = array_merge($strErrors, ['bio', 'image']);
 
         return [
-            'required' => [[], $allErrors],
+            'required' => [[], ['any']],
             'wrong type' => [[
                 'user' => [
                     'username' => 123,
-                    'email' => [],
-                    'bio' => null,
+                    'email' => null,
+                    'bio' => [],
                     'image' => 'string',
                 ],
             ], $allErrors],
@@ -147,17 +168,16 @@ class UpdateUserTest extends TestCase
                 'user' => [
                     'username' => '',
                     'email' => '',
-                    'bio' => '',
                 ],
             ], $strErrors],
-            'bad username' => [['user' => ['username' => 'user n@me']], ['user.username']],
-            'not email' => [['user' => ['email' => 'not an email']], ['user.email']],
+            'bad username' => [['user' => ['username' => 'user n@me']], ['username']],
+            'not email' => [['user' => ['email' => 'not an email']], ['email']],
             'file but not image' => [[
                 'user' => [
                     'image' => UploadedFile::fake()
                         ->create('file.txt', 100, 'text/plain'),
                 ],
-            ], ['user.image']],
+            ], ['image']],
         ];
     }
 }

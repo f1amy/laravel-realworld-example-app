@@ -70,7 +70,7 @@ class CreateCommentTest extends TestCase
             ->postJson("/api/articles/{$this->article->slug}/comments", $data);
 
         $response->assertStatus(422)
-            ->assertInvalid(['comment.body']);
+            ->assertInvalid(['body']);
     }
 
     public function testCreateCommentForNonExistentArticle(): void

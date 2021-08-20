@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Arr;
 
 class NewCommentRequest extends FormRequest
 {
@@ -14,7 +15,15 @@ class NewCommentRequest extends FormRequest
     public function rules()
     {
         return [
-            'comment.body' => 'required|string',
+            'body' => 'required|string',
         ];
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public function validationData()
+    {
+        return Arr::wrap($this->input('comment'));
     }
 }
