@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\v1\LoginRequest;
 use App\Http\Requests\Api\v1\NewUserRequest;
-use App\Http\Resources\Api\v1\UserTokenResource;
+use App\Http\Resources\Api\v1\UserResource;
 use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +27,7 @@ class AuthController extends Controller
 
         $user = User::create($attributes);
 
-        return (new UserTokenResource($user))
+        return (new UserResource($user))
             ->response()
             ->setStatusCode(201);
     }
@@ -36,7 +36,7 @@ class AuthController extends Controller
      * Login existing user.
      *
      * @param \App\Http\Requests\Api\v1\LoginRequest $request
-     * @return \App\Http\Resources\Api\v1\UserTokenResource|\Illuminate\Http\JsonResponse
+     * @return \App\Http\Resources\Api\v1\UserResource|\Illuminate\Http\JsonResponse
      */
     public function login(LoginRequest $request)
     {
@@ -45,7 +45,7 @@ class AuthController extends Controller
         Auth::shouldUse('web');
 
         if (Auth::attempt($credentials)) {
-            return new UserTokenResource(Auth::user());
+            return new UserResource(Auth::user());
         }
 
         return response()->json([

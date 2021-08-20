@@ -20,9 +20,11 @@ class UpdateArticleRequest extends FormRequest
         $input = $this->input();
         $title = Arr::get($input, 'article.title');
 
-        Arr::set($input, 'article.slug', Str::slug(
-            is_string($title) ? $title : ''
-        ));
+        if (is_string($title)) {
+            Arr::set($input, 'article.slug', Str::slug($title));
+        } else {
+            Arr::forget($input, 'article.slug');
+        }
 
         $this->merge($input);
     }
@@ -43,10 +45,22 @@ class UpdateArticleRequest extends FormRequest
         }
 
         return [
-            'article.title' => 'required|string|max:255',
-            'article.slug' => ['required', 'string', 'max:255', $unique],
-            'article.description' => 'required|string|max:510',
-            'article.body' => 'required|string',
+            'article.title' => [
+                'required_without_all:article.description,article.body',
+                'string', 'max:255',
+            ],
+            'article.slug' => [
+                'required_with:article.title',
+                'string', 'max:255', $unique,
+            ],
+            'article.description' => [
+                'required_without_all:article.title,article.body',
+                'string', 'max:510',
+            ],
+            'article.body' => [
+                'required_without_all:article.title,article.description',
+                'string',
+            ],
         ];
     }
 }

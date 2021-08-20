@@ -5,6 +5,7 @@ namespace Tests\Feature\Api\v1\User;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
 class UpdateUserTest extends TestCase
@@ -37,14 +38,17 @@ class UpdateUserTest extends TestCase
             ->putJson('/api/v1/user', ['user' => ['bio' => $bio]]);
 
         $response->assertOk()
-            ->assertExactJson([
-                'user' => [
-                    'username' => $username,
-                    'email' => $email,
-                    'bio' => $bio,
-                    'image' => $this->user->image,
-                ],
-            ]);
+            ->assertJson(fn (AssertableJson $json) =>
+                $json->has('user', fn (AssertableJson $item) =>
+                    $item->whereType('token', 'string')
+                        ->whereAll([
+                            'username' => $username,
+                            'email' => $email,
+                            'bio' => $bio,
+                            'image' => $this->user->image,
+                        ])
+                )
+            );
     }
 
     public function testUpdateUserImage(): void

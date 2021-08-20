@@ -10,6 +10,7 @@ use Illuminate\Auth\GuardHelpers;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use JsonException;
 
 /**
@@ -118,7 +119,7 @@ class JwtGuard implements Guard
      */
     public function getTokenForRequest()
     {
-        $token = $this->request->header('Authorization');
+        $token = $this->jwtToken();
 
         if (empty($token)) {
             $token = $this->request->query($this->inputKey);
@@ -129,5 +130,22 @@ class JwtGuard implements Guard
         }
 
         return $token;
+    }
+
+    /**
+     * Get the JWT token from the request headers.
+     *
+     * @return string|null
+     */
+    public function jwtToken()
+    {
+        /** @var string $header */
+        $header = $this->request->header('Authorization', '');
+
+        if (Str::startsWith($header, 'Token ')) {
+            return Str::substr($header, 6);
+        }
+
+        return null;
     }
 }

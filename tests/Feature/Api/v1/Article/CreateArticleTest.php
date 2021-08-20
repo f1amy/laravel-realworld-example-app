@@ -162,11 +162,10 @@ class CreateArticleTest extends TestCase
     public function articleProvider(): array
     {
         $errors = ['article.title', 'article.description', 'article.body'];
-        $allErrors = array_merge($errors, ['article.slug']);
         $tags = ['article.tagList.0', 'article.tagList.1', 'article.tagList.2'];
 
         return [
-            'required' => [[], $allErrors],
+            'required' => [[], $errors],
             'not strings' => [[
                 'article' => [
                     'title' => 123,

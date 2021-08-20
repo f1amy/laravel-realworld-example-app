@@ -32,13 +32,17 @@ class UpdateArticleTest extends TestCase
         $this->assertNotEquals($description = 'New description.', $this->article->description);
         $this->assertNotEquals($body = 'Updated article body.', $this->article->body);
 
+        // update by one to check required_without_all rule
+        $this->actingAs($author)
+            ->putJson("/api/v1/articles/{$this->article->slug}", ['article' => ['description' => $description]])
+            ->assertOk();
+        $this->actingAs($author)
+            ->putJson("/api/v1/articles/{$this->article->slug}", ['article' => ['body' => $body]]);
         $response = $this->actingAs($author)
             ->putJson("/api/v1/articles/{$this->article->slug}", [
                 'article' => [
                     'title' => $title,
                     'slug' => $fakeSlug, // must be overwritten with title slug
-                    'description' => $description,
-                    'body' => $body,
                 ],
             ]);
 
@@ -168,10 +172,9 @@ class UpdateArticleTest extends TestCase
     public function articleProvider(): array
     {
         $errors = ['article.title', 'article.description', 'article.body'];
-        $allErrors = array_merge($errors, ['article.slug']);
 
         return [
-            'required' => [[], $allErrors],
+            'required' => [[], $errors],
             'not strings' => [[
                 'article' => [
                     'title' => 123,

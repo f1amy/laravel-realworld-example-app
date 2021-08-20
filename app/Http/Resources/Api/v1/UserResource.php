@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources\Api\v1;
 
+use App\Jwt\Generator;
+
 class UserResource extends BaseUserResource
 {
     /**
@@ -21,6 +23,7 @@ class UserResource extends BaseUserResource
     {
         return array_merge(parent::toArray($request), [
             'email' => $this->resource->email,
+            'token' => Generator::token($this->resource),
         ]);
     }
 }

@@ -39,7 +39,7 @@ class JwtGuardTest extends TestCase
     public function testGuardWithHeaderToken(): void
     {
         $response = $this->getJson('/api/v1/user', [
-            'Authorization' => $this->token,
+            'Authorization' => "Token {$this->token}",
         ]);
 
         $response->assertOk();
