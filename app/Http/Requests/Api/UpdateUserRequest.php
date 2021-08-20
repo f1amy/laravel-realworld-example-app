@@ -35,7 +35,7 @@ class UpdateUserRequest extends FormRequest
                     ->ignore($user->getKey()),
             ],
             'bio' => 'sometimes|nullable|string',
-            'image' => 'sometimes|nullable|file|image|max:10000',
+            'image' => 'sometimes|nullable|string|url',
         ];
     }
 

@@ -3,7 +3,6 @@
 namespace App\Http\Resources\Api;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
 
 /**
  * Class BaseUserResource
@@ -21,14 +20,10 @@ abstract class BaseUserResource extends JsonResource
      */
     public function toArray($request)
     {
-        if (($image = $this->resource->image) !== null) {
-            $image = Storage::url("images/{$image->getBasename()}");
-        }
-
         return [
             'username' => $this->resource->username,
             'bio' => $this->resource->bio,
-            'image' => $image,
+            'image' => $this->resource->image,
         ];
     }
 }

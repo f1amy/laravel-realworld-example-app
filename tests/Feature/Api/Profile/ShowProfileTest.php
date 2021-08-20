@@ -3,7 +3,6 @@
 namespace Tests\Feature\Api\Profile;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ShowProfileTest extends TestCase
@@ -21,15 +20,8 @@ class ShowProfileTest extends TestCase
 
     public function testShowProfileWithoutAuth(): void
     {
-        Storage::fake('public');
-
         /** @var User $profile */
-        $profile = User::factory()->withImage()->create();
-        $image = $profile->image;
-
-        $this->assertNotNull($image);
-        Storage::disk('public')
-            ->assertExists($imagePath = "images/{$image->getBasename()}");
+        $profile = User::factory()->create();
 
         $response = $this->getJson("/api/profiles/{$profile->username}");
 
@@ -38,7 +30,7 @@ class ShowProfileTest extends TestCase
                 'profile' => [
                     'username' => $profile->username,
                     'bio' => $profile->bio,
-                    'image' => "/storage/{$imagePath}",
+                    'image' => $profile->image,
                 ],
             ]);
     }

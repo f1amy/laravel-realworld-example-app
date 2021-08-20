@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Casts\File;
 use App\Contracts\JwtSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -21,7 +20,7 @@ use Illuminate\Notifications\Notifiable;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string $username
  * @property string|null $bio
- * @property \Illuminate\Http\File|null|null $image
+ * @property string|null $image
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Article[] $articles
  * @property-read int|null $articles_count
  * @property-read \Illuminate\Database\Eloquent\Collection|User[] $authors
@@ -85,7 +84,6 @@ class User extends Authenticatable implements JwtSubject
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'image' => File::class,
     ];
 
     public function getJwtIdentifier()

@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         /** @var User[]|\Illuminate\Database\Eloquent\Collection<User> $users */
-        $users = User::factory()->count(20)->withImage()->create();
+        $users = User::factory()->count(20)->create();
 
         foreach ($users as $user) {
             $user->followers()->attach($users->random(rand(0, 5)));

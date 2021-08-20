@@ -3,8 +3,6 @@
 namespace Tests\Feature\Api\User;
 
 use App\Models\User;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
@@ -26,6 +24,7 @@ class UpdateUserTest extends TestCase
         $this->assertNotEquals($username = 'new.username', $this->user->username);
         $this->assertNotEquals($email = 'newEmail@example.com', $this->user->email);
         $this->assertNotEquals($bio = 'New bio information.', $this->user->bio);
+        $this->assertNotEquals($image = 'https://example.com/image.png', $this->user->image);
 
         // update by one to check required_without_all rule
         $this->actingAs($this->user)
@@ -34,8 +33,10 @@ class UpdateUserTest extends TestCase
         $this->actingAs($this->user)
             ->putJson('/api/user', ['user' => ['email' => $email]])
             ->assertOk();
-        $response = $this->actingAs($this->user)
+        $this->actingAs($this->user)
             ->putJson('/api/user', ['user' => ['bio' => $bio]]);
+        $response = $this->actingAs($this->user)
+            ->putJson('/api/user', ['user' => ['image' => $image]]);
 
         $response->assertOk()
             ->assertJson(fn (AssertableJson $json) =>
@@ -45,30 +46,10 @@ class UpdateUserTest extends TestCase
                             'username' => $username,
                             'email' => $email,
                             'bio' => $bio,
-                            'image' => $this->user->image,
+                            'image' => $image,
                         ])
                 )
             );
-    }
-
-    public function testUpdateUserImage(): void
-    {
-        Storage::fake('public');
-
-        $image = UploadedFile::fake()->image('avatar.jpg');
-
-        $response = $this->actingAs($this->user)
-            ->putJson('/api/user', [
-                'user' => [
-                    'image' => $image,
-                ],
-            ]);
-
-        Storage::disk('public')
-            ->assertExists($imagePath = "images/{$image->hashName()}");
-
-        $response->assertOk()
-            ->assertJsonPath('user.image', "/storage/{$imagePath}");
     }
 
     /**
@@ -78,8 +59,6 @@ class UpdateUserTest extends TestCase
      */
     public function testUpdateUserValidation(array $data, array $errors): void
     {
-        Storage::fake('public');
-
         $response = $this->actingAs($this->user)
             ->putJson('/api/user', $data);
 
@@ -119,12 +98,12 @@ class UpdateUserTest extends TestCase
 
     public function testUpdateUserSetNull(): void
     {
-        Storage::fake('public');
-
         /** @var User $user */
         $user = User::factory()
-            ->withImage()
-            ->state(['bio' => 'not-null'])
+            ->state([
+                'bio' => 'not-null',
+                'image' => 'https://example.com/image.png',
+            ])
             ->create();
 
         $response = $this->actingAs($user)
@@ -161,7 +140,7 @@ class UpdateUserTest extends TestCase
                     'username' => 123,
                     'email' => null,
                     'bio' => [],
-                    'image' => 'string',
+                    'image' => 123.0,
                 ],
             ], $allErrors],
             'empty strings' => [[
@@ -172,12 +151,7 @@ class UpdateUserTest extends TestCase
             ], $strErrors],
             'bad username' => [['user' => ['username' => 'user n@me']], ['username']],
             'not email' => [['user' => ['email' => 'not an email']], ['email']],
-            'file but not image' => [[
-                'user' => [
-                    'image' => UploadedFile::fake()
-                        ->create('file.txt', 100, 'text/plain'),
-                ],
-            ], ['image']],
+            'not url' => [['user' => ['image' => 'string']], ['image']],
         ];
     }
 }
