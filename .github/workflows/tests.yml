@@ -1,60 +1,23 @@
-name: CI
+name: tests
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
+  schedule:
+    - cron: '0 0 1 * *'
 
 jobs:
-  static-analysis:
-    name: PHPStan
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup PHP with composer
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.0'
-          tools: cs2pr
-          coverage: none
-
-      - name: Validate composer.json and composer.lock
-        run: composer validate --strict
-
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - name: Cache composer dependencies
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-      - name: Install composer dependencies
-        run: composer create-project --no-progress --prefer-dist
-
-      - name: Run PHPStan
-        run: >
-          vendor/bin/phpstan analyse -c phpstan.neon
-          --no-progress --error-format=checkstyle | cs2pr
-
   tests:
-    name: Tests (PHP ${{ matrix.php-versions }})
+    name: php ${{ matrix.php-versions }}
     runs-on: ${{ matrix.operating-system }}
 
-    env:
-      php-extensions: pgsql, redis
-      php-extensions-key: cache-v1 # change to clear the extension cache.
-      DB_CONNECTION: pgsql
-      DB_HOST: localhost
-      DB_PORT: 5432
-      DB_DATABASE: laravel-realworld
-      DB_USERNAME: username
-      DB_PASSWORD: password
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ 'ubuntu-latest' ]
+        php-versions: [ '7.4', '8.0' ]
 
     services:
       pgsql:
@@ -71,11 +34,15 @@ jobs:
           --health-timeout 5s
           --health-retries 3
 
-    strategy:
-      fail-fast: false
-      matrix:
-        operating-system: [ 'ubuntu-latest' ]
-        php-versions: [ '7.4', '8.0' ]
+    env:
+      php-extensions: pgsql, redis
+      php-extensions-key: cache-v1 # change to clear the extension cache.
+      DB_CONNECTION: pgsql
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_DATABASE: laravel-realworld
+      DB_USERNAME: username
+      DB_PASSWORD: password
 
     steps:
       - name: Checkout
@@ -112,12 +79,14 @@ jobs:
       - name: Get composer cache directory
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
       - name: Cache composer dependencies
         uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
+
       - name: Install composer dependencies
         run: composer create-project --no-progress --prefer-dist
 
