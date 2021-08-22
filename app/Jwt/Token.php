@@ -2,10 +2,10 @@
 
 namespace App\Jwt;
 
-use App\Contracts\JwToken;
+use App\Contracts\JwtToken;
 use Illuminate\Support\Collection;
 
-class Token implements JwToken
+class Token implements JwtToken
 {
     /** User-supplied signature */
     private ?string $signature;
@@ -13,7 +13,7 @@ class Token implements JwToken
     private Collection $payload;
 
     /**
-     * JwToken constructor.
+     * Token constructor.
      *
      * @param array<string, mixed>|null $headers
      * @param array<string, mixed>|null $claims

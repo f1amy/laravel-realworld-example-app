@@ -4,7 +4,7 @@ namespace App\Contracts;
 
 use Illuminate\Support\Collection;
 
-interface JwToken
+interface JwtToken
 {
     /**
      * Get default headers.

@@ -3,14 +3,14 @@
 namespace App\Jwt;
 
 use App\Contracts\JwtGenerator;
-use App\Contracts\JwToken;
+use App\Contracts\JwtToken;
 use App\Contracts\JwtSubject;
 use Illuminate\Support\Carbon;
 use InvalidArgumentException;
 
 class Generator implements JwtGenerator
 {
-    public static function signature(JwToken $token): string
+    public static function signature(JwtToken $token): string
     {
         $secret = config('app.key');
 
@@ -44,12 +44,12 @@ class Generator implements JwtGenerator
     }
 
     /**
-     * Encode JwToken headers and payload.
+     * Encode JwtToken headers and payload.
      *
-     * @param \App\Contracts\JwToken $token
+     * @param \App\Contracts\JwtToken $token
      * @return string
      */
-    private static function encodeData(JwToken $token): string
+    private static function encodeData(JwtToken $token): string
     {
         $jsonParts = [
             $token->headers()->toJson(),

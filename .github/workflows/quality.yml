@@ -1,4 +1,4 @@
-name: quality
+name: Quality
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   static-analysis:
-    name: phpstan
+    name: PHPStan
     runs-on: ubuntu-latest
 
     steps:

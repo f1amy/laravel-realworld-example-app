@@ -1,4 +1,4 @@
-name: tests
+name: Tests
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   tests:
-    name: php ${{ matrix.php-versions }}
+    name: PHP ${{ matrix.php-versions }}
     runs-on: ${{ matrix.operating-system }}
 
     strategy:

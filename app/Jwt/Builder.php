@@ -3,12 +3,12 @@
 namespace App\Jwt;
 
 use App\Contracts\JwtBuilder;
-use App\Contracts\JwToken;
+use App\Contracts\JwtToken;
 use App\Contracts\JwtSubject;
 
 class Builder implements JwtBuilder
 {
-    private JwToken $jwt;
+    private JwtToken $jwt;
 
     public function __construct()
     {
@@ -59,7 +59,7 @@ class Builder implements JwtBuilder
         return $this;
     }
 
-    public function getToken(): JwToken
+    public function getToken(): JwtToken
     {
         return $this->jwt;
     }

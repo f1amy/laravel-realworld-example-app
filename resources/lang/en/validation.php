@@ -124,6 +124,7 @@ return [
     'url' => 'The :attribute must be a valid URL.',
     'uuid' => 'The :attribute must be a valid UUID.',
     'required_at_least_one' => 'At least one field must be present.',
+    'invalid' => 'The given data was invalid.',
 
     /*
     |--------------------------------------------------------------------------

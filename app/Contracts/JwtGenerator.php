@@ -7,10 +7,10 @@ interface JwtGenerator
     /**
      * Generate JWT signature.
      *
-     * @param \App\Contracts\JwToken $token
+     * @param \App\Contracts\JwtToken $token
      * @return string
      */
-    public static function signature(JwToken $token): string;
+    public static function signature(JwtToken $token): string;
 
     /**
      * Generate JWT string.

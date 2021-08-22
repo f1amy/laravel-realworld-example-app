@@ -27,17 +27,17 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request)
     {
-        /** @var \App\Models\User $user */
-        $user = $request->user();
-
         if (empty($attrs = $request->validated())) {
             return response()->json([
-                'message' => 'The given data was invalid.',
+                'message' => trans('validation.invalid'),
                 'errors' => [
                     'any' => [trans('validation.required_at_least_one')],
                 ],
             ], 422);
         }
+
+        /** @var \App\Models\User $user */
+        $user = $request->user();
 
         $user->update($attrs);
 

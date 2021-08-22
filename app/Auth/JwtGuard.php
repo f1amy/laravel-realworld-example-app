@@ -2,7 +2,7 @@
 
 namespace App\Auth;
 
-use App\Contracts\JwToken;
+use App\Contracts\JwtToken;
 use App\Exceptions\JwtParseException;
 use App\Jwt\Parser;
 use App\Jwt\Validator;
@@ -79,8 +79,10 @@ class JwtGuard implements Guard
             }
 
             if ($this->validate([$this->inputKey => $jwt])) {
-                /** @var \App\Contracts\JwToken $jwt */
-                $user = $this->provider->retrieveById($jwt->getSubject());
+                /** @var \App\Contracts\JwtToken $jwt */
+                $user = $this->provider->retrieveById(
+                    $jwt->getSubject()
+                );
             }
         }
 
@@ -101,7 +103,7 @@ class JwtGuard implements Guard
 
         $token = $credentials[$this->inputKey];
 
-        if (! $token instanceof JwToken) {
+        if (! $token instanceof JwtToken) {
             return false;
         }
 

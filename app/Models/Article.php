@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,17 +25,22 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Tag[] $tags
  * @property-read int|null $tags_count
  * @method static \Database\Factories\ArticleFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Article newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Article newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Article query()
- * @method static \Illuminate\Database\Eloquent\Builder|Article whereAuthorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Article whereBody($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Article whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Article whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Article whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Article whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Article whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Article whereUpdatedAt($value)
+ * @method static Builder|Article favoredByUser(string $username)
+ * @method static Builder|Article followedAuthorsOf(\App\Models\User $user)
+ * @method static Builder|Article havingTag(string $tag)
+ * @method static Builder|Article list(int $take, int $skip)
+ * @method static Builder|Article newModelQuery()
+ * @method static Builder|Article newQuery()
+ * @method static Builder|Article ofAuthor(string $username)
+ * @method static Builder|Article query()
+ * @method static Builder|Article whereAuthorId($value)
+ * @method static Builder|Article whereBody($value)
+ * @method static Builder|Article whereCreatedAt($value)
+ * @method static Builder|Article whereDescription($value)
+ * @method static Builder|Article whereId($value)
+ * @method static Builder|Article whereSlug($value)
+ * @method static Builder|Article whereTitle($value)
+ * @method static Builder|Article whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Article extends Model
@@ -65,6 +71,93 @@ class Article extends Model
         return $this->favoredUsers()
             ->whereKey($user->getKey())
             ->exists();
+    }
+
+    /**
+     * Scope article list.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param int $take
+     * @param int $skip
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeList(Builder $query, int $take, int $skip): Builder
+    {
+        return $query->latest()
+            ->limit($take)
+            ->offset($skip);
+    }
+
+    /**
+     * Scope articles having a tag.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $tag
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeHavingTag(Builder $query, string $tag): Builder
+    {
+        return $query->whereHas('tags', fn (Builder $builder) =>
+            $builder->where('name', $tag)
+        );
+    }
+
+    /**
+     * Scope to article author.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $username
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOfAuthor(Builder $query, string $username): Builder
+    {
+        return $query->whereHas('author', fn (Builder $builder) =>
+            $builder->where('username', $username)
+        );
+    }
+
+    /**
+     * Scope articles to favored by a user.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $username
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFavoredByUser(Builder $query, string $username): Builder
+    {
+        return $query->whereHas('favoredUsers', fn (Builder $builder) =>
+            $builder->where('username', $username)
+        );
+    }
+
+    /**
+     * Scope articles to author's of a user.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \App\Models\User $user
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFollowedAuthorsOf(Builder $query, User $user): Builder
+    {
+        return $query->whereHas('author', fn (Builder $builder) =>
+            $builder->whereIn('id', $user->authors->pluck('id'))
+        );
+    }
+
+    /**
+     * Attach tags to article.
+     *
+     * @param array<string> $tags
+     */
+    public function attachTags(array $tags): void
+    {
+        foreach ($tags as $tagName) {
+            $tag = Tag::firstOrCreate([
+                'name' => $tagName,
+            ]);
+
+            $this->tags()->syncWithoutDetaching($tag);
+        }
     }
 
     /**

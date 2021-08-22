@@ -3,7 +3,7 @@
 return [
 
     /**
-     * Expiration of JWToken in seconds.
+     * Expiration of JWT Token in seconds.
      */
     'expiration' => (int) env('JWT_EXPIRATION', 3600), // one hour
 

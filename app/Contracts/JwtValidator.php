@@ -5,10 +5,10 @@ namespace App\Contracts;
 interface JwtValidator
 {
     /**
-     * Validate JwToken signature, header, expiration and subject.
+     * Validate JwtToken signature, header, expiration and subject.
      *
-     * @param \App\Contracts\JwToken $token
+     * @param \App\Contracts\JwtToken $token
      * @return bool
      */
-    public static function validate(JwToken $token): bool;
+    public static function validate(JwtToken $token): bool;
 }

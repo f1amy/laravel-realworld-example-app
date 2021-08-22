@@ -39,16 +39,14 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        $credentials = $request->validated();
-
         Auth::shouldUse('web');
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($request->validated())) {
             return new UserResource(Auth::user());
         }
 
         return response()->json([
-            'message' => 'The given data was invalid.',
+            'message' => trans('validation.invalid'),
             'errors' => [
                 'user' => [trans('auth.failed')],
             ],

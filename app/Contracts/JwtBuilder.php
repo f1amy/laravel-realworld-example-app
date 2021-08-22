@@ -5,7 +5,7 @@ namespace App\Contracts;
 interface JwtBuilder
 {
     /**
-     * Start building JwToken.
+     * Start building JwtToken.
      *
      * @return \App\Contracts\JwtBuilder
      */
@@ -54,9 +54,9 @@ interface JwtBuilder
     public function withHeader(string $key, $value = null): JwtBuilder;
 
     /**
-     * Get JwToken built.
+     * Get JwtToken built.
      *
-     * @return \App\Contracts\JwToken
+     * @return \App\Contracts\JwtToken
      */
-    public function getToken(): JwToken;
+    public function getToken(): JwtToken;
 }

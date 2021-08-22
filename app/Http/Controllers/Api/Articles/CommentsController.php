@@ -71,6 +71,8 @@ class CommentsController extends Controller
 
         $comment->delete();
 
-        return response()->json(['message' => 'Comment deleted.']);
+        return response()->json([
+            'message' => trans('models.comment.deleted'),
+        ]);
     }
 }

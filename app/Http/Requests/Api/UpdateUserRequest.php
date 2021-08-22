@@ -44,8 +44,6 @@ class UpdateUserRequest extends FormRequest
      */
     public function validationData()
     {
-        return Arr::wrap(
-            Arr::get($this->all(), 'user')
-        );
+        return Arr::wrap($this->input('user'));
     }
 }

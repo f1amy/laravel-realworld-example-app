@@ -10,9 +10,8 @@ use App\Http\Requests\Api\UpdateArticleRequest;
 use App\Http\Resources\Api\ArticleResource;
 use App\Http\Resources\Api\ArticlesCollection;
 use App\Models\Article;
-use App\Models\Tag;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
 class ArticleController extends Controller
 {
@@ -32,29 +31,21 @@ class ArticleController extends Controller
     {
         $filter = collect($request->validated());
 
-        $limit = (int) $filter->get('limit', static::FILTER_LIMIT);
-        $offset = (int) $filter->get('offset', static::FILTER_OFFSET);
+        $limit = $this->getLimit($filter);
+        $offset = $this->getOffset($filter);
 
-        $list = Article::orderBy('created_at', 'desc')
-            ->limit($limit)
-            ->offset($offset);
+        $list = Article::list($limit, $offset);
 
         if ($tag = $filter->get('tag')) {
-            $list->whereHas('tags', fn (Builder $query) =>
-                $query->where('name', $tag)
-            );
+            $list->havingTag($tag);
         }
 
         if ($authorName = $filter->get('author')) {
-            $list->whereHas('author', fn (Builder $query) =>
-                $query->where('username', $authorName)
-            );
+            $list->ofAuthor($authorName);
         }
 
         if ($userName = $filter->get('favorited')) {
-            $list->whereHas('favoredUsers', fn (Builder $query) =>
-                $query->where('username', $userName)
-            );
+            $list->favoredByUser($userName);
         }
 
         return new ArticlesCollection($list->get());
@@ -70,21 +61,13 @@ class ArticleController extends Controller
     {
         $filter = collect($request->validated());
 
-        $limit = (int) $filter->get('limit', static::FILTER_LIMIT);
-        $offset = (int) $filter->get('offset', static::FILTER_OFFSET);
+        $limit = $this->getLimit($filter);
+        $offset = $this->getOffset($filter);
 
-        /** @var \App\Models\User $user */
-        $user = $request->user();
+        $feed = Article::list($limit, $offset)
+            ->followedAuthorsOf($request->user());
 
-        $feed = Article::whereHas('author', fn (Builder $query) =>
-                $query->whereIn('id', $user->authors->pluck('id'))
-            )
-            ->orderBy('created_at', 'desc')
-            ->limit($limit)
-            ->offset($offset)
-            ->get();
-
-        return new ArticlesCollection($feed);
+        return new ArticlesCollection($feed->get());
     }
 
     /**
@@ -105,15 +88,7 @@ class ArticleController extends Controller
         $article = Article::create($attributes);
 
         if (is_array($tags)) {
-            foreach ($tags as $tagName) {
-                $tag = Tag::firstOrCreate([
-                    'name' => $tagName,
-                ]);
-
-                $article->tags()->syncWithoutDetaching($tag);
-            }
-
-            $article->refresh();
+            $article->attachTags($tags);
         }
 
         return (new ArticleResource($article))
@@ -150,9 +125,7 @@ class ArticleController extends Controller
 
         $this->authorize('update', $article);
 
-        $attributes = $request->validated();
-
-        $article->update($attributes);
+        $article->update($request->validated());
 
         return new ArticleResource($article);
     }
@@ -173,6 +146,30 @@ class ArticleController extends Controller
 
         $article->delete(); // cascade
 
-        return response()->json(['message' => 'Article deleted.']);
+        return response()->json([
+            'message' => trans('models.article.deleted'),
+        ]);
+    }
+
+    /**
+     * Get limit from filter.
+     *
+     * @param \Illuminate\Support\Collection $filter
+     * @return int
+     */
+    private function getLimit(Collection $filter): int
+    {
+        return $filter['limit'] ?? static::FILTER_LIMIT;
+    }
+
+    /**
+     * Get offset from filter.
+     *
+     * @param \Illuminate\Support\Collection $filter
+     * @return int
+     */
+    private function getOffset(Collection $filter): int
+    {
+        return $filter['offset'] ?? static::FILTER_OFFSET;
     }
 }
