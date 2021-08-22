@@ -2,15 +2,15 @@
 
 namespace App\Jwt;
 
-use App\Contracts\JwtGenerator;
-use App\Contracts\JwtToken;
-use App\Contracts\JwtSubject;
+use App\Contracts\JwtGeneratorInterface;
+use App\Contracts\JwtTokenInterface;
+use App\Contracts\JwtSubjectInterface;
 use Illuminate\Support\Carbon;
 use InvalidArgumentException;
 
-class Generator implements JwtGenerator
+class Generator implements JwtGeneratorInterface
 {
-    public static function signature(JwtToken $token): string
+    public static function signature(JwtTokenInterface $token): string
     {
         $secret = config('app.key');
 
@@ -23,7 +23,7 @@ class Generator implements JwtGenerator
         return hash_hmac('sha256', $encodedData, $secret);
     }
 
-    public static function token(JwtSubject $user): string
+    public static function token(JwtSubjectInterface $user): string
     {
         $now = Carbon::now();
         $expiresIn = (int) config('jwt.expiration');
@@ -46,10 +46,10 @@ class Generator implements JwtGenerator
     /**
      * Encode JwtToken headers and payload.
      *
-     * @param \App\Contracts\JwtToken $token
+     * @param \App\Contracts\JwtTokenInterface $token
      * @return string
      */
-    private static function encodeData(JwtToken $token): string
+    private static function encodeData(JwtTokenInterface $token): string
     {
         $jsonParts = [
             $token->headers()->toJson(),

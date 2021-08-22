@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Contracts\JwtSubject;
+use App\Contracts\JwtSubjectInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -50,7 +50,7 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
  * @mixin \Eloquent
  */
-class User extends Authenticatable implements JwtSubject
+class User extends Authenticatable implements JwtSubjectInterface
 {
     use HasFactory, Notifiable;
 

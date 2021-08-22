@@ -2,19 +2,19 @@
 
 namespace App\Jwt;
 
-use App\Contracts\JwtToken;
-use App\Contracts\JwtParser;
+use App\Contracts\JwtTokenInterface;
+use App\Contracts\JwtParserInterface;
 use App\Exceptions\JwtParseException;
 
-class Parser implements JwtParser
+class Parser implements JwtParserInterface
 {
     /**
      * @param string $token
-     * @return \App\Contracts\JwtToken
+     * @return \App\Contracts\JwtTokenInterface
      * @throws \App\Exceptions\JwtParseException
      * @throws \JsonException
      */
-    public static function parse(string $token): JwtToken
+    public static function parse(string $token): JwtTokenInterface
     {
         $parts = explode('.', $token);
 

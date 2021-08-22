@@ -2,10 +2,10 @@
 
 namespace App\Jwt;
 
-use App\Contracts\JwtToken;
+use App\Contracts\JwtTokenInterface;
 use Illuminate\Support\Collection;
 
-class Token implements JwtToken
+class Token implements JwtTokenInterface
 {
     /** User-supplied signature */
     private ?string $signature;

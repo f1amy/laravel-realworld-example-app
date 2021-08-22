@@ -2,41 +2,41 @@
 
 namespace App\Jwt;
 
-use App\Contracts\JwtBuilder;
-use App\Contracts\JwtToken;
-use App\Contracts\JwtSubject;
+use App\Contracts\JwtBuilderInterface;
+use App\Contracts\JwtTokenInterface;
+use App\Contracts\JwtSubjectInterface;
 
-class Builder implements JwtBuilder
+class Builder implements JwtBuilderInterface
 {
-    private JwtToken $jwt;
+    private JwtTokenInterface $jwt;
 
     public function __construct()
     {
         $this->jwt = new Token();
     }
 
-    public static function build(): JwtBuilder
+    public static function build(): JwtBuilderInterface
     {
         return new self();
     }
 
-    public function issuedAt(int $timestamp): JwtBuilder
+    public function issuedAt(int $timestamp): JwtBuilderInterface
     {
         $this->jwt->putToPayload('iat', $timestamp);
 
         return $this;
     }
 
-    public function expiresAt(int $timestamp): JwtBuilder
+    public function expiresAt(int $timestamp): JwtBuilderInterface
     {
         $this->jwt->putToPayload('exp', $timestamp);
 
         return $this;
     }
 
-    public function subject($identifier): JwtBuilder
+    public function subject($identifier): JwtBuilderInterface
     {
-        if ($identifier instanceof JwtSubject) {
+        if ($identifier instanceof JwtSubjectInterface) {
             $identifier = $identifier->getJwtIdentifier();
         }
 
@@ -45,21 +45,21 @@ class Builder implements JwtBuilder
         return $this;
     }
 
-    public function withClaim(string $key, $value = null): JwtBuilder
+    public function withClaim(string $key, $value = null): JwtBuilderInterface
     {
         $this->jwt->putToPayload($key, $value);
 
         return $this;
     }
 
-    public function withHeader(string $key, $value = null): JwtBuilder
+    public function withHeader(string $key, $value = null): JwtBuilderInterface
     {
         $this->jwt->putToHeader($key, $value);
 
         return $this;
     }
 
-    public function getToken(): JwtToken
+    public function getToken(): JwtTokenInterface
     {
         return $this->jwt;
     }

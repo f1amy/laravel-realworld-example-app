@@ -2,14 +2,14 @@
 
 namespace App\Jwt;
 
-use App\Contracts\JwtToken;
-use App\Contracts\JwtValidator;
+use App\Contracts\JwtTokenInterface;
+use App\Contracts\JwtValidatorInterface;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 
-class Validator implements JwtValidator
+class Validator implements JwtValidatorInterface
 {
-    public static function validate(JwtToken $token): bool
+    public static function validate(JwtTokenInterface $token): bool
     {
         $signature = $token->getUserSignature();
         if ($signature === null) {

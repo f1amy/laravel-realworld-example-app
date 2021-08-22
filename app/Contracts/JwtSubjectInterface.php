@@ -2,7 +2,7 @@
 
 namespace App\Contracts;
 
-interface JwtSubject
+interface JwtSubjectInterface
 {
     /**
      * Get JWT subject identifier (User Key).
