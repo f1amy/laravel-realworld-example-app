@@ -11,8 +11,6 @@ We've gone to great lengths to adhere to the Laravel framework community style g
 
 For more information on how to this works with other frontends/backends, head over to the [RealWorld](https://github.com/gothinkster/realworld) repo.
 
----
-
 ## How it works
 
 standard laravel application, utilizing framework features
@@ -54,8 +52,6 @@ Migrate the database with seeding:
 
     sail artisan migrate --seed
 
----
-
 ## Usage
 
 The API is available at `http://localhost:3000/api` (You can change the `APP_PORT` in `.env` file).
@@ -71,8 +67,6 @@ The API is available at `http://localhost:3000/api` (You can change the `APP_POR
 ### OpenAPI Specification (underway)
 
 Swagger UI will be live at [http://localhost:3000/api/documentation](http://localhost:3000/api/documentation).
-
----
 
 ## Contributions
 
