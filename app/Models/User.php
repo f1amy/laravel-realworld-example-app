@@ -68,7 +68,7 @@ class User extends Authenticatable implements JwtSubjectInterface
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * The attributes that should be hidden for serialization.
      *
      * @var string[]
      */
@@ -78,7 +78,7 @@ class User extends Authenticatable implements JwtSubjectInterface
     ];
 
     /**
-     * The attributes that should be cast to native types.
+     * The attributes that should be cast.
      *
      * @var array<string, string|class-string>
      */
