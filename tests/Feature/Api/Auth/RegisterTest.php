@@ -52,7 +52,7 @@ class RegisterTest extends TestCase
     {
         $response = $this->postJson('/api/users', $data);
 
-        $response->assertStatus(422)
+        $response->assertUnprocessable()
             ->assertInvalid($errors);
     }
 
@@ -69,7 +69,7 @@ class RegisterTest extends TestCase
             ],
         ]);
 
-        $response->assertStatus(422)
+        $response->assertUnprocessable()
             ->assertInvalid(['username', 'email']);
     }
 

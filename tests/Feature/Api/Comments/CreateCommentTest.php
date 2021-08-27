@@ -69,7 +69,7 @@ class CreateCommentTest extends TestCase
         $response = $this->actingAs($this->user)
             ->postJson("/api/articles/{$this->article->slug}/comments", $data);
 
-        $response->assertStatus(422)
+        $response->assertUnprocessable()
             ->assertInvalid(['body']);
     }
 

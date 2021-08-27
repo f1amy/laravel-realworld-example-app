@@ -61,7 +61,7 @@ class LoginTest extends TestCase
             ],
         ]);
 
-        $response->assertStatus(422)
+        $response->assertUnprocessable()
             ->assertInvalid(['user']);
     }
 
@@ -74,7 +74,7 @@ class LoginTest extends TestCase
     {
         $response = $this->postJson('/api/users/login', $data);
 
-        $response->assertStatus(422)
+        $response->assertUnprocessable()
             ->assertInvalid($errors);
     }
 

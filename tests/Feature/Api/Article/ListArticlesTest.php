@@ -151,7 +151,7 @@ class ListArticlesTest extends TestCase
     {
         $response = $this->json('GET', '/api/articles', $data);
 
-        $response->assertStatus(422)
+        $response->assertUnprocessable()
             ->assertInvalid($errors);
     }
 

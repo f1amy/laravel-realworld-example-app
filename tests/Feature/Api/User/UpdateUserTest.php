@@ -62,7 +62,7 @@ class UpdateUserTest extends TestCase
         $response = $this->actingAs($this->user)
             ->putJson('/api/user', $data);
 
-        $response->assertStatus(422)
+        $response->assertUnprocessable()
             ->assertInvalid($errors);
     }
 
@@ -79,7 +79,7 @@ class UpdateUserTest extends TestCase
                 ],
             ]);
 
-        $response->assertStatus(422)
+        $response->assertUnprocessable()
             ->assertInvalid(['username', 'email']);
     }
 

@@ -97,7 +97,7 @@ class UpdateArticleTest extends TestCase
         $response = $this->actingAs($this->article->author)
             ->putJson("/api/articles/{$this->article->slug}", $data);
 
-        $response->assertStatus(422)
+        $response->assertUnprocessable()
             ->assertInvalid($errors);
     }
 
@@ -113,7 +113,7 @@ class UpdateArticleTest extends TestCase
                 ],
             ]);
 
-        $response->assertStatus(422)
+        $response->assertUnprocessable()
             ->assertInvalid(['slug']);
     }
 

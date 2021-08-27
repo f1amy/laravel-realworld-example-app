@@ -104,7 +104,7 @@ class ArticleFeedTest extends TestCase
         $response = $this->actingAs($this->user)
             ->json('GET', '/api/articles/feed', $data);
 
-        $response->assertStatus(422)
+        $response->assertUnprocessable()
             ->assertInvalid($errors);
     }
 
