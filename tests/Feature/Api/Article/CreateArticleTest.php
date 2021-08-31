@@ -111,9 +111,9 @@ class CreateArticleTest extends TestCase
     /**
      * @dataProvider articleProvider
      * @param array<mixed> $data
-     * @param array<string> $errors
+     * @param string|array<string> $errors
      */
-    public function testCreateArticleValidation(array $data, array $errors): void
+    public function testCreateArticleValidation(array $data, $errors): void
     {
         /** @var User $author */
         $author = User::factory()->create();
@@ -140,7 +140,7 @@ class CreateArticleTest extends TestCase
             ]);
 
         $response->assertUnprocessable()
-            ->assertInvalid(['slug']);
+            ->assertInvalid('slug');
     }
 
     public function testCreateArticleWithoutAuth(): void
@@ -176,7 +176,7 @@ class CreateArticleTest extends TestCase
                     ],
                 ],
             ], array_merge($errors, $tags)],
-            'not array' => [['article' => ['tagList' => 'str']], ['tagList']],
+            'not array' => [['article' => ['tagList' => 'str']], 'tagList'],
         ];
     }
 }

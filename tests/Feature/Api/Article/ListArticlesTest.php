@@ -145,9 +145,9 @@ class ListArticlesTest extends TestCase
     /**
      * @dataProvider queryProvider
      * @param array<mixed> $data
-     * @param array<string> $errors
+     * @param string|array<string> $errors
      */
-    public function testArticleListValidation(array $data, array $errors): void
+    public function testArticleListValidation(array $data, $errors): void
     {
         $response = $this->json('GET', '/api/articles', $data);
 

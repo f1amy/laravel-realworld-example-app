@@ -46,9 +46,9 @@ class RegisterTest extends TestCase
     /**
      * @dataProvider userProvider
      * @param array<mixed> $data
-     * @param array<string> $errors
+     * @param string|array<string> $errors
      */
-    public function testRegisterUserValidation(array $data, array $errors): void
+    public function testRegisterUserValidation(array $data, $errors): void
     {
         $response = $this->postJson('/api/users', $data);
 
@@ -96,9 +96,9 @@ class RegisterTest extends TestCase
                     'password' => '',
                 ],
             ], $errors],
-            'bad username' => [['user' => ['username' => 'user n@me']], ['username']],
-            'not email' => [['user' => ['email' => 'not an email']], ['email']],
-            'small password' => [['user' => ['password' => 'small']], ['password']],
+            'bad username' => [['user' => ['username' => 'user n@me']], 'username'],
+            'not email' => [['user' => ['email' => 'not an email']], 'email'],
+            'small password' => [['user' => ['password' => 'small']], 'password'],
         ];
     }
 }

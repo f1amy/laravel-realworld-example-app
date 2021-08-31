@@ -55,9 +55,9 @@ class UpdateUserTest extends TestCase
     /**
      * @dataProvider userProvider
      * @param array<mixed> $data
-     * @param array<string> $errors
+     * @param string|array<string> $errors
      */
-    public function testUpdateUserValidation(array $data, array $errors): void
+    public function testUpdateUserValidation(array $data, $errors): void
     {
         $response = $this->actingAs($this->user)
             ->putJson('/api/user', $data);
@@ -134,7 +134,7 @@ class UpdateUserTest extends TestCase
         $allErrors = array_merge($strErrors, ['bio', 'image']);
 
         return [
-            'required' => [[], ['any']],
+            'required' => [[], 'any'],
             'wrong type' => [[
                 'user' => [
                     'username' => 123,
@@ -149,9 +149,9 @@ class UpdateUserTest extends TestCase
                     'email' => '',
                 ],
             ], $strErrors],
-            'bad username' => [['user' => ['username' => 'user n@me']], ['username']],
-            'not email' => [['user' => ['email' => 'not an email']], ['email']],
-            'not url' => [['user' => ['image' => 'string']], ['image']],
+            'bad username' => [['user' => ['username' => 'user n@me']], 'username'],
+            'not email' => [['user' => ['email' => 'not an email']], 'email'],
+            'not url' => [['user' => ['image' => 'string']], 'image'],
         ];
     }
 }

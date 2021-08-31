@@ -90,9 +90,9 @@ class UpdateArticleTest extends TestCase
     /**
      * @dataProvider articleProvider
      * @param array<mixed> $data
-     * @param array<string> $errors
+     * @param string|array<string> $errors
      */
-    public function testUpdateArticleValidation(array $data, array $errors): void
+    public function testUpdateArticleValidation(array $data, $errors): void
     {
         $response = $this->actingAs($this->article->author)
             ->putJson("/api/articles/{$this->article->slug}", $data);
@@ -114,7 +114,7 @@ class UpdateArticleTest extends TestCase
             ]);
 
         $response->assertUnprocessable()
-            ->assertInvalid(['slug']);
+            ->assertInvalid('slug');
     }
 
     public function testSelfUpdateArticleValidationUnique(): void

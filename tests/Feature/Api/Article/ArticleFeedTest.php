@@ -97,9 +97,9 @@ class ArticleFeedTest extends TestCase
     /**
      * @dataProvider queryProvider
      * @param array<mixed> $data
-     * @param array<string> $errors
+     * @param string|array<string> $errors
      */
-    public function testArticleFeedValidation(array $data, array $errors): void
+    public function testArticleFeedValidation(array $data, $errors): void
     {
         $response = $this->actingAs($this->user)
             ->json('GET', '/api/articles/feed', $data);

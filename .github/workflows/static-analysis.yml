@@ -1,4 +1,4 @@
-name: Quality
+name: Static Analysis
 
 on:
   push:
@@ -20,7 +20,6 @@ jobs:
         with:
           php-version: '8.0'
           tools: cs2pr
-          coverage: none
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict

@@ -62,15 +62,15 @@ class LoginTest extends TestCase
         ]);
 
         $response->assertUnprocessable()
-            ->assertInvalid(['user']);
+            ->assertInvalid('user');
     }
 
     /**
      * @dataProvider credentialsProvider
      * @param array<mixed> $data
-     * @param array<string> $errors
+     * @param string|array<string> $errors
      */
-    public function testLoginUserValidation(array $data, array $errors): void
+    public function testLoginUserValidation(array $data, $errors): void
     {
         $response = $this->postJson('/api/users/login', $data);
 
@@ -99,7 +99,7 @@ class LoginTest extends TestCase
                     'password' => '',
                 ],
             ], $errors],
-            'not email' => [['user' => ['email' => 'not an email']], ['email']],
+            'not email' => [['user' => ['email' => 'not an email']], 'email'],
         ];
     }
 }

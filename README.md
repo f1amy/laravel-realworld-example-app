@@ -1,7 +1,10 @@
 # ![Laravel RealWorld Example App](.github/readme/logo.png)
 
+[![RealWorld: Backend](https://img.shields.io/badge/RealWorld-Backend-blueviolet.svg)](https://github.com/gothinkster/realworld)
 [![Tests: status](https://github.com/f1amy/laravel-realworld-example-app/actions/workflows/tests.yml/badge.svg)](https://github.com/f1amy/laravel-realworld-example-app/actions/workflows/tests.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Static Analysis: status](https://github.com/f1amy/laravel-realworld-example-app/actions/workflows/static-analysis.yml/badge.svg)](https://github.com/f1amy/laravel-realworld-example-app/actions/workflows/static-analysis.yml)
+[![Coverage: percent](https://codecov.io/github/f1amy/laravel-realworld-example-app/coverage.svg?branch=main)](https://codecov.io/github/f1amy/laravel-realworld-example-app?branch=main)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellowgreen.svg)](https://opensource.org/licenses/MIT)
 
 > Example of a PHP-based Laravel application containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld) API spec.
 
@@ -15,7 +18,7 @@ For more information on how to this works with other frontends/backends, head ov
 
 The API is built with [Laravel](https://laravel.com/), making the most of the framework's features out-of-the-box.
 
-The application is using a custom JWT implementation (`app/Jwt`).
+The application is using a custom JWT implementation: [`app/Jwt`](./app/Jwt).
 
 ## Getting started
 
@@ -68,8 +71,12 @@ The API is available at `http://localhost:3000/api` (You can change the `APP_POR
 
 Swagger UI will be live at [http://localhost:3000/api/documentation](http://localhost:3000/api/documentation).
 
-For now, please visit the spec [here](https://github.com/gothinkster/realworld/tree/master/api).
+For now, please visit the specification [here](https://github.com/gothinkster/realworld/tree/master/api).
 
 ## Contributions
 
 Feedback, suggestions, and improvements are welcome, feel free to contribute.
+
+## License
+
+The MIT License (MIT). Please see [`LICENSE`](./LICENSE) for more information.
