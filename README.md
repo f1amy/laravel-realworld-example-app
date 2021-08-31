@@ -18,7 +18,7 @@ For more information on how to this works with other frontends/backends, head ov
 
 The API is built with [Laravel](https://laravel.com/), making the most of the framework's features out-of-the-box.
 
-The application is using a custom JWT implementation: [`app/Jwt`](./app/Jwt).
+The application is using a custom JWT auth implementation: [`app/Jwt`](./app/Jwt).
 
 ## Getting started
 
@@ -32,7 +32,7 @@ Clone the repository and change directory:
     git clone https://github.com/f1amy/laravel-realworld-example-app.git
     cd laravel-realworld-example-app
 
-Install dependencies (if you have `composer`):
+Install dependencies (if you have `composer` locally):
 
     composer create-project
 
@@ -59,7 +59,7 @@ Migrate the database with seeding:
 
 The API is available at `http://localhost:3000/api` (You can change the `APP_PORT` in `.env` file).
 
-### Run Tests
+### Run tests
 
     sail artisan test
 
@@ -67,7 +67,7 @@ The API is available at `http://localhost:3000/api` (You can change the `APP_POR
 
     sail php ./vendor/bin/phpstan
 
-### OpenAPI Specification (underway)
+### OpenAPI specification (not ready yet)
 
 Swagger UI will be live at [http://localhost:3000/api/documentation](http://localhost:3000/api/documentation).
 
