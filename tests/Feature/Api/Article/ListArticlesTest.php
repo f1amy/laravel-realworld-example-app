@@ -25,28 +25,31 @@ class ListArticlesTest extends TestCase
         $response->assertOk()
             ->assertJson(fn (AssertableJson $json) =>
                 $json->where('articlesCount', 20)
-                    ->has('articles', 20, fn (AssertableJson $item) =>
-                        $item->missing('favorited')
-                            ->whereAllType([
-                                'slug' => 'string',
-                                'title' => 'string',
-                                'description' => 'string',
-                                'body' => 'string',
-                                'createdAt' => 'string',
-                                'updatedAt' => 'string',
-                            ])
-                            ->whereAll([
-                                'tagList' => [],
-                                'favoritesCount' => 0,
-                            ])
-                            ->has('author', fn (AssertableJson $subItem) =>
-                                $subItem->missing('following')
-                                    ->whereAllType([
-                                        'username' => 'string',
-                                        'bio' => 'string|null',
-                                        'image' => 'string|null',
-                                    ])
-                            )
+                    ->count('articles', 20)
+                    ->has('articles', fn (AssertableJson $items) =>
+                        $items->each(fn (AssertableJson $item) =>
+                            $item->missing('favorited')
+                                ->whereAllType([
+                                    'slug' => 'string',
+                                    'title' => 'string',
+                                    'description' => 'string',
+                                    'body' => 'string',
+                                    'createdAt' => 'string',
+                                    'updatedAt' => 'string',
+                                ])
+                                ->whereAll([
+                                    'tagList' => [],
+                                    'favoritesCount' => 0,
+                                ])
+                                ->has('author', fn (AssertableJson $subItem) =>
+                                    $subItem->missing('following')
+                                        ->whereAllType([
+                                            'username' => 'string',
+                                            'bio' => 'string|null',
+                                            'image' => 'string|null',
+                                        ])
+                                )
+                        )
                     )
             );
     }
