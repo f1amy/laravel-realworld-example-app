@@ -40,7 +40,7 @@ class DeleteCommentTest extends TestCase
             ->deleteJson("/api/articles/{$nonExistentSlug}/comments/{$this->comment->getKey()}")
             ->assertNotFound();
 
-        $this->assertTrue($this->comment->exists());
+        $this->assertModelExists($this->comment);
     }
 
     /**
@@ -55,7 +55,7 @@ class DeleteCommentTest extends TestCase
             ->deleteJson("/api/articles/{$this->article->slug}/comments/{$nonExistentId}")
             ->assertNotFound();
 
-        $this->assertTrue($this->comment->exists());
+        $this->assertModelExists($this->comment);
     }
 
     public function testDeleteForeignArticleComment(): void
@@ -67,7 +67,7 @@ class DeleteCommentTest extends TestCase
             ->deleteJson("/api/articles/{$this->article->slug}/comments/{$this->comment->getKey()}")
             ->assertForbidden();
 
-        $this->assertTrue($this->comment->exists());
+        $this->assertModelExists($this->comment);
     }
 
     public function testDeleteCommentOfForeignArticle(): void
@@ -79,7 +79,7 @@ class DeleteCommentTest extends TestCase
             ->deleteJson("/api/articles/{$article->slug}/comments/{$this->comment->getKey()}")
             ->assertNotFound();
 
-        $this->assertTrue($this->comment->exists());
+        $this->assertModelExists($this->comment);
     }
 
     public function testDeleteCommentWithoutAuth(): void
@@ -87,7 +87,7 @@ class DeleteCommentTest extends TestCase
         $this->deleteJson("/api/articles/{$this->article->slug}/comments/{$this->comment->getKey()}")
             ->assertUnauthorized();
 
-        $this->assertTrue($this->comment->exists());
+        $this->assertModelExists($this->comment);
     }
 
     /**

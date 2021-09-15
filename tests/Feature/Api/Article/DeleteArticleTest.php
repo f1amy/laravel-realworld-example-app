@@ -39,7 +39,7 @@ class DeleteArticleTest extends TestCase
             ->deleteJson("/api/articles/{$this->article->slug}")
             ->assertForbidden();
 
-        $this->assertTrue($this->article->exists());
+        $this->assertModelExists($this->article);
     }
 
     public function testDeleteNonExistentArticle(): void
@@ -54,6 +54,6 @@ class DeleteArticleTest extends TestCase
         $this->deleteJson("/api/articles/{$this->article->slug}")
             ->assertUnauthorized();
 
-        $this->assertTrue($this->article->exists());
+        $this->assertModelExists($this->article);
     }
 }
