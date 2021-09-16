@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Api;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Rules\Password;
@@ -17,7 +18,7 @@ class NewUserRequest extends FormRequest
     {
         return [
             'username' => [
-                'required', 'string', 'regex:/^[\pL\pM\pN._-]+$/u',
+                'required', 'string', 'regex:' . User::REGEX_USERNAME,
                 'max:255', 'unique:users,username'
             ],
             'email' => 'required|string|email|max:255|unique:users,email',

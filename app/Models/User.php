@@ -55,6 +55,11 @@ class User extends Authenticatable implements JwtSubjectInterface
     use HasFactory, Notifiable;
 
     /**
+     * Regular expression for username.
+     */
+    public const REGEX_USERNAME = '/^[\pL\pM\pN._-]+$/u';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var string[]

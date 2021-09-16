@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Api;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
@@ -25,7 +26,7 @@ class UpdateUserRequest extends FormRequest
 
         return [
             'username' => [
-                'sometimes', 'string', 'regex:/^[\pL\pM\pN._-]+$/u', 'max:255',
+                'sometimes', 'string', 'max:255', 'regex:' . User::REGEX_USERNAME,
                 Rule::unique('users', 'username')
                     ->ignore($user->getKey()),
             ],
