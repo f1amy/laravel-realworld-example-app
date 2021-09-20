@@ -71,7 +71,7 @@ The API is available at `http://localhost:3000/api` (You can change the `APP_POR
 
 Swagger UI will be live at [http://localhost:3000/api/documentation](http://localhost:3000/api/documentation).
 
-For now, please visit the specification [here](https://github.com/gothinkster/realworld/tree/master/api).
+For now, please visit the specification [here](https://github.com/gothinkster/realworld/tree/main/api).
 
 ## Contributions
 
