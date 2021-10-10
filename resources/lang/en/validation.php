@@ -47,9 +47,9 @@ return [
     'file' => 'The :attribute must be a file.',
     'filled' => 'The :attribute field must have a value.',
     'gt' => [
-        'numeric' => 'The :attribute must be greater than :value.',
-        'file' => 'The :attribute must be greater than :value kilobytes.',
-        'string' => 'The :attribute must be greater than :value characters.',
+        'numeric' => 'The :attribute must be greater than or equal to :value.',
+        'file' => 'The :attribute must be greater than or equal to :value kilobytes.',
+        'string' => 'The :attribute must be greater than or equal to :value characters.',
         'array' => 'The :attribute must have more than :value items.',
     ],
     'gte' => [
@@ -73,9 +73,9 @@ return [
         'array' => 'The :attribute must have less than :value items.',
     ],
     'lte' => [
-        'numeric' => 'The :attribute must be less than or equal :value.',
-        'file' => 'The :attribute must be less than or equal :value kilobytes.',
-        'string' => 'The :attribute must be less than or equal :value characters.',
+        'numeric' => 'The :attribute must be less than or equal to :value.',
+        'file' => 'The :attribute must be less than or equal to :value kilobytes.',
+        'string' => 'The :attribute must be less than or equal to :value characters.',
         'array' => 'The :attribute must not have more than :value items.',
     ],
     'max' => [
