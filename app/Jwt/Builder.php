@@ -34,7 +34,7 @@ class Builder implements JwtBuilderInterface
         return $this;
     }
 
-    public function subject($identifier): JwtBuilderInterface
+    public function subject(mixed $identifier): JwtBuilderInterface
     {
         if ($identifier instanceof JwtSubjectInterface) {
             $identifier = $identifier->getJwtIdentifier();
@@ -45,14 +45,14 @@ class Builder implements JwtBuilderInterface
         return $this;
     }
 
-    public function withClaim(string $key, $value = null): JwtBuilderInterface
+    public function withClaim(string $key, mixed $value = null): JwtBuilderInterface
     {
         $this->jwt->putToPayload($key, $value);
 
         return $this;
     }
 
-    public function withHeader(string $key, $value = null): JwtBuilderInterface
+    public function withHeader(string $key, mixed $value = null): JwtBuilderInterface
     {
         $this->jwt->putToHeader($key, $value);
 

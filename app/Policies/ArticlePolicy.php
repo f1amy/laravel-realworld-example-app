@@ -17,7 +17,7 @@ class ArticlePolicy
      * @param  \App\Models\Article  $article
      * @return bool
      */
-    public function update(User $user, Article $article)
+    public function update(User $user, Article $article): bool
     {
         return $user->getKey() === $article->author->getKey();
     }
@@ -29,7 +29,7 @@ class ArticlePolicy
      * @param  \App\Models\Article  $article
      * @return bool
      */
-    public function delete(User $user, Article $article)
+    public function delete(User $user, Article $article): bool
     {
         return $this->update($user, $article);
     }

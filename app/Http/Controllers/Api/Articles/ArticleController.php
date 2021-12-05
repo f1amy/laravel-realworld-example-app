@@ -74,7 +74,7 @@ class ArticleController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\Api\NewArticleRequest $request
-     * @return \Illuminate\Http\JsonResponse|object
+     * @return \Illuminate\Http\JsonResponse
      */
     public function create(NewArticleRequest $request)
     {

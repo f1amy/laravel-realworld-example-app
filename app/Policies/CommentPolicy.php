@@ -17,7 +17,7 @@ class CommentPolicy
      * @param  \App\Models\Comment  $comment
      * @return bool
      */
-    public function delete(User $user, Comment $comment)
+    public function delete(User $user, Comment $comment): bool
     {
         return $user->getKey() === $comment->author->getKey();
     }

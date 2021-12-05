@@ -25,10 +25,8 @@ class JwtGuard implements Guard
 
     /**
      * The request instance.
-     *
-     * @var \Illuminate\Http\Request
      */
-    protected $request;
+    protected Request $request;
 
     /**
      * The name of the query string item from the request containing the API token.
@@ -74,7 +72,7 @@ class JwtGuard implements Guard
         if (! empty($token) && is_string($token)) {
             try {
                 $jwt = Parser::parse($token);
-            } catch (JwtParseException | JsonException $e) {
+            } catch (JwtParseException | JsonException) {
                 $jwt = null;
             }
 
@@ -139,7 +137,7 @@ class JwtGuard implements Guard
      *
      * @return string|null
      */
-    public function jwtToken()
+    public function jwtToken(): ?string
     {
         /** @var string $header */
         $header = $this->request->header('Authorization', '');

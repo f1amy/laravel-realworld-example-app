@@ -33,25 +33,25 @@ interface JwtBuilderInterface
      * @param JwtSubjectInterface|mixed $identifier
      * @return \App\Contracts\JwtBuilderInterface
      */
-    public function subject($identifier): JwtBuilderInterface;
+    public function subject(mixed $identifier): JwtBuilderInterface;
 
     /**
      * Add custom claim to the payload.
      *
      * @param string $key
-     * @param null|mixed $value
+     * @param mixed|null $value
      * @return \App\Contracts\JwtBuilderInterface
      */
-    public function withClaim(string $key, $value = null): JwtBuilderInterface;
+    public function withClaim(string $key, mixed $value = null): JwtBuilderInterface;
 
     /**
      * Add custom header.
      *
      * @param string $key
-     * @param null|mixed $value
+     * @param mixed|null $value
      * @return \App\Contracts\JwtBuilderInterface
      */
-    public function withHeader(string $key, $value = null): JwtBuilderInterface;
+    public function withHeader(string $key, mixed $value = null): JwtBuilderInterface;
 
     /**
      * Get JwtToken built.

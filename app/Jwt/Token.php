@@ -53,12 +53,12 @@ class Token implements JwtTokenInterface
         return $this->signature;
     }
 
-    public function putToPayload($key, $value): void
+    public function putToPayload(mixed $key, mixed $value): void
     {
         $this->payload->put($key, $value);
     }
 
-    public function putToHeader($key, $value): void
+    public function putToHeader(mixed $key, mixed $value): void
     {
         $this->header->put($key, $value);
     }
@@ -68,7 +68,7 @@ class Token implements JwtTokenInterface
         $this->signature = $signature;
     }
 
-    public function getSubject()
+    public function getSubject(): mixed
     {
         return $this->payload->get('sub');
     }

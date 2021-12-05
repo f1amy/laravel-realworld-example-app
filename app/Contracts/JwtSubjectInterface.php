@@ -9,5 +9,5 @@ interface JwtSubjectInterface
      *
      * @return mixed
      */
-    public function getJwtIdentifier();
+    public function getJwtIdentifier(): mixed;
 }

@@ -30,7 +30,7 @@ class CommentsController extends Controller
      *
      * @param \App\Http\Requests\Api\NewCommentRequest $request
      * @param string $slug
-     * @return \Illuminate\Http\JsonResponse|object
+     * @return \Illuminate\Http\JsonResponse
      */
     public function create(NewCommentRequest $request, string $slug)
     {

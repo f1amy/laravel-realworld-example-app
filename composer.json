@@ -6,7 +6,7 @@
     "homepage": "https://github.com/f1amy/laravel-realworld-example-app",
     "license": "MIT",
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^8.0",
         "ext-json": "*",
         "darkaonline/l5-swagger": "^8.0",
         "fruitcake/laravel-cors": "^2.0",
@@ -68,7 +68,7 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "platform": {
-            "php": "7.4"
+            "php": "8.0"
         }
     },
     "minimum-stability": "dev",

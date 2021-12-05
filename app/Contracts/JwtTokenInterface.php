@@ -40,7 +40,7 @@ interface JwtTokenInterface
      * @param mixed $key
      * @param mixed $value
      */
-    public function putToPayload($key, $value): void;
+    public function putToPayload(mixed $key, mixed $value): void;
 
     /**
      * Put value to header under a key.
@@ -48,7 +48,7 @@ interface JwtTokenInterface
      * @param mixed $key
      * @param mixed $value
      */
-    public function putToHeader($key, $value): void;
+    public function putToHeader(mixed $key, mixed $value): void;
 
     /**
      * Set user-supplied signature.
@@ -60,9 +60,9 @@ interface JwtTokenInterface
     /**
      * Get subject key.
      *
-     * @return mixed|null
+     * @return mixed
      */
-    public function getSubject();
+    public function getSubject(): mixed;
 
     /**
      * Get expiration timestamp.
