@@ -30,7 +30,7 @@ class UnfollowProfileTest extends TestCase
         $response->assertOk()
             ->assertJsonPath('profile.following', false);
 
-        $this->assertFalse($this->user->followers->contains($follower));
+        $this->assertTrue($this->user->followers->doesntContain($follower));
 
         $this->actingAs($follower)
             ->deleteJson("/api/profiles/{$this->user->username}/follow")

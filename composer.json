@@ -11,7 +11,7 @@
         "darkaonline/l5-swagger": "^8.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/framework": "^8.65",
+        "laravel/framework": "^8.75",
         "laravel/tinker": "^2.5"
     },
     "require-dev": {
@@ -47,7 +47,7 @@
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi",
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
             "[ $COMPOSER_DEV_MODE -eq 0 ] || $PHP_BINARY artisan ide-helper:generate -WHM",
             "[ $COMPOSER_DEV_MODE -eq 0 ] || $PHP_BINARY artisan ide-helper:meta"
         ],

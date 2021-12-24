@@ -62,7 +62,7 @@ class User extends Authenticatable implements JwtSubjectInterface
     /**
      * The attributes that are mass assignable.
      *
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = [
         'username',
@@ -75,7 +75,7 @@ class User extends Authenticatable implements JwtSubjectInterface
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var string[]
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
@@ -85,7 +85,7 @@ class User extends Authenticatable implements JwtSubjectInterface
     /**
      * The attributes that should be cast.
      *
-     * @var array<string, string|class-string>
+     * @var array<string, string>
      */
     protected $casts = [
         'email_verified_at' => 'datetime',

@@ -32,7 +32,7 @@ class RemoveFavoritesTest extends TestCase
             ->assertJsonPath('article.favorited', false)
             ->assertJsonPath('article.favoritesCount', 0);
 
-        $this->assertFalse($this->user->favorites->contains($article));
+        $this->assertTrue($this->user->favorites->doesntContain($article));
 
         $this->actingAs($this->user)
             ->deleteJson("/api/articles/{$article->slug}/favorite")
