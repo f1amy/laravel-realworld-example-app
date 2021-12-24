@@ -69,6 +69,10 @@
         "sort-packages": true,
         "platform": {
             "php": "8.0"
+        },
+        "allow-plugins": {
+            "phpstan/extension-installer": true,
+            "composer/package-versions-deprecated": true
         }
     },
     "minimum-stability": "dev",
