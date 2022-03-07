@@ -4,8 +4,7 @@ namespace App\Auth;
 
 use App\Contracts\JwtTokenInterface;
 use App\Exceptions\JwtParseException;
-use App\Jwt\Parser;
-use App\Jwt\Validator;
+use App\Jwt;
 use Illuminate\Auth\GuardHelpers;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
@@ -71,7 +70,7 @@ class JwtGuard implements Guard
 
         if (! empty($token) && is_string($token)) {
             try {
-                $jwt = Parser::parse($token);
+                $jwt = Jwt\Parser::parse($token);
             } catch (JwtParseException | JsonException) {
                 $jwt = null;
             }
@@ -105,11 +104,7 @@ class JwtGuard implements Guard
             return false;
         }
 
-        if (Validator::validate($token)) {
-            return true;
-        }
-
-        return false;
+        return Jwt\Validator::validate($token);
     }
 
     /**

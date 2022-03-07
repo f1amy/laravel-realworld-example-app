@@ -2,8 +2,7 @@
 
 namespace Tests\Feature\Api\User;
 
-use App\Jwt\Parser;
-use App\Jwt\Validator;
+use App\Jwt;
 use App\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
@@ -31,8 +30,8 @@ class ShowUserTest extends TestCase
                 )
             );
 
-        $token = Parser::parse($response['user']['token']);
-        $this->assertTrue(Validator::validate($token));
+        $token = Jwt\Parser::parse($response['user']['token']);
+        $this->assertTrue(Jwt\Validator::validate($token));
     }
 
     public function testShowUserWithoutAuth(): void

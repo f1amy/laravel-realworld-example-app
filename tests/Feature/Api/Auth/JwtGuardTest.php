@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Api\Auth;
 
-use App\Jwt\Generator;
+use App\Jwt;
 use App\Models\User;
 use Tests\TestCase;
 
@@ -19,7 +19,7 @@ class JwtGuardTest extends TestCase
         $user = User::factory()->create();
 
         $this->user = $user;
-        $this->token = Generator::token($user);
+        $this->token = Jwt\Generator::token($user);
     }
 
     public function testGuardTokenParse(): void
