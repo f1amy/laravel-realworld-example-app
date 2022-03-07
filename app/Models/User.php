@@ -6,6 +6,7 @@ use App\Contracts\JwtSubjectInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * App\Models\User
@@ -33,6 +34,8 @@ use Illuminate\Notifications\Notifiable;
  * @property-read int|null $followers_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
+ * @property-read int|null $tokens_count
  * @method static \Database\Factories\UserFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
@@ -52,7 +55,7 @@ use Illuminate\Notifications\Notifiable;
  */
 class User extends Authenticatable implements JwtSubjectInterface
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * Regular expression for username.
@@ -125,7 +128,7 @@ class User extends Authenticatable implements JwtSubjectInterface
     /**
      * The authors that the user follows.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<User>
      */
     public function authors()
     {
@@ -135,7 +138,7 @@ class User extends Authenticatable implements JwtSubjectInterface
     /**
      * The followers of the author.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<User>
      */
     public function followers()
     {
@@ -145,7 +148,7 @@ class User extends Authenticatable implements JwtSubjectInterface
     /**
      * Get the comments of the user.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Comment>
      */
     public function comments()
     {
@@ -155,7 +158,7 @@ class User extends Authenticatable implements JwtSubjectInterface
     /**
      * Get user written articles.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Article>
      */
     public function articles()
     {
@@ -165,7 +168,7 @@ class User extends Authenticatable implements JwtSubjectInterface
     /**
      * Get user favorite articles.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<Article>
      */
     public function favorites()
     {

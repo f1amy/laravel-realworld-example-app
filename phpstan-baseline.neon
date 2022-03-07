@@ -1,6 +1,26 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Parameter \\#1 \\$user of method Illuminate\\\\Database\\\\Eloquent\\\\Builder\\<App\\\\Models\\\\Article\\>\\:\\:followedAuthorsOf\\(\\) expects App\\\\Models\\\\User, App\\\\Models\\\\User\\|null given\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/Articles/ArticleController.php
+
+		-
+			message: "#^Unable to resolve the template type TKey in call to function collect$#"
+			count: 2
+			path: app/Http/Controllers/Api/Articles/ArticleController.php
+
+		-
+			message: "#^Unable to resolve the template type TValue in call to function collect$#"
+			count: 2
+			path: app/Http/Controllers/Api/Articles/ArticleController.php
+
+		-
+			message: "#^Parameter \\#1 \\$ids of method Illuminate\\\\Database\\\\Eloquent\\\\Relations\\\\BelongsToMany\\<App\\\\Models\\\\User\\>\\:\\:syncWithoutDetaching\\(\\) expects array\\|Illuminate\\\\Database\\\\Eloquent\\\\Model\\|Illuminate\\\\Support\\\\Collection, App\\\\Models\\\\User\\|null given\\.$#"
+			count: 1
+			path: app/Http/Controllers/Api/ProfileController.php
+
+		-
 			message: "#^Parameter \\#1 \\$user of method App\\\\Models\\\\Article\\:\\:favoredBy\\(\\) expects App\\\\Models\\\\User, App\\\\Models\\\\User\\|null given\\.$#"
 			count: 1
 			path: app/Http/Resources/Api/ArticleResource.php
@@ -9,4 +29,9 @@ parameters:
 			message: "#^Cannot call method following\\(\\) on App\\\\Models\\\\User\\|null\\.$#"
 			count: 1
 			path: app/Http/Resources/Api/ProfileResource.php
+
+		-
+			message: "#^Parameter \\#1 \\$key of method Illuminate\\\\Cache\\\\RateLimiting\\\\Limit\\:\\:by\\(\\) expects string, int\\<min, \\-1\\>\\|int\\<1, max\\>\\|string\\|null given\\.$#"
+			count: 1
+			path: app/Providers/RouteServiceProvider.php
 

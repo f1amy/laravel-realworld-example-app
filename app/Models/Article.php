@@ -76,10 +76,10 @@ class Article extends Model
     /**
      * Scope article list.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \Illuminate\Database\Eloquent\Builder<self> $query
      * @param int $take
      * @param int $skip
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Builder<self>
      */
     public function scopeList(Builder $query, int $take, int $skip): Builder
     {
@@ -91,9 +91,9 @@ class Article extends Model
     /**
      * Scope articles having a tag.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \Illuminate\Database\Eloquent\Builder<self> $query
      * @param string $tag
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Builder<self>
      */
     public function scopeHavingTag(Builder $query, string $tag): Builder
     {
@@ -105,9 +105,9 @@ class Article extends Model
     /**
      * Scope to article author.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \Illuminate\Database\Eloquent\Builder<self> $query
      * @param string $username
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Builder<self>
      */
     public function scopeOfAuthor(Builder $query, string $username): Builder
     {
@@ -119,9 +119,9 @@ class Article extends Model
     /**
      * Scope articles to favored by a user.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \Illuminate\Database\Eloquent\Builder<self> $query
      * @param string $username
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Builder<self>
      */
     public function scopeFavoredByUser(Builder $query, string $username): Builder
     {
@@ -133,9 +133,9 @@ class Article extends Model
     /**
      * Scope articles to author's of a user.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \Illuminate\Database\Eloquent\Builder<self> $query
      * @param \App\Models\User $user
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Builder<self>
      */
     public function scopeFollowedAuthorsOf(Builder $query, User $user): Builder
     {
@@ -163,7 +163,7 @@ class Article extends Model
     /**
      * Article author.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<User, self>
      */
     public function author()
     {
@@ -173,7 +173,7 @@ class Article extends Model
     /**
      * Article tags.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<Tag>
      */
     public function tags()
     {
@@ -183,7 +183,7 @@ class Article extends Model
     /**
      * Get the comments for the article.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<Comment>
      */
     public function comments()
     {
@@ -193,7 +193,7 @@ class Article extends Model
     /**
      * Get users favored the article.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<User>
      */
     public function favoredUsers()
     {

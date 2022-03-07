@@ -8,7 +8,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
  * Class CommentsCollection
  *
  * @package App\Http\Resources
- * @property \App\Models\Comment[]|\Illuminate\Support\Collection $collection
+ * @property \Illuminate\Support\Collection<\App\Models\Comment> $collection
  */
 class CommentsCollection extends ResourceCollection
 {

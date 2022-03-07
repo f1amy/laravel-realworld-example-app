@@ -9,21 +9,21 @@ interface JwtTokenInterface
     /**
      * Get default headers.
      *
-     * @return string[]
+     * @return array<string>
      */
     public function getDefaultHeaders(): array;
 
     /**
      * Get a copy of headers set on token.
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection<string, mixed>
      */
     public function headers(): Collection;
 
     /**
      * Get a copy of claims set on token.
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection<string, mixed>
      */
     public function claims(): Collection;
 
@@ -37,18 +37,18 @@ interface JwtTokenInterface
     /**
      * Put value to payload under a key.
      *
-     * @param mixed $key
+     * @param string $key
      * @param mixed $value
      */
-    public function putToPayload(mixed $key, mixed $value): void;
+    public function putToPayload(string $key, mixed $value): void;
 
     /**
      * Put value to header under a key.
      *
-     * @param mixed $key
+     * @param string $key
      * @param mixed $value
      */
-    public function putToHeader(mixed $key, mixed $value): void;
+    public function putToHeader(string $key, mixed $value): void;
 
     /**
      * Set user-supplied signature.

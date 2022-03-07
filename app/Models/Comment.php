@@ -46,7 +46,7 @@ class Comment extends Model
     /**
      * Comment's article.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<Article, self>
      */
     public function article()
     {
@@ -56,7 +56,7 @@ class Comment extends Model
     /**
      * Comment's author.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<User, self>
      */
     public function author()
     {

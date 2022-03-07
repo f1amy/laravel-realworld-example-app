@@ -29,7 +29,7 @@ class DeleteCommentTest extends TestCase
             ->deleteJson("/api/articles/{$this->article->slug}/comments/{$this->comment->getKey()}")
             ->assertOk();
 
-        $this->assertDeleted($this->comment);
+        $this->assertModelMissing($this->comment);
     }
 
     public function testDeleteCommentOfNonExistentArticle(): void

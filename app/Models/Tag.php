@@ -40,7 +40,7 @@ class Tag extends Model
     /**
      * Tagged articles.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany<Article>
      */
     public function articles()
     {
