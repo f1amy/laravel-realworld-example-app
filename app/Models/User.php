@@ -6,6 +6,7 @@ use App\Contracts\JwtSubjectInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * App\Models\User
@@ -52,7 +53,7 @@ use Illuminate\Notifications\Notifiable;
  */
 class User extends Authenticatable implements JwtSubjectInterface
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * Regular expression for username.

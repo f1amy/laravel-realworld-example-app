@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Throwable;
 
 /**
  * @codeCoverageIgnore
@@ -14,7 +15,7 @@ class Handler extends ExceptionHandler
     /**
      * A list of the exception types that are not reported.
      *
-     * @var array<int, class-string<\Throwable>>
+     * @var array<int, class-string<Throwable>>
      */
     protected $dontReport = [
         //

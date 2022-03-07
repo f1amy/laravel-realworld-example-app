@@ -30,7 +30,7 @@ class DeleteArticleTest extends TestCase
             ->deleteJson("/api/articles/{$this->article->slug}")
             ->assertOk();
 
-        $this->assertDeleted($this->article);
+        $this->assertModelMissing($this->article);
     }
 
     public function testDeleteForeignArticle(): void
