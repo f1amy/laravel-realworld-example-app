@@ -56,7 +56,7 @@ class UpdateArticleTest extends TestCase
                             'description' => $description,
                             'body' => $body,
                             'tagList' => [],
-                            'createdAt' => optional($this->article->created_at)->toISOString(),
+                            'createdAt' => $this->article->created_at?->toISOString(),
                             'favorited' => false,
                             'favoritesCount' => 0,
                         ])

@@ -9,7 +9,11 @@ class Token implements JwtTokenInterface
 {
     /** User-supplied signature */
     private ?string $signature;
+
+    /** @var Collection<string, mixed> */
     private Collection $header;
+
+    /** @var Collection<string, mixed> */
     private Collection $payload;
 
     /**
@@ -53,12 +57,12 @@ class Token implements JwtTokenInterface
         return $this->signature;
     }
 
-    public function putToPayload(mixed $key, mixed $value): void
+    public function putToPayload(string $key, mixed $value): void
     {
         $this->payload->put($key, $value);
     }
 
-    public function putToHeader(mixed $key, mixed $value): void
+    public function putToHeader(string $key, mixed $value): void
     {
         $this->header->put($key, $value);
     }

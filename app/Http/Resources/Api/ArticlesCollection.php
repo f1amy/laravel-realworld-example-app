@@ -8,7 +8,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
  * Class ArticlesCollection
  *
  * @package App\Http\Resources
- * @property \App\Models\Article[]|\Illuminate\Support\Collection $collection
+ * @property \Illuminate\Support\Collection<\App\Models\Article> $collection
  */
 class ArticlesCollection extends ResourceCollection
 {

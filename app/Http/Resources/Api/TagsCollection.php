@@ -8,7 +8,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
  * Class TagsCollection
  *
  * @package App\Http\Resources
- * @property \App\Models\Tag[]|\Illuminate\Support\Collection $collection
+ * @property \Illuminate\Support\Collection<\App\Models\Tag> $collection
  */
 class TagsCollection extends ResourceCollection
 {
@@ -30,7 +30,7 @@ class TagsCollection extends ResourceCollection
      * Transform the resource collection into an array.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return array<string, mixed>|\Illuminate\Support\Collection<\App\Models\Tag|string>
+     * @return \Illuminate\Support\Collection<int, mixed>
      */
     public function toArray($request)
     {

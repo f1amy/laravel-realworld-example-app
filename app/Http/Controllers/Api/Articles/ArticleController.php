@@ -154,22 +154,22 @@ class ArticleController extends Controller
     /**
      * Get limit from filter.
      *
-     * @param \Illuminate\Support\Collection $filter
+     * @param \Illuminate\Support\Collection<string, string> $filter
      * @return int
      */
     private function getLimit(Collection $filter): int
     {
-        return $filter['limit'] ?? static::FILTER_LIMIT;
+        return (int) ($filter['limit'] ?? static::FILTER_LIMIT);
     }
 
     /**
      * Get offset from filter.
      *
-     * @param \Illuminate\Support\Collection $filter
+     * @param \Illuminate\Support\Collection<string, string> $filter
      * @return int
      */
     private function getOffset(Collection $filter): int
     {
-        return $filter['offset'] ?? static::FILTER_OFFSET;
+        return (int) ($filter['offset'] ?? static::FILTER_OFFSET);
     }
 }

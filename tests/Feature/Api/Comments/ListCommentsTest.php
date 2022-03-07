@@ -27,8 +27,8 @@ class ListCommentsTest extends TestCase
                 $json->has('comments', 5, fn (AssertableJson $item) =>
                     $item->where('id', $comment->getKey())
                         ->whereAll([
-                            'createdAt' => optional($comment->created_at)->toISOString(),
-                            'updatedAt' => optional($comment->updated_at)->toISOString(),
+                            'createdAt' => $comment->created_at?->toISOString(),
+                            'updatedAt' => $comment->updated_at?->toISOString(),
                             'body' => $comment->body,
                         ])
                         ->has('author', fn (AssertableJson $subItem) =>

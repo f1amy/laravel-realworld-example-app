@@ -31,8 +31,8 @@ class ShowArticleTest extends TestCase
                             'description' => $article->description,
                             'body' => $article->body,
                             'tagList' => $tags->pluck('name'),
-                            'createdAt' => optional($article->created_at)->toISOString(),
-                            'updatedAt' => optional($article->updated_at)->toISOString(),
+                            'createdAt' => $article->created_at?->toISOString(),
+                            'updatedAt' => $article->updated_at?->toISOString(),
                             'favoritesCount' => 0,
                         ])
                         ->has('author', fn (AssertableJson $subItem) =>
