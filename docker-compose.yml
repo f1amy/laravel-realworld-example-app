@@ -13,6 +13,7 @@ services:
             - 'host.docker.internal:host-gateway'
         ports:
             - '${APP_PORT:-80}:80'
+            - '${HMR_PORT:-8080}:8080'
         environment:
             PHP_IDE_CONFIG: 'serverName=laravel-realworld.test'
             WWWUSER: '${WWWUSER}'
@@ -27,7 +28,7 @@ services:
             - pgsql
 
     pgsql:
-        image: 'postgres:alpine'
+        image: 'postgres:14-alpine'
         ports:
             - '${FORWARD_DB_PORT:-5432}:5432'
         environment:
@@ -37,10 +38,11 @@ services:
             POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
         volumes:
             - 'sail-pgsql:/var/lib/postgresql/data'
+            - './vendor/laravel/sail/database/pgsql/create-testing-database.sql:/docker-entrypoint-initdb.d/10-create-testing-database.sql'
         networks:
             - sail
         healthcheck:
-            test: [ "CMD", "pg_isready", "-q" ]
+            test: [ "CMD", "pg_isready", "-q", "-d", "${DB_DATABASE}", "-U", "${DB_USERNAME}" ]
             retries: 3
             timeout: 5s
 
